@@ -1,0 +1,5 @@
+- Add redux
+- Add Signup Page
+- Add register API call
+- Add login call
+- Style that shiz.
