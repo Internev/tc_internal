@@ -17,7 +17,7 @@ module.exports = new PassportLocalStrategy({
     name: req.body.name.trim()
   }
 
-  User.findOrCreate({where: {email: userData.email}, defaults: {password: userData.password, name: userData.name}})
+  User.findCreateFind({where: {email: userData.email}, defaults: {password: userData.password, name: userData.name}})
     .spread((user, created) => {
       if (!created) {
         return done({name: 'exists'}, null)
@@ -26,7 +26,7 @@ module.exports = new PassportLocalStrategy({
       }
     })
     .catch(err => {
-      User.sync
+      User.sync()
       return done(err)
     })
 })

@@ -78,14 +78,15 @@ function validateLoginForm (payload) {
 }
 
 router.post('/signup', (req, res, next) => {
-  const validationResult = validateSignupForm(req.body)
-  if (!validationResult.success) {
-    return res.status(400).json({
-      success: false,
-      message: validationResult.message,
-      errors: validationResult.errors
-    })
-  }
+  // console.log('\n\n\n****\nThis is signup route, req is:', req.body)
+  // const validationResult = validateSignupForm(req.body)
+  // if (!validationResult.success) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: validationResult.message,
+  //     errors: validationResult.errors
+  //   })
+  // }
 
   return passport.authenticate('local-signup', (err, user) => {
     if (err) {
@@ -108,7 +109,7 @@ router.post('/signup', (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      message: 'You have successfully signed up! Now you should be able to log in.',
+      message: `Sign up successful, please log in.`,
       user
     })
   })(req, res, next)
