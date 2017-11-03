@@ -10,22 +10,18 @@ import Protected from './components/Protected'
 
 const App = () => (
   <Router>
-    <div className='container'>
+    <div>
       <Header />
-      <ul>
-        <li><Link to='/'>Root</Link></li>
-        <li><Link to='/login'>Login Page</Link></li>
-        <li><Link to='/protected'>Protected Page</Link></li>
-        <li><Link to='/logout'>Log Out</Link></li>
-      </ul>
-      <div className='row'>
-        <Switch>
-          <Route path='/login' component={Login} />
-          <Route path='/signup' component={Signup} />
-          <Route path='/protected' component={Protected} />
-          <Route path='/logout' component={Logout} />
-          <Route path='/' component={Test} />
-        </Switch>
+      <div className='container'>
+        <div className='row'>
+          <Switch>
+            <Route path='/login' component={Login} />
+            <Route path='/signup' component={Signup} />
+            <Route path='/protected' component={Protected} />
+            <Route path='/logout' component={Logout} />
+            <Route path='/' component={Test} />
+          </Switch>
+        </div>
       </div>
     </div>
   </Router>

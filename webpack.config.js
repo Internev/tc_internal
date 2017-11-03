@@ -31,7 +31,7 @@ module.exports = {
           loader: 'file-loader',
           options: {
             query: {
-              name: 'assets/[name].[ext]'
+              name: 'imgs/[name].[ext]'
             }
           }
         },
