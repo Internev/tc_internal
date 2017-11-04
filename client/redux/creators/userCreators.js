@@ -6,9 +6,18 @@ import {
   LOGOUT_SUCCESS,
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
-  SIGNUP_FAILURE
+  SIGNUP_FAILURE,
+  UPDATE_AUTH_MSG
 } from '../actions'
 import axios from 'axios'
+
+export function updateAuthMsg (msg) {
+  console.log('userCreator updateAuthMsg, msg is:', msg)
+  return {
+    type: UPDATE_AUTH_MSG,
+    msg
+  }
+}
 
 function requestSignup () {
   return {

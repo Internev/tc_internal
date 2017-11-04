@@ -7,6 +7,7 @@ import FormControl from 'react-bootstrap/lib/FormControl'
 import ControlLabel from 'react-bootstrap/lib/ControlLabel'
 import HelpBlock from 'react-bootstrap/lib/HelpBlock'
 import { loginUser } from '../redux/creators/userCreators'
+import './Auth.scss'
 
 class Login extends React.Component {
   static isPrivate = false
@@ -49,10 +50,10 @@ class Login extends React.Component {
   }
   render () {
     return (
-      <div className='row'>
-        <div className='col-md-3'></div>
-        <div className='col-md-6 col-xs-12'>
-          <h4 className=''>Welcome, please log in.</h4>
+      <div className='auth row'>
+        <div className='col-md-3 col-xs-1'></div>
+        <div className='col-md-6 col-xs-10 auth_container'>
+          <h4 className='auth_heading'>Welcome, please log in</h4>
           <div className='auth_feedback'>
             {this.props.user.auth.message}
           </div>
@@ -90,12 +91,12 @@ class Login extends React.Component {
               }
             </FormGroup>
             <Button type="submit" onClick={e => this.handleFormSubmit(e)}>
-              Sign up
+              Log in
             </Button>
           </form>
-          <div className=''>No account yet? <Link to='/signup'>Sign up here</Link>.</div>
+          <div className='auth_link'>No account yet? <Link to='/signup'>Sign up here</Link>.</div>
         </div>
-        <div className='col-md-3'></div>
+        <div className='col-md-3 col-xs-1'></div>
       </div>
     )
   }

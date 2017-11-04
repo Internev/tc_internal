@@ -6,7 +6,8 @@ import FormGroup from 'react-bootstrap/lib/FormGroup'
 import FormControl from 'react-bootstrap/lib/FormControl'
 import ControlLabel from 'react-bootstrap/lib/ControlLabel'
 import HelpBlock from 'react-bootstrap/lib/HelpBlock'
-import { signupUser } from '../redux/creators/userCreators'
+import { signupUser, updateAuthMsg } from '../redux/creators/userCreators'
+import './Auth.scss'
 
 class Signup extends React.Component {
   static isPrivate = false
@@ -15,7 +16,8 @@ class Signup extends React.Component {
     this.state = {
       email: '',
       pass: '',
-      passConfirm: ''
+      passConfirm: '',
+      submit: false
     }
     this.getEmailValid = this.getEmailValid.bind(this)
     this.getPassValid = this.getPassValid.bind(this)
@@ -24,7 +26,6 @@ class Signup extends React.Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
   componentDidUpdate () {
-    console.log('signup props:', this.props)
     if (this.props.user.auth.success) {
       this.props.dispatch({type: 'SIGNUP_REDIRECT'})
       this.props.history.push('/login')
@@ -37,12 +38,22 @@ class Signup extends React.Component {
   }
   handleFormSubmit (e) {
     e.preventDefault()
-    const creds = {
-      name: 'Test Account',
-      email: this.state.email,
-      password: this.state.pass
+    if (
+      this.getEmailValid() === 'success'
+      && this.getPassValid() === 'success'
+      && this.getPassConfirmValid() === 'success'
+    ) {
+      const creds = {
+        name: 'Test Account',
+        email: this.state.email,
+        password: this.state.pass
+      }
+      this.props.dispatch(signupUser(creds))
+    } else if (this.getEmailValid() !== 'success') {
+      this.props.dispatch(updateAuthMsg('Please check your email address.'))
+    } else {
+      this.props.dispatch(updateAuthMsg('Please complete all fields.'))
     }
-    this.props.dispatch(signupUser(creds))
   }
   getEmailValid () {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)) return 'success'
@@ -59,10 +70,10 @@ class Signup extends React.Component {
   }
   render () {
     return (
-      <div className='row'>
-        <div className='col-md-3'></div>
-        <div className='col-md-6 col-xs-12'>
-          <h4 className=''>Welcome aboard, please create your account</h4>
+      <div className='auth row'>
+        <div className='col-md-3 col-xs-1'></div>
+        <div className='col-md-6 col-xs-10 auth_container'>
+          <h4 className='auth_heading'>Welcome aboard, please create your account</h4>
           <div className='auth_feedback'>
             {this.props.user.auth.message}
           </div>
@@ -117,13 +128,16 @@ class Signup extends React.Component {
                   : null
                 }
             </FormGroup>
-            <Button type="submit" onClick={e => this.handleFormSubmit(e)}>
+            <Button
+              type="submit"
+              onClick={e => this.handleFormSubmit(e)}
+              >
               Sign up
             </Button>
           </form>
-          <div className=''>Already have an account? <Link to='/login'>log in here</Link>.</div>
+          <div className='auth_link'>Already have an account? <Link to='/login'>Log in here</Link>.</div>
         </div>
-        <div className='col-md-3'></div>
+        <div className='col-md-3 col-xs-1'></div>
       </div>
     )
   }

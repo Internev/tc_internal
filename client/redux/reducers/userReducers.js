@@ -6,7 +6,8 @@ import { SIGNUP_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   LOGOUT_REQUEST,
-  LOGOUT_SUCCESS
+  LOGOUT_SUCCESS,
+  UPDATE_AUTH_MSG
 } from '../actions'
 
 const DEFAULT_STATE = {
@@ -94,6 +95,14 @@ const logoutSuccess = (state, action) => {
   return newState
 }
 
+const updateAuthMsg = (state, action) => {
+  const authState = {...state.auth}
+  authState.message = action.msg
+  const newState = {...state, ...{auth: authState}}
+  console.log('updateAuthMessage Reducer newstate is:', newState)
+  return newState
+}
+
 export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case SIGNUP_REQUEST:
@@ -114,6 +123,8 @@ export default function (state = DEFAULT_STATE, action) {
       return logoutRequest(state, action)
     case LOGOUT_SUCCESS:
       return logoutSuccess(state, action)
+    case UPDATE_AUTH_MSG:
+      return updateAuthMsg(state, action)
     default:
       return state
   }
