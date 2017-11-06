@@ -11,7 +11,9 @@ const User = db.define('user', {
   email: Sequelize.STRING,
   password: Sequelize.STRING,
   admin: {type: Sequelize.BOOLEAN, defaultValue: false},
-  walker: {type: Sequelize.BOOLEAN, defaultValue: true}
+  walker: {type: Sequelize.BOOLEAN, defaultValue: true},
+  reset_password_token: Sequelize.STRING,
+  reset_password_expires: Sequelize.DATE
 })
 
 const Client = db.define('client', {

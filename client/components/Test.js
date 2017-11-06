@@ -6,7 +6,4 @@ const Test = () => (
   </div>
 )
 
-Test.isPrivate = true
-
-
 export default Test

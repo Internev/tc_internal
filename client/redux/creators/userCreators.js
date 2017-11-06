@@ -101,6 +101,19 @@ export function loginUser (creds) {
   }
 }
 
+export function forgotPassword (email) {
+  return dispatch => {
+    return axios.post('/auth/forgot', {email})
+      .then(res => {
+        return dispatch(updateAuthMsg(`Email sent (assuming you're a registered user), please follow the link in the email to reset your password.`))
+      })
+      .catch(err => {
+        console.log('forgotPassword Error:', err)
+        return dispatch(updateAuthMsg(`Email sent (assuming you're a registered user).`))
+      })
+  }
+}
+
 function requestLogout () {
   return {
     type: LOGOUT_REQUEST,

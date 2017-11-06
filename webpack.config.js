@@ -18,14 +18,24 @@ module.exports = {
       ]
     },
     {
-      test: /\.scss$/,
+      test: /\.s?css$/,
       use: ExtractTextPlugin.extract({
         fallback: 'style-loader',
         use: ['css-loader', 'sass-loader']
       })
     },
     {
+      test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+      use: {
+        loader: 'url-loader',
+        options: {
+          limit: 100000
+        }
+      }
+    },
+    {
       test: /\.(jpe?g|png|gif|svg)$/i,
+      exclude: /node_modules/,
       use: [
         {
           loader: 'file-loader',

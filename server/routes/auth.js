@@ -4,8 +4,10 @@ const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../../config')
 const router = new express.Router()
+const addMinutes = require('date-fns/add_minutes')
 const { User } = require('../models/db')
-
+const { genRandom } = require('../utils/crypto')
+const { forgotPassEmail } = require('../utils/email')
 /**
  * Validate the sign up form
  *
@@ -168,9 +170,41 @@ router.post('/token', (req, res, next) => {
         return res.status(401).end()
       })
     } else {
-        return res.status(401).end()
+      return res.status(401).end()
     }
   })
+})
+
+router.post('/forgot', (req, res) => {
+  console.log('\n\nForgot Password\n\n')
+  User.findOne({where: {email: req.body.email}})
+    .then(user => {
+      return genRandom(12, user)
+    })
+    .then(([passToken, user]) => {
+      const tokenDetails = {
+        reset_password_token: passToken,
+        reset_password_expires: addMinutes(new Date(), 30)
+      }
+      return User.update(
+        tokenDetails,
+        {where: {id: user.id},
+          returning: true,
+          plain: true}
+      )
+    })
+    .then(([_, user]) => {
+      console.log('\n\nforgot updated a user:', user, '\n\n')
+      return forgotPassEmail(user.email, user.reset_password_token)
+    })
+    .then(mailResult => {
+      console.log('we sent an email!', mailResult)
+      res.sendStatus(200)
+    })
+    .catch(err => {
+      console.log('Error in forgot password route:', err)
+      res.status(500).json({err})
+    })
 })
 
 module.exports = router

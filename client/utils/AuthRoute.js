@@ -4,14 +4,12 @@ import { connect } from 'react-redux'
 import { Redirect, Route } from 'react-router-dom'
 
 // Mock of an Auth method, can be replaced with an async call to the backend. Must return true or false
-const isAuthenticated = () => true
+// const isAuthenticated = () => true
 
 const PRIVATE_ROOT = '/'
 const PUBLIC_ROOT = '/login'
 
-const AuthRoute = ({component, ...props}) => {
-  const { isPrivate } = component
-
+const AuthRoute = ({component, isPrivate, ...props}) => {
   if (props.user.isAuthenticated) {
     // If route is private, user proceeds, else route is public, redirect use to private root.
     return isPrivate

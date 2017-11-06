@@ -6,6 +6,4 @@ const Protected = () => (
   </div>
 )
 
-Protected.isPrivate = true
-
 export default Protected

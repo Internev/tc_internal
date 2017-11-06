@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { logoutUser } from '../redux/creators/userCreators'
+import { logoutUser } from '../../redux/creators/userCreators'
 
 class Logout extends React.Component {
-  static isPrivate = true
   componentWillMount () {
     this.props.dispatch(logoutUser())
     this.props.history.push('/login')
