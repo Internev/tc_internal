@@ -7,7 +7,9 @@ import { SIGNUP_REQUEST,
   LOGIN_FAILURE,
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
-  UPDATE_AUTH_MSG
+  UPDATE_AUTH_MSG,
+  PASSWORD_TOKEN_CHECKING,
+  PASSWORD_TOKEN_RESULT
 } from '../actions'
 
 const DEFAULT_STATE = {
@@ -18,6 +20,8 @@ const DEFAULT_STATE = {
   isFetching: false,
   isAuthenticated: localStorage.getItem('id_token') !== null,
   id_token: '',
+  isPassTokenChecking: false,
+  isPassTokenGood: false,
   auth: {
     success: false,
     message: '',
@@ -103,6 +107,28 @@ const updateAuthMsg = (state, action) => {
   return newState
 }
 
+const passwordTokenChecking = (state, action) => {
+  const newState = {
+    ...state,
+    ...{
+      isPassTokenChecking: action.isPassTokenChecking,
+      isPassTokenGood: action.isPassTokenGood
+    }
+  }
+  return newState
+}
+
+const passwordTokenResult = (state, action) => {
+  const newState = {
+    ...state,
+    ...{
+      isPassTokenChecking: action.isPassTokenChecking,
+      isPassTokenGood: action.isPassTokenGood
+    }
+  }
+  return newState
+}
+
 export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case SIGNUP_REQUEST:
@@ -125,6 +151,10 @@ export default function (state = DEFAULT_STATE, action) {
       return logoutSuccess(state, action)
     case UPDATE_AUTH_MSG:
       return updateAuthMsg(state, action)
+    case PASSWORD_TOKEN_CHECKING:
+      return passwordTokenChecking(state, action)
+    case PASSWORD_TOKEN_RESULT:
+      return passwordTokenResult(state, action)
     default:
       return state
   }

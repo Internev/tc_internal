@@ -1,8 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, Message, Icon } from 'semantic-ui-react'
-import { loginUser } from '../../redux/creators/userCreators'
+import { Link } from 'react-router-dom'
+import { Form, Message, Icon, Dimmer, Loader } from 'semantic-ui-react'
+import { changePassword, resetPasswordCheck } from '../../redux/creators/userCreators'
 import './Auth.scss'
 
 class Reset extends React.Component {
@@ -17,6 +17,15 @@ class Reset extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
+  componentWillMount () {
+    this.props.dispatch(resetPasswordCheck(this.props.match.params.token))
+  }
+  componentDidUpdate () {
+    if (this.props.user.auth.success) {
+      this.props.dispatch({type: 'SIGNUP_REDIRECT'})
+      this.props.history.push('/login')
+    }
+  }
   handleChange (e) {
     const change = {}
     change[e.target.name] = e.target.value
@@ -24,12 +33,7 @@ class Reset extends React.Component {
   }
   handleFormSubmit (e) {
     e.preventDefault()
-    const creds = {
-      name: 'Test Account',
-      email: this.state.email,
-      password: this.state.pass
-    }
-    this.props.dispatch(loginUser(creds))
+    this.props.dispatch(changePassword(this.state.pass, this.props.match.params.token))
   }
   getPassValid () {
     return this.state.pass.length > 5
@@ -58,42 +62,50 @@ class Reset extends React.Component {
     return (
       <div className='auth'>
         <div className='auth_container'>
+          <Dimmer inverted active={this.props.user.isPassTokenChecking}>
+            <Loader inverted>Checking Reset Permission</Loader>
+          </Dimmer>
           <h4 className='auth_heading'>Password reset</h4>
-            <Form
-              error={this.props.user.auth.message.length > 0}
-              onSubmit={this.handleFormSubmit}
-              >
-              <Message
-                error
-                content={this.props.user.auth.message}
-                />
-              <Form.Input
-                label='Password (min 6 characters)'
-                placeholder='Password'
-                type='password'
-                name='pass'
-                value={this.state.pass}
-                onChange={e => this.handleChange(e)}
-                icon={this.getPassValid() ? validIcon : null}
-                />
-              <Form.Input
-                label='Confirm Password'
-                placeholder='Password'
-                type='password'
-                name='passConfirm'
-                value={this.state.passConfirm}
-                onChange={e => this.handleChange(e)}
-                icon={
-                  this.getPassConfirmValid()
-                  ? validIcon
-                  : this.getPassConfirmValid() === null
-                    ? null
-                    : warnIcon}
-                />
-              <Form.Button
-                disabled={!(this.getPassValid() && this.getPassConfirmValid())}
-                >Update Password</Form.Button>
-            </Form>
+          {!this.props.user.isPassTokenChecking && this.props.user.isPassTokenGood
+          ? <Form
+            error={this.props.user.auth.message.length > 0}
+            onSubmit={this.handleFormSubmit}
+            >
+            <Message
+              error
+              content={this.props.user.auth.message}
+              />
+            <Form.Input
+              label='Password (min 6 characters)'
+              placeholder='Password'
+              type='password'
+              name='pass'
+              value={this.state.pass}
+              onChange={e => this.handleChange(e)}
+              icon={this.getPassValid() ? validIcon : null}
+              />
+            <Form.Input
+              label='Confirm Password'
+              placeholder='Password'
+              type='password'
+              name='passConfirm'
+              value={this.state.passConfirm}
+              onChange={e => this.handleChange(e)}
+              icon={
+                this.getPassConfirmValid()
+                ? validIcon
+                : this.getPassConfirmValid() === null
+                  ? null
+                  : warnIcon}
+              />
+            <Form.Button
+              disabled={!(this.getPassValid() && this.getPassConfirmValid())}
+              >Update Password</Form.Button>
+          </Form>
+          : <div>
+            Sorry, the reset token has expired or is invalid. If you would like to request a new reset email, please head <Link to='/forgot'>here</Link>.
+          </div>
+          }
         </div>
       </div>
     )

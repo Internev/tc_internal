@@ -5,9 +5,10 @@ const jwt = require('jsonwebtoken')
 const config = require('../../config')
 const router = new express.Router()
 const addMinutes = require('date-fns/add_minutes')
-const { User } = require('../models/db')
+const { User, genHash } = require('../models/db')
 const { genRandom } = require('../utils/crypto')
 const { forgotPassEmail } = require('../utils/email')
+const format = require('date-fns/format')
 /**
  * Validate the sign up form
  *
@@ -176,7 +177,6 @@ router.post('/token', (req, res, next) => {
 })
 
 router.post('/forgot', (req, res) => {
-  console.log('\n\nForgot Password\n\n')
   User.findOne({where: {email: req.body.email}})
     .then(user => {
       return genRandom(12, user)
@@ -194,7 +194,6 @@ router.post('/forgot', (req, res) => {
       )
     })
     .then(([_, user]) => {
-      console.log('\n\nforgot updated a user:', user, '\n\n')
       return forgotPassEmail(user.email, user.reset_password_token)
     })
     .then(mailResult => {
@@ -205,6 +204,50 @@ router.post('/forgot', (req, res) => {
       console.log('Error in forgot password route:', err)
       res.status(500).json({err})
     })
+})
+
+router.get('/reset', (req, res) => {
+  User.findOne({where: {reset_password_token: req.headers.token}})
+    .then(user => {
+      user && format(user.reset_password_expires, 'x') > Date.now()
+      ? res.status(200).json({resetToken: true})
+      : res.status(200).json({resetToken: false})
+    })
+    .catch(err => {
+      console.log('No password reset token found, token was:', req.headers.token, 'error:', err)
+      res.status(200).json({
+        resetToken: false
+      })
+    })
+})
+
+router.post('/reset', (req, res) => {
+  let update = {
+    password: genHash(req.body.password.trim())
+  }
+  console.log('reset Pword, req.body is:', req.body)
+  User.update(
+    update,
+    {where: {reset_password_token: req.body.token},
+      returning: true,
+      plain: true}
+  )
+  .then(([_, user]) => {
+    console.log('user password reset updated, user is:', user)
+    res.status(200).json({
+      success: true,
+      message: `Password reset, please log in.`,
+      user
+    })
+  })
+  .catch(err => {
+    console.log('user password reset update error:', err)
+    res.status(400).json({
+      success: false,
+      message: `Reset failed, please try again later.`,
+      err
+    })
+  })
 })
 
 module.exports = router

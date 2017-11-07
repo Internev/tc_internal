@@ -7,7 +7,9 @@ import {
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
   SIGNUP_FAILURE,
-  UPDATE_AUTH_MSG
+  UPDATE_AUTH_MSG,
+  PASSWORD_TOKEN_CHECKING,
+  PASSWORD_TOKEN_RESULT
 } from '../actions'
 import axios from 'axios'
 
@@ -110,6 +112,55 @@ export function forgotPassword (email) {
       .catch(err => {
         console.log('forgotPassword Error:', err)
         return dispatch(updateAuthMsg(`Email sent (assuming you're a registered user).`))
+      })
+  }
+}
+
+export function resetPasswordCheck (token) {
+  return dispatch => {
+    dispatch(passwordTokenChecking())
+    const config = {
+      headers: {
+        token
+      }
+    }
+    return axios.get('/auth/reset', config)
+      .then(res => {
+        console.log('response from server reset token check:', res)
+        dispatch(passwordTokenResult(res.data.resetToken))
+      })
+      .catch(err => {
+        console.log('passwordTokenCheck error:', err)
+        dispatch(passwordTokenResult(false))
+      })
+  }
+}
+
+function passwordTokenChecking () {
+  return {
+    type: PASSWORD_TOKEN_CHECKING,
+    isPassTokenChecking: true,
+    isPassTokenGood: false
+  }
+}
+
+function passwordTokenResult (valid) {
+  return {
+    type: PASSWORD_TOKEN_RESULT,
+    isPassTokenChecking: false,
+    isPassTokenGood: valid
+  }
+}
+
+export function changePassword (password, token) {
+  return dispatch => {
+    return axios.post('/auth/reset', {password, token})
+      .then(res => {
+        return dispatch(receiveSignup(res.data))
+      })
+      .catch(err => {
+        console.log('we got a changePassword err:', err)
+        if (err) return dispatch(signupError(err.response.data))
       })
   }
 }
