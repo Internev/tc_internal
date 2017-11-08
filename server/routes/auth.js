@@ -223,7 +223,9 @@ router.get('/reset', (req, res) => {
 
 router.post('/reset', (req, res) => {
   let update = {
-    password: genHash(req.body.password.trim())
+    password: genHash(req.body.password.trim()),
+    reset_password_token: '',
+    reset_password_expires: null
   }
   console.log('reset Pword, req.body is:', req.body)
   User.update(

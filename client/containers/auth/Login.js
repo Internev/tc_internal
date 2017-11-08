@@ -17,6 +17,14 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
+  componentWillMount () {
+    console.log('login component mounting, state:', this.state)
+    console.log('login component mounting, props:', this.props)
+  }
+  componentDidMount () {
+    console.log('login component mounted, state:', this.state)
+    console.log('login component mounted, props:', this.props)
+  }
   componentDidUpdate () {
     if (this.props.user.auth.success) {
       this.props.history.push('/')
@@ -84,7 +92,10 @@ class Login extends React.Component {
               disabled={!(this.getEmailValid() && this.getPassValid())}
               >Submit</Form.Button>
           </Form>
-          <div className='auth_link'>No account yet? <Link to='/signup'>Sign up here</Link>.</div>
+          <div className='auth_link'>
+            No account yet? <Link to='/signup'>Sign up here</Link>.<br />
+            Forgotten your password? <Link to='/forgot'>Reset it here</Link>.
+          </div>
         </div>
       </div>
     )

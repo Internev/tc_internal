@@ -14,7 +14,6 @@ import {
 import axios from 'axios'
 
 export function updateAuthMsg (msg) {
-  console.log('userCreator updateAuthMsg, msg is:', msg)
   return {
     type: UPDATE_AUTH_MSG,
     msg

@@ -55,7 +55,9 @@ const signupSuccess = (state, action) => {
 }
 
 const signupRedirect = (state, action) => {
-  const newState = {...state, success: false}
+  const newAuth = {...state.auth, ...{success: false}}
+  const newState = {...state}
+  newState.auth = newAuth
   return newState
 }
 
@@ -103,7 +105,6 @@ const updateAuthMsg = (state, action) => {
   const authState = {...state.auth}
   authState.message = action.msg
   const newState = {...state, ...{auth: authState}}
-  console.log('updateAuthMessage Reducer newstate is:', newState)
   return newState
 }
 

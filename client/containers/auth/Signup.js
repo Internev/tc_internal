@@ -22,6 +22,7 @@ class Signup extends React.Component {
   }
   componentWillMount () {
     this.props.dispatch(updateAuthMsg(''))
+    this.props.dispatch({type: 'SIGNUP_REDIRECT'})
   }
   componentDidUpdate () {
     if (this.props.user.auth.success) {
