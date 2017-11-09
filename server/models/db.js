@@ -63,11 +63,3 @@ module.exports = {
   genHashAsync,
   validPass
 }
-//
-// module.exports.User = User
-// module.exports.Order = Order
-// module.exports.Storedorder = Storedorder
-// module.exports.Storegeo = Storegeo
-// module.exports.genHash = genHash
-// module.exports.genHashAsync = genHashAsync
-// module.exports.validPass = validPass

@@ -14,3 +14,10 @@
 
 - Assigned dogs details:
   Options here for add note/photo.
+
+- User Tools:
+  Enable/disable Admin/Walker.
+  Add user?
+
+- Client Tools:
+  Add/edit client/dog.

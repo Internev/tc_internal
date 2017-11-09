@@ -1,0 +1,79 @@
+@import '../../colors';
+
+.header {
+  height: 6rem;
+  border-bottom: 1px solid $ltgrey;
+  margin-bottom: 1rem;
+  display: flex;
+
+  &_logo {
+    padding-left: 1rem;
+    height: 5.5rem;
+  }
+  &_nav {
+    max-width: 300px;
+    margin: auto 0 auto auto;
+    flex: 1;
+
+    position: relative;
+    &-dropdown{
+      text-align: right !important;
+      padding-right: 15px;
+    }
+    &-link {
+      // color: hotpink;
+      // min-width: 40vw;
+    }
+    .menu.transition {
+      min-width: 100% !important;
+    }
+  }
+  // &_nav {
+  //   display: flex;
+  //   flex: 1;
+  //   &-wide {
+  //     margin-left: 50vw;
+  //     flex: 1;
+  //     display: flex;
+  //     flex-direction: row;
+  //     justify-content: flex-end;
+  //     text-align: right;
+  //     &-link {
+  //       margin: auto;
+  //     }
+  //     &-dropdown {
+  //       margin: auto;
+  //     }
+  //   }
+  //   &-narrow {
+  //     flex: 1;
+  //     display: flex;
+  //     flex-direction: row;
+  //     justify-content: flex-end;
+  //     text-align: right;
+  //     border: 1px dotted coral;
+  //     &-link {
+  //       margin: auto;
+  //     }
+  //     &-dropdown {
+  //       margin: auto;
+  //     }
+  //     &-container {
+  //       position: absolute;
+  //       top: 0;
+  //       left: 0;
+  //       width: 100%;
+  //
+  //     }
+  //   }
+  //   @media (max-width: 991px) {
+  //     &-wide {
+  //       display: none;
+  //     }
+  //     &-narrow {
+  //       display: flex;
+  //     }
+  //   }
+  // }
+
+}

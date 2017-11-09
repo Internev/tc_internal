@@ -6,7 +6,7 @@ import Signup from './containers/auth/Signup'
 import Logout from './containers/auth/Logout'
 import Reset from './containers/auth/Reset'
 import Forgot from './containers/auth/Forgot'
-import Header from './containers/Header'
+import Header from './containers/header/Header'
 import Test from './components/Test'
 import Protected from './components/Protected'
 
