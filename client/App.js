@@ -8,7 +8,7 @@ import Reset from './containers/auth/Reset'
 import Forgot from './containers/auth/Forgot'
 import Header from './containers/header/Header'
 import Test from './components/Test'
-import Protected from './components/Protected'
+import UserTools from './containers/usertools/UserTools'
 
 const App = () => (
   <Router>
@@ -21,8 +21,8 @@ const App = () => (
             <Route path='/signup' component={Signup} />
             <Route path='/forgot' component={Forgot} />
             <Route path='/reset/:token' component={Reset} />
-            <Route path='/protected' component={Protected} isPrivate />
             <Route path='/logout' component={Logout} isPrivate />
+            <Route path='/user-tools' component={UserTools} isPrivate adminOnly />
             <Route path='/' component={Test} isPrivate />
           </Switch>
         </div>

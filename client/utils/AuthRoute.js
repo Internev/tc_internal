@@ -9,8 +9,14 @@ import { Redirect, Route } from 'react-router-dom'
 const PRIVATE_ROOT = '/'
 const PUBLIC_ROOT = '/login'
 
-const AuthRoute = ({component, isPrivate, ...props}) => {
+const AuthRoute = ({component, isPrivate, adminOnly, ...props}) => {
   if (props.user.isAuthenticated) {
+    // If route is admin only and user is admin, proceed, otherwise redirect to private root.
+    if (adminOnly) {
+      return props.user.admin
+      ? <Route {...props} component={component} />
+      : <Redirect to={PRIVATE_ROOT} />
+    }
     // If route is private, user proceeds, else route is public, redirect use to private root.
     return isPrivate
       ? <Route {...props} component={component} />

@@ -12,7 +12,7 @@ class Header extends React.Component {
     if (token) this.props.dispatch(checkToken(token))
   }
   componentDidUpdate () {
-    console.log('header props:', this.props, this.props.user.admin)
+    // console.log('header props:', this.props, this.props.user.admin)
   }
   genMenuItems () {
     return headerLinks

@@ -21,8 +21,10 @@
       padding-right: 15px;
     }
     &-link {
-      // color: hotpink;
-      // min-width: 40vw;
+      display: inline-block;
+      width: 100%;
+      padding: 0.7em 1em;
+      margin: -0.7em -1em;
     }
     .menu.transition {
       min-width: 100% !important;
