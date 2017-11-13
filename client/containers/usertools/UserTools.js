@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Card, Input } from 'semantic-ui-react'
+import { Card, Input, Dimmer, Loader } from 'semantic-ui-react'
 import { getUsers, updateUser } from '../../redux/creators/usersCreators'
 import UserCard from './UserCard'
 import './UserTools.scss'
@@ -30,6 +30,9 @@ class UserTools extends React.Component {
   render () {
     return (
       <div className='usertools'>
+        <Dimmer inverted active={this.props.users.isFetching}>
+          <Loader inverted>Contacting Database</Loader>
+        </Dimmer>
         <Input
           className='usertools_input'
           fluid

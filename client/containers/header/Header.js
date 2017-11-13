@@ -25,12 +25,12 @@ class Header extends React.Component {
       size='big'
       />
     return (
-      <header className='header'>
-        <img className='header_logo' src='/tomandcaptain.png' />
+      <header className='tcheader'>
+        <img className='tcheader_logo' src='/tomandcaptain.png' />
         {this.props.user.isAuthenticated
-        ? <nav className='header_nav'>
+        ? <nav className='tcheader_nav'>
           <Dropdown
-            className='header_nav-dropdown'
+            className='tcheader_nav-dropdown'
             fluid
             icon={hamburger}
             options={this.genMenuItems()}
