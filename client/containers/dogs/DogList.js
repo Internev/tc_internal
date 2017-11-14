@@ -10,7 +10,7 @@ class DogList extends React.Component {
     this.detailsLink = this.detailsLink.bind(this)
   }
   componentDidMount () {
-    console.log('doglist mounted, props:', this.props)
+    // console.log('doglist mounted, props:', this.props)
   }
   uploadDogImage () {
 

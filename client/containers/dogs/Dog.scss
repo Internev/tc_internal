@@ -1,0 +1,23 @@
+.dog_upload {
+  cursor: pointer;
+}
+
+.dog-details {
+
+  &_content {
+
+    &-item {
+
+      >span {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.dog-upload {
+  text-align: center;
+  &_preview {
+    padding: 1rem;
+  }
+}

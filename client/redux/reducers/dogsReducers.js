@@ -9,6 +9,7 @@ const DEFAULT_STATE = {
       breed: 'Poodle',
       photo: 'https://pbs.twimg.com/media/DKXssjMVoAEZwoP.jpg',
       notes: 'Good hound, does not like peanut butter.',
+      age: 6,
       id: 1
     },
     {
@@ -16,6 +17,7 @@ const DEFAULT_STATE = {
       breed: 'Irish Wolfhound',
       photo: '',
       notes: 'Can be saddled and ridden into battle.',
+      age: 12,
       id: 2
     }
   ],

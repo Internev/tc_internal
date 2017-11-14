@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Dropdown, Icon } from 'semantic-ui-react'
 import { checkToken } from '../../redux/creators/userCreators'
 import { headerLinks } from './headerLinks'
+import logo from '../../imgs/tomandcaptain.png'
 import './Header.scss'
 
 class Header extends React.Component {
@@ -26,7 +27,7 @@ class Header extends React.Component {
       />
     return (
       <header className='tcheader'>
-        <img className='tcheader_logo' src='/tomandcaptain.png' />
+        <img className='tcheader_logo' src={logo} />
         {this.props.user.isAuthenticated
         ? <nav className='tcheader_nav'>
           <Dropdown
