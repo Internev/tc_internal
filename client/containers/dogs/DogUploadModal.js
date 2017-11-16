@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Header, Icon, Modal, Image, Progress } from 'semantic-ui-react'
 import './Dog.scss'
 
-const DogUploadModal = ({open, handleClose, upload, handleImagePreview, dogImagePreview, handleImageUpload, name, uploadPercentage}) => (
+const DogUploadModal = ({open, handleClose, upload, handleImagePreview, dogImagePreview, handleImageUpload, uploadPercentage, name, id}) => (
   <Modal
     open={open}
     onClose={handleClose}
@@ -33,7 +33,7 @@ const DogUploadModal = ({open, handleClose, upload, handleImagePreview, dogImage
       </Button>
       <Button
         color='green'
-        onClick={handleImageUpload}
+        onClick={() => handleImageUpload(id)}
         inverted
         disabled={!dogImagePreview}
         >

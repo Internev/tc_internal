@@ -11,6 +11,7 @@ import Header from './containers/header/Header'
 import DogList from './containers/dogs/DogList'
 import DogDetails from './containers/dogs/DogDetails'
 import UserTools from './containers/usertools/UserTools'
+import ClientTools from './containers/clienttools/ClientTools'
 
 const App = () => (
   <Router>
@@ -24,6 +25,7 @@ const App = () => (
           <Route path='/reset/:token' component={Reset} />
           <Route path='/logout' component={Logout} isPrivate />
           <Route path='/user-tools' component={UserTools} isPrivate adminOnly />
+          <Route path='/client-tools' component={ClientTools} isPrivate adminOnly />
           <Route path='/dog-details/:id' component={DogDetails} isPrivate />
           <Route path='/' component={DogList} isPrivate />
         </Switch>

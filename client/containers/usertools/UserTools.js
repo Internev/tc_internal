@@ -12,7 +12,7 @@ class UserTools extends React.Component {
     this.toggleAdmin = this.toggleAdmin.bind(this)
     this.toggleWalker = this.toggleWalker.bind(this)
   }
-  componentWillMount () {
+  componentDidMount () {
     this.props.dispatch(getUsers())
   }
   componentDidUpdate () {
@@ -33,6 +33,7 @@ class UserTools extends React.Component {
         <Dimmer inverted active={this.props.users.isFetching}>
           <Loader inverted>Contacting Database</Loader>
         </Dimmer>
+        <div className=''>User permissions can be updated here. Walker: regular walker rights (can be assigned dogs, can view details of assigned dogs). Administrator: full rights (can update everything).</div>
         <Input
           className='usertools_input'
           fluid

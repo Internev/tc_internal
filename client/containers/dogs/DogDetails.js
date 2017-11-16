@@ -46,7 +46,7 @@ class DogDetails extends React.Component {
 
     preview.readAsDataURL(file)
   }
-  handleImageUpload () {
+  handleImageUpload (id) {
     this.setState({modalOpen: false, uploadProgress: true})
     const that = this
     let config = {
@@ -60,6 +60,7 @@ class DogDetails extends React.Component {
     }
     let fd = new FormData()
     fd.append('file', this.state.file)
+    fd.append('id', id)
 
     axios.post('/api/dog-upload', fd, config)
       .then(res => {
@@ -103,6 +104,7 @@ class DogDetails extends React.Component {
             dogImagePreview={this.state.dogImagePreview}
             uploadPercentage={this.state.uploadPercentage}
             name={d.name}
+            id={d.id}
             />
           <Dimmer active={this.state.uploadProgress}>
             Uploading Photo...

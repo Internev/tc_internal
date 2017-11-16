@@ -1,6 +1,6 @@
 const express = require('express')
 const config = require('../../config')
-const { User } = require('../models/db')
+const { User, Dog, Client } = require('../models/db')
 
 const router = new express.Router()
 
@@ -71,28 +71,79 @@ const storage = multer.diskStorage({
   }
 })
 const upload = multer({ storage })
-const fs = require('fs')
 
 router.post('/dog-upload', upload.single('file'), (req, res) => {
   console.log('req.file is:', req.file)
-  cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
-    if (err) console.log('cloudinary upload error:', err)
-    console.log('cloudinary result:', result)
-    res.sendStatus(200)
-  })
-  // no formdata method
-  // var data = ''
-  //
-  // req.on('data', function (chunk) {
-  //   data += chunk
-  // })
-  //
-  // req.on('end', function () {
-  //   console.log('File uploaded')
-  //   fs.writeFile('./uploads/testy.jpg', data, 'binary', (err) => {
-  //     if (err) console.log('file write err', err)
-  //   })
-  //   res.sendStatus(200)
+  console.log('req body?', req.body)
+  // dogs db not implemented yet.
+  res.sendStatus(200)
+  // cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+  //   if (err) console.log('cloudinary upload error:', err)
+  //   let adjustment = {photo: result.url}
+  //   Dog.update(
+  //     adjustment,
+  //     {where: {id: req.body.id},
+  //       returning: true,
+  //       plain: true}
+  //     )
+  //     .then(res => {
+  //       console.log('dog photo update result:', res)
+  //       res.status(200).json({dog: res.data})
+  //     })
+  //     .catch(err => {
+  //       console.log('dog photo update err:', err)
+  //       res.status(500).json({err})
+  //     })
   // })
 })
+function promiseMap (xs, f) {
+  const reducer = (promise, x) =>
+    promise.then(ysAcc => f(x).then(y => ysAcc.push(y) && ysAcc))
+  return xs.reduce(reducer, Promise.resolve([]))
+}
+
+router.post('/clients', (req, res) => {
+  function writeToDB (client) {
+    return Client.findCreateFind({
+      where: {email: client.email},
+      include: [ Dog ],
+      defaults: client
+    })
+    .spread((user, created) => user)
+  }
+
+  promiseMap(req.body, writeToDB)
+    .then(resp => {
+      Client.findAll()
+        .then(resp => {
+          res.status(200).json({list: resp})
+        })
+    })
+  // let dbWrites = []
+  // req.body.forEach(client => {
+  //   let {dogs, ...c} = client
+  //   console.log('client pruned of dogs is:', c)
+  //   // if (c.name) dbWrites.push(Client.findCreateFind({where: {email: c.email}}, c))
+  //   if (c.name) {
+  //     dbWrites.push(Client.findCreateFind({
+  //       where: {email: client.email},
+  //       include: [ Dog ],
+  //       defaults: client
+  //     }))
+  //   }
+  // })
+  // Promise.all(dbWrites)
+  //   .then(resp => {
+  //     resp = resp.reduce((a, v) => {
+  //       a.push(v[0])
+  //       return a
+  //     }, [])
+  //     res.status(200).json({list: resp})
+  //   })
+  //   .catch(err => {
+  //     console.log('err from promise all dbwrites:', err)
+  //     res.sendStatus(500)
+  //   })
+})
+
 module.exports = router

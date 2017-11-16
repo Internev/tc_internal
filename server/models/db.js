@@ -18,8 +18,12 @@ const User = db.define('user', {
 
 const Client = db.define('client', {
   name: Sequelize.STRING,
+  email: {type: Sequelize.STRING, unique: true},
   address: Sequelize.STRING,
-  phone: Sequelize.STRING,
+  phone: {type: Sequelize.STRING, allowNull: false},
+  emergency: Sequelize.JSON,
+  social: Sequelize.STRING,
+  vet: Sequelize.JSON,
   pickupdetails: Sequelize.STRING
 })
 
@@ -28,16 +32,25 @@ const Dog = db.define('dog', {
   breed: Sequelize.STRING,
   dob: Sequelize.DATEONLY,
   photo: Sequelize.STRING,
+  gender: Sequelize.STRING,
+  recall: Sequelize.STRING,
+  desexed: Sequelize.BOOLEAN,
+  vaccinated: Sequelize.BOOLEAN,
+  vacdate: Sequelize.STRING,
+  insurance: Sequelize.BOOLEAN,
+  insurer: Sequelize.STRING,
+  medications: Sequelize.JSON,
+  injuries: Sequelize.JSON,
+  issues: Sequelize.JSON,
+  allergies: Sequelize.JSON,
   notes: Sequelize.JSON
 })
 
-Dog.belongsTo(Client, {
-  onDelete: 'cascade',
-  foreignKey: {
-    field: 'owner',
-    allowNull: false
-  }
-})
+// Dog.belongsTo(Client, {
+//   onDelete: 'cascade'
+// })
+
+Client.Dog = Client.hasMany(Dog)
 
 User.sync()
 Client.sync()
