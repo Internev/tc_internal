@@ -1,0 +1,35 @@
+.client {
+  &_csv-upload {
+    div {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+      max-width: 800px;
+      // margin: auto;
+      @media (max-width: 768px) {
+        flex-direction: column;
+      }
+      span {
+        flex: 1;
+        padding-right: 1rem;
+        margin: auto;
+        text-align: right;
+        max-width: 20rem;
+
+        @media (max-width: 768px) {
+          text-align: center;
+        }
+      }
+      label {
+        margin: auto;
+        flex: 1;
+        align-self: flex-start;
+        max-width: 30rem;
+        @media (max-width: 768px) {
+          max-width: 100%;
+          align-self: auto;
+        }
+      }
+    }
+  }
+}

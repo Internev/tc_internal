@@ -1,7 +1,9 @@
 import {
   UPLOAD_CLIENTS_REQUEST,
-  UPLOAD_CLIENTS_SUCCESS,
-  UPLOAD_CLIENTS_FAILURE
+  UPLOAD_CLIENTS_FAILURE,
+  GET_CLIENTS_SUCCESS,
+  GET_CLIENTS_REQUEST,
+  GET_CLIENTS_FAILURE
 } from '../actions'
 import axios from 'axios'
 
@@ -16,11 +18,29 @@ export function uploadClients (clients) {
     axios.post('/api/clients', clients, config)
     .then(res => {
       console.log('response from api/clients:', res)
-      dispatch(uploadClientsSuccess(res.data.list))
+      dispatch(getClientsSuccess(res.data.list))
     })
     .catch(err => {
       dispatch(uploadClientsFailure(err))
     })
+  }
+}
+
+export function getClients () {
+  return dispatch => {
+    dispatch(getClientsRequest())
+    const config = {
+      headers: {
+        'authorization': localStorage.getItem('id_token')
+      }
+    }
+    axios.get('/api/clients', config)
+      .then(res => {
+        dispatch(getClientsSuccess(res.data.list))
+      })
+      .catch(err => {
+        dispatch(getClientsFailure(err))
+      })
   }
 }
 
@@ -30,16 +50,30 @@ function uploadClientsRequest () {
   }
 }
 
-function uploadClientsSuccess (list) {
+function uploadClientsFailure (err) {
   return {
-    type: UPLOAD_CLIENTS_SUCCESS,
+    type: UPLOAD_CLIENTS_FAILURE,
+    err
+  }
+}
+
+function getClientsRequest () {
+  return {
+    type: GET_CLIENTS_REQUEST
+  }
+}
+
+function getClientsSuccess (list) {
+  return {
+    type: GET_CLIENTS_SUCCESS,
     list
   }
 }
 
-function uploadClientsFailure (err) {
+
+function getClientsFailure (err) {
   return {
-    type: UPLOAD_CLIENTS_FAILURE,
+    type: GET_CLIENTS_FAILURE,
     err
   }
 }

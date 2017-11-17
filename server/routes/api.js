@@ -118,6 +118,10 @@ router.post('/clients', (req, res) => {
         .then(resp => {
           res.status(200).json({list: resp})
         })
+        .catch(err => {
+          console.log('error finding all clients in csv upload.', err)
+          res.status(500).json({err})
+        })
     })
   // let dbWrites = []
   // req.body.forEach(client => {
@@ -144,6 +148,17 @@ router.post('/clients', (req, res) => {
   //     console.log('err from promise all dbwrites:', err)
   //     res.sendStatus(500)
   //   })
+})
+
+router.get('/clients', (req, res) => {
+  Client.findAll()
+    .then(resp => {
+      res.status(200).json({list: resp})
+    })
+    .catch(err => {
+      console.log('error finding all clients in get api/clients', err)
+      res.status(500).json({err})
+    })
 })
 
 module.exports = router

@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Card, Input, Dimmer, Loader, Icon } from 'semantic-ui-react'
+// import { Card, Input, Dimmer, Loader, Icon } from 'semantic-ui-react'
 import { parseClientCSV } from '../../utils/csvParsers'
-import { uploadClients } from '../../redux/creators/clientsCreators'
-// import UserCard from './UserCard'
+import { uploadClients, getClients } from '../../redux/creators/clientsCreators'
+import ClientCSVUpload from './ClientCSVUpload'
+import ClientEditor from './ClientEditor'
 import './ClientTools.scss'
 
 class ClientTools extends React.Component {
@@ -13,6 +14,7 @@ class ClientTools extends React.Component {
   }
   componentDidMount () {
     console.log('Client Tools props:', this.props)
+    if (this.props.clients.list.length < 1) this.props.dispatch(getClients())
   }
   componentDidUpdate () {
     console.log('Client Tools props:', this.props)
@@ -27,17 +29,9 @@ class ClientTools extends React.Component {
   render () {
     return (
       <div>
-        <label htmlFor='clientCSV' className='ui icon button'>
-          <Icon name='upload' />
-          &nbsp;Upload Client CSV
-        </label>
-        <input
-          type='file'
-          onChange={e => this.handleClientCSVUpload(e)}
-          accept='.csv'
-          id='clientCSV'
-          style={{display: 'none'}}
-        />
+        <ClientCSVUpload handleClientCSVUpload={this.handleClientCSVUpload} />
+        <hr />
+        <ClientEditor />
       </div>
     )
   }
