@@ -3,7 +3,10 @@ import {
   UPLOAD_CLIENTS_FAILURE,
   GET_CLIENTS_SUCCESS,
   GET_CLIENTS_REQUEST,
-  GET_CLIENTS_FAILURE
+  GET_CLIENTS_FAILURE,
+  SET_ACTIVE_CLIENT,
+  CLEAR_ACTIVE_CLIENT,
+  UPDATE_ACTIVE_CLIENT
 } from '../actions'
 
 const DEFAULT_STATE = {
@@ -39,6 +42,22 @@ const getClientsFailure = (state, action) => {
   return newState
 }
 
+const setActiveClient = (state, action) => {
+  const newState = {...state, ...{active: action.client}}
+  return newState
+}
+
+const clearActiveClient = (state, action) => {
+  const newState = {...state, ...{active: {}}}
+  return newState
+}
+
+const updateActiveClient = (state, action) => {
+  const newActive = {...state.active, ...action.update}
+  const newState = {...state, ...{active: newActive}}
+  return newState
+}
+
 export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case UPLOAD_CLIENTS_REQUEST:
@@ -51,6 +70,12 @@ export default function (state = DEFAULT_STATE, action) {
       return getClientsRequest(state, action)
     case GET_CLIENTS_FAILURE:
       return getClientsFailure(state, action)
+    case SET_ACTIVE_CLIENT:
+      return setActiveClient(state, action)
+    case CLEAR_ACTIVE_CLIENT:
+      return clearActiveClient(state, action)
+    case UPDATE_ACTIVE_CLIENT:
+      return updateActiveClient(state, action)
     default:
       return state
   }

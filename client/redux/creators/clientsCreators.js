@@ -3,7 +3,10 @@ import {
   UPLOAD_CLIENTS_FAILURE,
   GET_CLIENTS_SUCCESS,
   GET_CLIENTS_REQUEST,
-  GET_CLIENTS_FAILURE
+  GET_CLIENTS_FAILURE,
+  SET_ACTIVE_CLIENT,
+  CLEAR_ACTIVE_CLIENT,
+  UPDATE_ACTIVE_CLIENT
 } from '../actions'
 import axios from 'axios'
 
@@ -75,5 +78,25 @@ function getClientsFailure (err) {
   return {
     type: GET_CLIENTS_FAILURE,
     err
+  }
+}
+
+export function setActiveClient (client) {
+  return {
+    type: SET_ACTIVE_CLIENT,
+    client
+  }
+}
+
+export function clearActiveClient () {
+  return {
+    type: CLEAR_ACTIVE_CLIENT
+  }
+}
+
+export function updateActiveClient (update) {
+  return {
+    type: UPDATE_ACTIVE_CLIENT,
+    update
   }
 }

@@ -114,7 +114,7 @@ router.post('/clients', (req, res) => {
 
   promiseMap(req.body, writeToDB)
     .then(resp => {
-      Client.findAll()
+      Client.findAll({include: [ Dog ]})
         .then(resp => {
           res.status(200).json({list: resp})
         })
@@ -123,35 +123,10 @@ router.post('/clients', (req, res) => {
           res.status(500).json({err})
         })
     })
-  // let dbWrites = []
-  // req.body.forEach(client => {
-  //   let {dogs, ...c} = client
-  //   console.log('client pruned of dogs is:', c)
-  //   // if (c.name) dbWrites.push(Client.findCreateFind({where: {email: c.email}}, c))
-  //   if (c.name) {
-  //     dbWrites.push(Client.findCreateFind({
-  //       where: {email: client.email},
-  //       include: [ Dog ],
-  //       defaults: client
-  //     }))
-  //   }
-  // })
-  // Promise.all(dbWrites)
-  //   .then(resp => {
-  //     resp = resp.reduce((a, v) => {
-  //       a.push(v[0])
-  //       return a
-  //     }, [])
-  //     res.status(200).json({list: resp})
-  //   })
-  //   .catch(err => {
-  //     console.log('err from promise all dbwrites:', err)
-  //     res.sendStatus(500)
-  //   })
 })
 
 router.get('/clients', (req, res) => {
-  Client.findAll()
+  Client.findAll({include: [ Dog ]})
     .then(resp => {
       res.status(200).json({list: resp})
     })
