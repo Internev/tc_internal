@@ -20,7 +20,9 @@ class ClientTools extends React.Component {
     this.cancelEditClient = this.cancelEditClient.bind(this)
     this.handleEditClientChange = this.handleEditClientChange.bind(this)
     this.saveEditClient = this.saveEditClient.bind(this)
+    this.handleEditClientObjectUpdate = this.handleEditClientObjectUpdate.bind(this)
     this.handleEditClientDog = this.handleEditClientDog.bind(this)
+    this.handleCloseMsg = this.handleCloseMsg.bind(this)
   }
   componentDidMount () {
     // console.log('Client Tools props:', this.props)
@@ -28,6 +30,7 @@ class ClientTools extends React.Component {
   }
   componentDidUpdate () {
     console.log('Client Tools props:', this.props, this.state)
+    console.log('Clients message is:', this.props.clients.msg)
   }
   handleClientCSVUpload (e) {
     let reader = new FileReader()
@@ -50,6 +53,14 @@ class ClientTools extends React.Component {
   handleEditClientChange (e) {
     const update = {}
     update[e.target.name] = e.target.value
+    this.props.dispatch(updateActiveClient(update))
+  }
+  handleEditClientObjectUpdate (e) {
+    const keys = e.target.name.split('.')
+    const objUpdate = {...this.props.clients.active[keys[0]]}
+    objUpdate[keys[1]] = e.target.value
+    const update = {}
+    update[keys[0]] = objUpdate
     this.props.dispatch(updateActiveClient(update))
   }
   handleEditClientDog (e, dog, index) {
@@ -78,10 +89,13 @@ class ClientTools extends React.Component {
           cancelEditClient={this.cancelEditClient}
           handleEditClientChange={this.handleEditClientChange}
           handleEditClientDog={this.handleEditClientDog}
+          handleEditClientObjectUpdate={this.handleEditClientObjectUpdate}
           saveEditClient={this.saveEditClient}
           search={this.handleClientEditorSearch}
           client={this.props.clients.active}
+          msg={this.props.clients.msg}
           modalOpen={this.state.modalOpen}
+          handleCloseMsg={this.handleCloseMsg}
           clients={this.state.searchTerm
             ? this.props.clients.list.filter(client =>
               this.state.searchTerm

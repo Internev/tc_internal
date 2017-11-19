@@ -20,17 +20,20 @@ const ClientEditor = ({
   cancelEditClient,
   saveEditClient,
   handleEditClientChange,
+  handleEditClientObjectUpdate,
   handleEditClientDog,
   handleCloseMsg,
-  modalOpen
+  modalOpen,
+  msg
 }) => (
   <div className='client_editor'>
-    {clients.msg
+    {msg
     ? <Message
       onDismiss={handleCloseMsg}
-      icon='paw'
+      icon='info'
+      color='yellow'
       >
-      {clients.msg}
+      {msg}
     </Message>
     : null}
     <h3>Edit Client Details</h3>
@@ -75,20 +78,20 @@ const ClientEditor = ({
           <h4>Emergency Contact Details</h4>
           <div>
             <Input type='text' name='emergency.name' fluid label={{content: 'Emergency Contact:'}}
-              value={client.emergency ? client.emergency.name : ''} labelPosition='left' onChange={e => handleEditClientChange(e)} />
+              value={client.emergency ? client.emergency.name : ''} labelPosition='left' onChange={e => handleEditClientObjectUpdate(e)} />
             <Input type='text' name='emergency.phone' fluid label={{content: 'Emergency Phone:'}}
-              value={client.emergency ? client.emergency.phone : ''} labelPosition='left' onChange={e => handleEditClientChange(e)} />
+              value={client.emergency ? client.emergency.phone : ''} labelPosition='left' onChange={e => handleEditClientObjectUpdate(e)} />
           </div>
           <h4>Veterinarian Details</h4>
           <div>
             <Input type='text' name='vet.practice' fluid label={{content: 'Preferred Vet Practice:'}}
-              value={client.vet ? client.vet.practice : ''} labelPosition='left' onChange={e => handleEditClientChange(e)} />
+              value={client.vet ? client.vet.practice : ''} labelPosition='left' onChange={e => handleEditClientObjectUpdate(e)} />
             <Input type='text' name='vet.name' fluid label={{content: 'Preferred Vet Contact:'}}
-              value={client.vet ? client.vet.name : ''} labelPosition='left' onChange={e => handleEditClientChange(e)} />
+              value={client.vet ? client.vet.name : ''} labelPosition='left' onChange={e => handleEditClientObjectUpdate(e)} />
             <Input type='text' name='vet.phone' fluid label={{content: 'Preferred Vet Phone:'}}
-              value={client.vet ? client.vet.phone : ''} labelPosition='left' onChange={e => handleEditClientChange(e)} />
+              value={client.vet ? client.vet.phone : ''} labelPosition='left' onChange={e => handleEditClientObjectUpdate(e)} />
             <Input type='text' name='vet.address' fluid label={{content: 'Preferred Vet Address:'}}
-              value={client.vet ? client.vet.address : ''} labelPosition='left' onChange={e => handleEditClientChange(e)} />
+              value={client.vet ? client.vet.address : ''} labelPosition='left' onChange={e => handleEditClientObjectUpdate(e)} />
           </div>
         </div>
       </Modal.Content>
