@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 // import { Card, Input, Dimmer, Loader, Icon } from 'semantic-ui-react'
 import { parseClientCSV } from '../../utils/csvParsers'
-import { uploadClients, getClients, setActiveClient, clearActiveClient, updateActiveClient } from '../../redux/creators/clientsCreators'
+import { uploadClients, getClients, setActiveClient, clearActiveClient, updateActiveClient, clearClientsMsg, updateClientDetails } from '../../redux/creators/clientsCreators'
 import ClientCSVUpload from './ClientCSVUpload'
 import ClientEditor from './ClientEditor'
 import './ClientTools.scss'
@@ -20,6 +20,7 @@ class ClientTools extends React.Component {
     this.cancelEditClient = this.cancelEditClient.bind(this)
     this.handleEditClientChange = this.handleEditClientChange.bind(this)
     this.saveEditClient = this.saveEditClient.bind(this)
+    this.handleEditClientDog = this.handleEditClientDog.bind(this)
   }
   componentDidMount () {
     // console.log('Client Tools props:', this.props)
@@ -47,15 +48,25 @@ class ClientTools extends React.Component {
     this.props.dispatch(clearActiveClient())
   }
   handleEditClientChange (e) {
-    console.log('Edit client change:', e)
-    console.log('Target name:', e.target.name, 'target value:', e.target.value)
     const update = {}
     update[e.target.name] = e.target.value
+    this.props.dispatch(updateActiveClient(update))
+  }
+  handleEditClientDog (e, dog, index) {
+    const dogUpdate = {...dog}
+    dogUpdate[e.target.name] = e.target.value
+    const update = {}
+    update.dogs = [...this.props.clients.active.dogs]
+    update.dogs[index] = dogUpdate
     this.props.dispatch(updateActiveClient(update))
   }
   saveEditClient () {
     this.setState({modalOpen: false})
     console.log('going to save client:', this.props.clients.active)
+    this.props.dispatch(updateClientDetails(this.props.clients.active))
+  }
+  handleCloseMsg () {
+    this.props.dispatch(clearClientsMsg())
   }
   render () {
     return (
@@ -66,6 +77,7 @@ class ClientTools extends React.Component {
           openEditClient={this.openEditClient}
           cancelEditClient={this.cancelEditClient}
           handleEditClientChange={this.handleEditClientChange}
+          handleEditClientDog={this.handleEditClientDog}
           saveEditClient={this.saveEditClient}
           search={this.handleClientEditorSearch}
           client={this.props.clients.active}

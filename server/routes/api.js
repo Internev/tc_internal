@@ -96,6 +96,7 @@ router.post('/dog-upload', upload.single('file'), (req, res) => {
   //     })
   // })
 })
+
 function promiseMap (xs, f) {
   const reducer = (promise, x) =>
     promise.then(ysAcc => f(x).then(y => ysAcc.push(y) && ysAcc))
@@ -132,6 +133,28 @@ router.get('/clients', (req, res) => {
     })
     .catch(err => {
       console.log('error finding all clients in get api/clients', err)
+      res.status(500).json({err})
+    })
+})
+
+router.post('/client-update', (req, res) => {
+  console.log('client update body is:', req.body)
+  const client = req.body
+  const dbUpdates = []
+  dbUpdates.push(Client.update(client, {where: {id: client.id}}))
+  client.dogs.forEach(dog => {
+    dbUpdates.push(Dog.update(dog, {where: {clientId: client.id}}))
+  })
+
+  Promise.all(dbUpdates)
+    .then(() => {
+      return Client.findAll({include: [ Dog ]})
+    })
+    .then(resp => {
+      res.status(200).json({list: resp})
+    })
+    .catch(err => {
+      console.log('error updating single client from api/client-update', err)
       res.status(500).json({err})
     })
 })

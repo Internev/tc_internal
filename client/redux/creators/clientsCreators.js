@@ -6,7 +6,11 @@ import {
   GET_CLIENTS_FAILURE,
   SET_ACTIVE_CLIENT,
   CLEAR_ACTIVE_CLIENT,
-  UPDATE_ACTIVE_CLIENT
+  UPDATE_ACTIVE_CLIENT,
+  CLEAR_CLIENTS_MSG,
+  UPDATE_CLIENT_DETAILS_SUCCESS,
+  UPDATE_CLIENT_DETAILS_REQUEST,
+  UPDATE_CLIENT_DETAILS_FAILURE
 } from '../actions'
 import axios from 'axios'
 
@@ -98,5 +102,50 @@ export function updateActiveClient (update) {
   return {
     type: UPDATE_ACTIVE_CLIENT,
     update
+  }
+}
+
+export function clearClientsMsg () {
+  return {
+    type: CLEAR_CLIENTS_MSG
+  }
+}
+
+export function updateClientDetails (client) {
+  return dispatch => {
+    dispatch(updateClientDetailsRequest())
+    const config = {
+      headers: {
+        'authorization': localStorage.getItem('id_token')
+      }
+    }
+    axios.post('/api/client-update', client, config)
+      .then(res => {
+        console.log('response from client-update:', res)
+        dispatch(updateClientDetailsSuccess(res.data.list))
+      })
+      .catch(err => {
+        dispatch(updateClientDetailsFailure(err))
+      })
+  }
+}
+
+function updateClientDetailsRequest () {
+  return {
+    type: UPDATE_CLIENT_DETAILS_REQUEST
+  }
+}
+
+function updateClientDetailsSuccess (list) {
+  return {
+    type: UPDATE_CLIENT_DETAILS_SUCCESS,
+    list
+  }
+}
+
+function updateClientDetailsFailure (err) {
+  return {
+    type: UPDATE_CLIENT_DETAILS_FAILURE,
+    err
   }
 }

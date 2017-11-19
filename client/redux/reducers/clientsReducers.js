@@ -6,7 +6,11 @@ import {
   GET_CLIENTS_FAILURE,
   SET_ACTIVE_CLIENT,
   CLEAR_ACTIVE_CLIENT,
-  UPDATE_ACTIVE_CLIENT
+  UPDATE_ACTIVE_CLIENT,
+  CLEAR_CLIENTS_MSG,
+  UPDATE_CLIENT_DETAILS_SUCCESS,
+  UPDATE_CLIENT_DETAILS_REQUEST,
+  UPDATE_CLIENT_DETAILS_FAILURE
 } from '../actions'
 
 const DEFAULT_STATE = {
@@ -58,6 +62,27 @@ const updateActiveClient = (state, action) => {
   return newState
 }
 
+const clearClientsMsg = (state, action) => {
+  const newState = {...state, ...{msg: ''}}
+  return newState
+}
+
+const updateClientDetailsRequest = (state, action) => {
+  const newState = {...state, ...{isFetching: true}}
+  return newState
+}
+
+const updateClientDetailsSuccess = (state, action) => {
+  const newState = {...state, ...{isFetching: false, list: action.list, active: {}, msg: 'Client details updated and saved to database.'}}
+  console.log('updateClientDetailsSuccess state:', state, 'newState', newState)
+  return newState
+}
+
+const updateClientDetailsFailure = (state, action) => {
+  const newState = {...state, ...{isFetching: false, active: {}, msg: 'Client details update failed, please try again. Error:' + action.err}}
+  return newState
+}
+
 export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case UPLOAD_CLIENTS_REQUEST:
@@ -76,6 +101,14 @@ export default function (state = DEFAULT_STATE, action) {
       return clearActiveClient(state, action)
     case UPDATE_ACTIVE_CLIENT:
       return updateActiveClient(state, action)
+    case CLEAR_CLIENTS_MSG:
+      return clearClientsMsg(state, action)
+    case UPDATE_CLIENT_DETAILS_REQUEST:
+      return updateClientDetailsRequest(state, action)
+    case UPDATE_CLIENT_DETAILS_SUCCESS:
+      return updateClientDetailsSuccess(state, action)
+    case UPDATE_CLIENT_DETAILS_FAILURE:
+      return updateClientDetailsFailure(state, action)
     default:
       return state
   }

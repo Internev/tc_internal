@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Card, Icon, Modal, Header, Button } from 'semantic-ui-react'
+import { Input, Card, Icon, Modal, Header, Button, Loader, Message } from 'semantic-ui-react'
 import DogEditor from './DogEditor'
 import './ClientTools.scss'
 
@@ -20,10 +20,21 @@ const ClientEditor = ({
   cancelEditClient,
   saveEditClient,
   handleEditClientChange,
+  handleEditClientDog,
+  handleCloseMsg,
   modalOpen
 }) => (
   <div className='client_editor'>
+    {clients.msg
+    ? <Message
+      onDismiss={handleCloseMsg}
+      icon='paw'
+      >
+      {clients.msg}
+    </Message>
+    : null}
     <h3>Edit Client Details</h3>
+    <Loader active={clients.isFetching} />
     <Modal
       open={modalOpen}
       onClose={cancelEditClient}
@@ -60,7 +71,7 @@ const ClientEditor = ({
               value={client.social} labelPosition='left' onChange={e => handleEditClientChange(e)} />
           </div>
           <h4>{client.dogs && client.dogs.length > 1 ? 'Dogs' : 'Dog'}</h4>
-          {client.dogs ? client.dogs.map(dog => <DogEditor key={dog.id} dog={dog} handleEditClientChange={handleEditClientChange} />) : null}
+          {client.dogs ? client.dogs.map((dog, i) => <DogEditor key={dog.id} dog={dog} handleEditClientDog={handleEditClientDog} index={i} />) : null}
           <h4>Emergency Contact Details</h4>
           <div>
             <Input type='text' name='emergency.name' fluid label={{content: 'Emergency Contact:'}}
