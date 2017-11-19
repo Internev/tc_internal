@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-// import { Card, Input, Dimmer, Loader, Icon } from 'semantic-ui-react'
+import { Message } from 'semantic-ui-react'
 import { parseClientCSV } from '../../utils/csvParsers'
 import { uploadClients, getClients, setActiveClient, clearActiveClient, updateActiveClient, clearClientsMsg, updateClientDetails } from '../../redux/creators/clientsCreators'
 import ClientCSVUpload from './ClientCSVUpload'
@@ -82,6 +82,15 @@ class ClientTools extends React.Component {
   render () {
     return (
       <div>
+        {this.props.clients.msg
+        ? <Message
+          onDismiss={this.handleCloseMsg}
+          icon='info'
+          color='yellow'
+          >
+          {this.props.clients.msg}
+        </Message>
+        : null}
         <ClientCSVUpload handleClientCSVUpload={this.handleClientCSVUpload} />
         <hr />
         <ClientEditor

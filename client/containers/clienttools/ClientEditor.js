@@ -22,20 +22,9 @@ const ClientEditor = ({
   handleEditClientChange,
   handleEditClientObjectUpdate,
   handleEditClientDog,
-  handleCloseMsg,
-  modalOpen,
-  msg
+  modalOpen
 }) => (
   <div className='client_editor'>
-    {msg
-    ? <Message
-      onDismiss={handleCloseMsg}
-      icon='info'
-      color='yellow'
-      >
-      {msg}
-    </Message>
-    : null}
     <h3>Edit Client Details</h3>
     <Loader active={clients.isFetching} />
     <Modal

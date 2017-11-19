@@ -1,5 +1,6 @@
 import {
   UPLOAD_CLIENTS_REQUEST,
+  UPLOAD_CLIENTS_SUCCESS,
   UPLOAD_CLIENTS_FAILURE,
   GET_CLIENTS_SUCCESS,
   GET_CLIENTS_REQUEST,
@@ -28,6 +29,11 @@ const uploadClientsRequest = (state, action) => {
 
 const uploadClientsFailure = (state, action) => {
   const newState = {...state, ...{isFetching: false, msg: 'Upload failure, try again.', error: action.err}}
+  return newState
+}
+
+const uploadClientsSuccess = (state, action) => {
+  const newState = {...state, ...{isFetching: false, list: action.list, msg: 'New client(s) uploaded and saved to database.'}}
   return newState
 }
 
@@ -87,6 +93,8 @@ export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case UPLOAD_CLIENTS_REQUEST:
       return uploadClientsRequest(state, action)
+    case UPLOAD_CLIENTS_SUCCESS:
+      return uploadClientsSuccess(state, action)
     case UPLOAD_CLIENTS_FAILURE:
       return uploadClientsFailure(state, action)
     case GET_CLIENTS_SUCCESS:

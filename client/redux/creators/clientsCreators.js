@@ -1,5 +1,6 @@
 import {
   UPLOAD_CLIENTS_REQUEST,
+  UPLOAD_CLIENTS_SUCCESS,
   UPLOAD_CLIENTS_FAILURE,
   GET_CLIENTS_SUCCESS,
   GET_CLIENTS_REQUEST,
@@ -25,7 +26,7 @@ export function uploadClients (clients) {
     axios.post('/api/clients', clients, config)
     .then(res => {
       console.log('response from api/clients:', res)
-      dispatch(getClientsSuccess(res.data.list))
+      dispatch(uploadClientsSuccess(res.data.list))
     })
     .catch(err => {
       dispatch(uploadClientsFailure(err))
@@ -64,6 +65,13 @@ function uploadClientsFailure (err) {
   }
 }
 
+function uploadClientsSuccess (list) {
+  return {
+    type: UPLOAD_CLIENTS_SUCCESS,
+    list
+  }
+}
+
 function getClientsRequest () {
   return {
     type: GET_CLIENTS_REQUEST
@@ -76,7 +84,6 @@ function getClientsSuccess (list) {
     list
   }
 }
-
 
 function getClientsFailure (err) {
   return {
