@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ClientList from './ClientList'
 import { getClients } from '../../redux/creators/clientsCreators'
+import { assignClient } from '../../redux/creators/assignedCreators'
 
 class ClientListContainer extends React.Component {
   constructor (props) {
@@ -20,6 +21,7 @@ class ClientListContainer extends React.Component {
   }
   handleClientClick (client) {
     console.log('Making client active for assigning to walker.', client)
+    this.props.dispatch(assignClient(client))
   }
   handleSearchTerm (e) {
     this.setState({searchTerm: e.target.value})

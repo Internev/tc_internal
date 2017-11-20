@@ -47,15 +47,20 @@ const Dog = db.define('dog', {
   notes: Sequelize.JSON
 })
 
-// Dog.belongsTo(Client, {
-//   onDelete: 'cascade'
-// })
+const Walks = db.define('walks', {
+  date: Sequelize.DATE
+})
 
 Client.Dog = Client.hasMany(Dog)
+
+// Walks: have one walker, many clients. 
+// User.belongsToMany(Client, {through: Walks})
+// Client.belongsToMany(User, {through: Walks})
 
 User.sync()
 Client.sync()
 Dog.sync()
+Walk.sync()
 
 const genHash = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)

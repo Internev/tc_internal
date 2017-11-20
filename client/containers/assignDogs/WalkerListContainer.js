@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import WalkerList from './WalkerList'
 import { getUsers } from '../../redux/creators/usersCreators'
+import { assignWalker } from '../../redux/creators/assignedCreators'
 
 class WalkerListContainer extends React.Component {
   constructor (props) {
@@ -20,6 +21,7 @@ class WalkerListContainer extends React.Component {
   }
   handleWalkerClick (walker) {
     console.log('Making walker active for assigning dogs.', walker)
+    this.props.dispatch(assignWalker(walker))
   }
   handleSearchTerm (e) {
     this.setState({searchTerm: e.target.value})

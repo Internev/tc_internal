@@ -160,4 +160,16 @@ router.post('/client-update', (req, res) => {
     })
 })
 
+router.post('/assign', (req, res) => {
+  // console.log('\n\nassign req body is:', req.body)
+  Client.findOne({where: {id: 1}})
+    .then(client => {
+      console.log('client is:', client)
+      client.getDogs().then(dogs => {
+        console.log('test dogs is:', dogs)
+        res.sendStatus(200)
+      })
+    })
+})
+
 module.exports = router
