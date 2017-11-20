@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Form, Message, Icon } from 'semantic-ui-react'
-import { signupUser, updateAuthMsg } from '../../redux/creators/userCreators'
+import { signupUser, updateAuthMsg } from '../../redux/creators/authCreators'
 import './Auth.scss'
 
 class Signup extends React.Component {
@@ -10,6 +10,8 @@ class Signup extends React.Component {
     super(props)
     this.state = {
       email: '',
+      name: '',
+      phone: '',
       pass: '',
       passConfirm: '',
       submit: false
@@ -25,7 +27,7 @@ class Signup extends React.Component {
     this.props.dispatch({type: 'SIGNUP_REDIRECT'})
   }
   componentDidUpdate () {
-    if (this.props.user.auth.success) {
+    if (this.props.auth.auth.success) {
       this.props.dispatch({type: 'SIGNUP_REDIRECT'})
       this.props.history.push('/login')
     }
@@ -38,14 +40,15 @@ class Signup extends React.Component {
   handleFormSubmit (e) {
     e.preventDefault()
     const creds = {
-      name: 'Test Account',
+      name: this.state.name,
       email: this.state.email,
+      phone: this.state.phone,
       password: this.state.pass
     }
     this.props.dispatch(signupUser(creds))
   }
   getEmailValid () {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)
+    return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)
   }
   getPassValid () {
     return this.state.pass.length > 5
@@ -76,12 +79,21 @@ class Signup extends React.Component {
         <div className='auth_container'>
           <h4 className='auth_heading'>Welcome aboard, please create your account</h4>
           <Form
-            warning={this.props.user.auth.message.length > 0}
+            warning={this.props.auth.auth.message.length > 0}
             onSubmit={this.handleFormSubmit}
             >
             <Message
               warning
-              content={this.props.user.auth.message}
+              content={this.props.auth.auth.message}
+              />
+            <Form.Input
+              label='Name'
+              placeholder='Name'
+              type='text'
+              name='name'
+              value={this.state.name}
+              onChange={e => this.handleChange(e)}
+              icon={this.state.name ? validIcon : null}
               />
             <Form.Input
               label='Email'
@@ -91,6 +103,15 @@ class Signup extends React.Component {
               value={this.state.email}
               onChange={e => this.handleChange(e)}
               icon={this.getEmailValid() ? validIcon : null}
+              />
+            <Form.Input
+              label='Phone'
+              placeholder='Phone Number'
+              type='text'
+              name='phone'
+              value={this.state.phone}
+              onChange={e => this.handleChange(e)}
+              icon={this.state.phone.length > 9 ? validIcon : null}
               />
             <Form.Input
               label='Password (min 6 characters)'
@@ -128,7 +149,7 @@ class Signup extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    auth: state.auth
   }
 }
 

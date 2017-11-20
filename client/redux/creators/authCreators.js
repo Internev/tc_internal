@@ -50,7 +50,7 @@ export function signupUser (creds) {
   return dispatch => {
     dispatch(requestSignup())
 
-    axios.post('/auth/signup', {name: creds.name, email: creds.email, password: creds.password})
+    axios.post('/auth/signup', {name: creds.name, phone: creds.phone, email: creds.email, password: creds.password})
       .then(res => {
         console.log('userCreator redux, signupUser response:', res)
         return dispatch(receiveSignup(res.data))

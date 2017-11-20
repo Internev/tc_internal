@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Form, Message, Icon, Dimmer, Loader } from 'semantic-ui-react'
-import { changePassword, resetPasswordCheck } from '../../redux/creators/userCreators'
+import { changePassword, resetPasswordCheck } from '../../redux/creators/authCreators'
 import './Auth.scss'
 
 class Reset extends React.Component {
@@ -21,7 +21,7 @@ class Reset extends React.Component {
     this.props.dispatch(resetPasswordCheck(this.props.match.params.token))
   }
   componentDidUpdate () {
-    if (this.props.user.auth.success) {
+    if (this.props.auth.auth.success) {
       this.props.dispatch({type: 'SIGNUP_REDIRECT'})
       this.props.history.push('/login')
     }
@@ -62,18 +62,18 @@ class Reset extends React.Component {
     return (
       <div className='auth'>
         <div className='auth_container'>
-          <Dimmer inverted active={this.props.user.isPassTokenChecking}>
+          <Dimmer inverted active={this.props.auth.isPassTokenChecking}>
             <Loader inverted>Checking Reset Permission</Loader>
           </Dimmer>
           <h4 className='auth_heading'>Password reset</h4>
-          {!this.props.user.isPassTokenChecking && this.props.user.isPassTokenGood
+          {!this.props.auth.isPassTokenChecking && this.props.auth.isPassTokenGood
           ? <Form
-            error={this.props.user.auth.message.length > 0}
+            error={this.props.auth.auth.message.length > 0}
             onSubmit={this.handleFormSubmit}
             >
             <Message
               error
-              content={this.props.user.auth.message}
+              content={this.props.auth.auth.message}
               />
             <Form.Input
               label='Password (min 6 characters)'
@@ -114,7 +114,7 @@ class Reset extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    auth: state.auth
   }
 }
 

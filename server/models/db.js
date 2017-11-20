@@ -9,6 +9,7 @@ const db = new Sequelize(dbUrl)
 const User = db.define('user', {
   name: Sequelize.STRING,
   email: Sequelize.STRING,
+  phone: Sequelize.STRING,
   password: Sequelize.STRING,
   admin: {type: Sequelize.BOOLEAN, defaultValue: false},
   walker: {type: Sequelize.BOOLEAN, defaultValue: true},

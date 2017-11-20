@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { logoutUser } from '../../redux/creators/userCreators'
+import { logoutUser } from '../../redux/creators/authCreators'
 
 class Logout extends React.Component {
   componentWillMount () {
@@ -14,7 +14,7 @@ class Logout extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    auth: state.auth
   }
 }
 

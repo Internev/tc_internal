@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Form, Message, Icon } from 'semantic-ui-react'
-import { loginUser } from '../../redux/creators/userCreators'
+import { loginUser } from '../../redux/creators/authCreators'
 import './Auth.scss'
 
 class Login extends React.Component {
@@ -26,7 +26,7 @@ class Login extends React.Component {
     console.log('login component mounted, props:', this.props)
   }
   componentDidUpdate () {
-    if (this.props.user.auth.success) {
+    if (this.props.auth.auth.success) {
       this.props.history.push('/')
     }
   }
@@ -63,12 +63,12 @@ class Login extends React.Component {
         <div className='auth_container'>
           <h4 className='auth_heading'>Welcome, please log in</h4>
           <Form
-            warning={this.props.user.auth.message.length > 0}
+            warning={this.props.auth.auth.message.length > 0}
             onSubmit={this.handleFormSubmit}
             >
             <Message
               warning
-              content={this.props.user.auth.message}
+              content={this.props.auth.auth.message}
               />
             <Form.Input
               label='Email'
@@ -104,7 +104,7 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    auth: state.auth
   }
 }
 

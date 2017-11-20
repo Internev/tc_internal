@@ -15,6 +15,7 @@ import { SIGNUP_REQUEST,
 const DEFAULT_STATE = {
   name: '',
   email: '',
+  phone: '',
   walker: false,
   admin: false,
   isFetching: false,

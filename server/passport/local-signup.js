@@ -14,10 +14,11 @@ module.exports = new PassportLocalStrategy({
   const userData = {
     email: email.trim(),
     password: genHash(password.trim()),
-    name: req.body.name.trim()
+    name: req.body.name.trim(),
+    phone: req.body.phone
   }
 
-  User.findCreateFind({where: {email: userData.email}, defaults: {password: userData.password, name: userData.name}})
+  User.findCreateFind({where: {email: userData.email}, defaults: {password: userData.password, phone: userData.phone, name: userData.name}})
     .spread((user, created) => {
       if (!created) {
         return done({name: 'exists'}, null)

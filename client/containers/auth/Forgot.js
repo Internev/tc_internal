@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Form, Message, Icon } from 'semantic-ui-react'
-import { updateAuthMsg, forgotPassword } from '../../redux/creators/userCreators'
+import { updateAuthMsg, forgotPassword } from '../../redux/creators/authCreators'
 import './Auth.scss'
 
 class Forgot extends React.Component {
@@ -44,12 +44,12 @@ class Forgot extends React.Component {
         <div className='auth_container'>
           <h4 className='auth_heading'>Password reset</h4>
           <Form
-            warning={this.props.user.auth.message.length > 0}
+            warning={this.props.auth.auth.message.length > 0}
             onSubmit={this.handleFormSubmit}
             >
             <Message
               warning
-              content={this.props.user.auth.message}
+              content={this.props.auth.auth.message}
               />
             <Form.Input
               label='Email'
@@ -72,7 +72,7 @@ class Forgot extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    auth: state.auth
   }
 }
 

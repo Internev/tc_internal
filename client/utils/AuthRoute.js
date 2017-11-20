@@ -10,10 +10,10 @@ const PRIVATE_ROOT = '/'
 const PUBLIC_ROOT = '/login'
 
 const AuthRoute = ({component, isPrivate, adminOnly, ...props}) => {
-  if (props.user.isAuthenticated) {
+  if (props.auth.isAuthenticated) {
     // If route is admin only and user is admin, proceed, otherwise redirect to private root.
     if (adminOnly) {
-      return props.user.admin
+      return props.auth.admin
       ? <Route {...props} component={component} />
       : <Redirect to={PRIVATE_ROOT} />
     }
@@ -38,7 +38,7 @@ AuthRoute.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    auth: state.auth
   }
 }
 

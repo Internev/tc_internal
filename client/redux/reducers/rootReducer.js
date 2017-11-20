@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
-import user from './userReducers'
+import auth from './authReducers'
 import users from './usersReducers'
 import dogs from './dogsReducers'
 import clients from './clientsReducers'
 
 export default combineReducers({
-  user,
+  auth,
   users,
   dogs,
   clients
