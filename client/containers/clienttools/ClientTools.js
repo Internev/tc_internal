@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Message } from 'semantic-ui-react'
+import { Message, Icon } from 'semantic-ui-react'
 import { parseClientCSV } from '../../utils/csvParsers'
 import { uploadClients, getClients, setActiveClient, clearActiveClient, updateActiveClient, clearClientsMsg, updateClientDetails } from '../../redux/creators/clientsCreators'
 import ClientCSVUpload from './ClientCSVUpload'
@@ -85,9 +85,10 @@ class ClientTools extends React.Component {
         {this.props.clients.msg
         ? <Message
           onDismiss={this.handleCloseMsg}
-          icon='info'
+          icon
           color='yellow'
           >
+          <Icon name='info' size='small' />
           {this.props.clients.msg}
         </Message>
         : null}

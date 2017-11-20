@@ -1,0 +1,26 @@
+.assign {
+  display: flex;
+  flex-direction: column;
+
+  &_container {
+    flex: 1;
+    display: flex;
+  }
+  &_summary {
+    flex: 1;
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 0.5rem;
+  }
+  &_walkers {
+    flex: 1;
+    border-right: 1px solid lightgrey;
+    padding-right: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  &_dogs {
+    flex: 3;
+  }
+  &_filter {
+    margin-bottom: 1rem;
+  }
+}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Card, Icon, Modal, Header, Button, Loader, Message } from 'semantic-ui-react'
+import { Input, Card, Icon, Modal, Header, Button, Loader } from 'semantic-ui-react'
 import DogEditor from './DogEditor'
 import './ClientTools.scss'
 

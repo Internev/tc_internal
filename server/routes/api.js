@@ -13,6 +13,7 @@ router.get('/users', (req, res) => {
           name: user.name,
           email: user.email,
           admin: user.admin,
+          phone: user.phone,
           walker: user.walker
         }
       }))
