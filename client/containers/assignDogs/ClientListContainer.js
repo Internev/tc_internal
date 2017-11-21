@@ -20,7 +20,7 @@ class ClientListContainer extends React.Component {
     console.log('ClientListContainer props:', this.props)
   }
   handleClientClick (client) {
-    console.log('Making client active for assigning to walker.', client)
+    // console.log('Making client active for assigning to walker.', client)
     this.props.dispatch(assignClient(client))
   }
   handleSearchTerm (e) {

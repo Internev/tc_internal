@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import AssignedList from './AssignedList'
-import { unassignWalker, unassignClient, clearAssigned, saveAssigned } from '../../redux/creators/assignedCreators'
+import { unassignWalker, unassignClient, clearAssigned, saveAssigned, clearAssignedMsg } from '../../redux/creators/assignedCreators'
 
 class assignedContainer extends React.Component {
   constructor (props) {
@@ -11,6 +11,7 @@ class assignedContainer extends React.Component {
     this.unassignWalkerClick = this.unassignWalkerClick.bind(this)
     this.saveAssigned = this.saveAssigned.bind(this)
     this.clearAllAssigned = this.clearAllAssigned.bind(this)
+    this.handleCloseMsg = this.handleCloseMsg.bind(this)
   }
   componentDidMount () {
   }
@@ -28,6 +29,9 @@ class assignedContainer extends React.Component {
   saveAssigned () {
     this.props.dispatch(saveAssigned(this.props.assigned.walker, this.props.assigned.clients))
   }
+  handleCloseMsg () {
+    this.props.dispatch(clearAssignedMsg())
+  }
   render () {
     return (
       <AssignedList
@@ -38,6 +42,8 @@ class assignedContainer extends React.Component {
         saveAssigned={this.saveAssigned}
         clearAll={this.clearAllAssigned}
         isFetching={this.props.assigned.isFetching}
+        msg={this.props.assigned.msg}
+        handleCloseMsg={this.handleCloseMsg}
        />
     )
   }

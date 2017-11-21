@@ -1,6 +1,6 @@
 const express = require('express')
 const config = require('../../config')
-const { User, Dog, Client } = require('../models/db')
+const { User, Dog, Client, Walk } = require('../models/db')
 
 const router = new express.Router()
 
@@ -161,15 +161,41 @@ router.post('/client-update', (req, res) => {
 })
 
 router.post('/assign', (req, res) => {
-  // console.log('\n\nassign req body is:', req.body)
-  Client.findOne({where: {id: 1}})
-    .then(client => {
-      console.log('client is:', client)
-      client.getDogs().then(dogs => {
-        console.log('test dogs is:', dogs)
-        res.sendStatus(200)
-      })
+  console.log('\n\nassign req body is:', req.body)
+  const walk = {
+    userId: req.body.walker.id,
+    date: new Date()
+  }
+  Walk.create(walk)
+    .then(walk => {
+      // console.log('\n\n\n1st assign response from db:', walk.setClients())
+      return walk.setClients(req.body.clients.map(client => client.id))
+    })
+    .then(walk => {
+      res.status(200).json({walk})
+    })
+    .catch(err => {
+      console.log('\n\nassign error from db:', err)
+      res.status(500).json({err})
     })
 })
 
 module.exports = router
+// Find walks for specific walker (inc clients walked)
+// Walk.findAll({
+//   where: {userId: 1},
+//   include: [{
+//     model: Client
+//   }]
+// })
+// .then(walks => {
+//   console.log('all walks with user id 1:', walks)
+//   res.status(200).json({walks})
+// })
+// Find walks for a specific client.
+// Client.find({where: {id: 2}})
+//   .then(client => {
+//     return client.getWalks()
+//   })
+//   .then(walks => {
+//   })

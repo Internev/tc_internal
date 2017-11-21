@@ -6,7 +6,8 @@ import {
   UNASSIGN_CLIENT,
   SAVE_ASSIGNED_REQUEST,
   SAVE_ASSIGNED_SUCCESS,
-  SAVE_ASSIGNED_FAILURE
+  SAVE_ASSIGNED_FAILURE,
+  CLEAR_ASSIGNED_MSG
 } from '../actions'
 
 const DEFAULT_STATE = {
@@ -42,7 +43,7 @@ const unassignClient = (state, action) => {
 }
 
 const saveAssignedRequest = (state, action) => {
-  const newState = {...state, ...{isFetching: true}}
+  const newState = {...state, ...{isFetching: true, msg: ''}}
   return newState
 }
 
@@ -53,6 +54,11 @@ const saveAssignedSuccess = (state, action) => {
 
 const saveAssignedFailure = (state, action) => {
   const newState = {...state, ...{isFetching: false, msg: 'Failed to save assignments, please try again.', error: action.err}}
+  return newState
+}
+
+const clearAssignedMsg = (state, action) => {
+  const newState = {...state, ...{msg: ''}}
   return newState
 }
 
@@ -74,6 +80,8 @@ export default function (state = DEFAULT_STATE, action) {
       return saveAssignedSuccess(state, action)
     case SAVE_ASSIGNED_FAILURE:
       return saveAssignedFailure(state, action)
+    case CLEAR_ASSIGNED_MSG:
+      return clearAssignedMsg(state, action)
     default:
       return state
   }

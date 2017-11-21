@@ -1,6 +1,6 @@
 import React from 'react'
 import './AssignDogs.scss'
-import { Input, Card, Icon, Modal, Dimmer, Button, Loader } from 'semantic-ui-react'
+import { Input, Card, Icon, Message, Dimmer, Button, Loader } from 'semantic-ui-react'
 
 const desc = (dogs) => (
   dogs.map((dog, i) => (
@@ -11,11 +11,21 @@ const desc = (dogs) => (
   ))
 )
 
-const AssignedList = ({walker, clients, unassignWalker, unassignClient, saveAssigned, clearAll, isFetching}) => (
+const AssignedList = ({walker, clients, unassignWalker, unassignClient, saveAssigned, clearAll, isFetching, msg, handleCloseMsg}) => (
   <div className={walker.name || clients.length ? 'assign_selected' : ''}>
-    <Dimmer blurring active={isFetching}>
+    <Dimmer active={isFetching}>
       <Loader>Saving Assignments...</Loader>
     </Dimmer>
+    {msg
+      ? <Message
+        onDismiss={handleCloseMsg}
+        icon
+        color='yellow'
+        >
+        <Icon name='info' size='small' />
+        {msg}
+      </Message>
+      : null}
     <div className='assign_selected-active'>
       <div className='assign_selected-walker'>
         {walker.name

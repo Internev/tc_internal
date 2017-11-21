@@ -47,20 +47,20 @@ const Dog = db.define('dog', {
   notes: Sequelize.JSON
 })
 
-const Walks = db.define('walks', {
+const Walk = db.define('walk', {
   date: Sequelize.DATE
 })
 
 Client.Dog = Client.hasMany(Dog)
+Dog.belongsTo(Client)
 
-// Walks: have one walker, many clients. 
-// User.belongsToMany(Client, {through: Walks})
-// Client.belongsToMany(User, {through: Walks})
+Walk.belongsTo(User)
+// Walk.hasMany(Client)
+// through clientwalks or something...? Then can query it for client-specific walks details.
+Client.belongsToMany(Walk, {through: 'clientwalk'})
+Walk.belongsToMany(Client, {through: 'clientwalk'})
 
-User.sync()
-Client.sync()
-Dog.sync()
-Walk.sync()
+db.sync()
 
 const genHash = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
@@ -78,6 +78,7 @@ module.exports = {
   User,
   Client,
   Dog,
+  Walk,
   genHash,
   genHashAsync,
   validPass

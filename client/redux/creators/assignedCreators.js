@@ -6,9 +6,16 @@ import {
   UNASSIGN_CLIENT,
   SAVE_ASSIGNED_REQUEST,
   SAVE_ASSIGNED_SUCCESS,
-  SAVE_ASSIGNED_FAILURE
+  SAVE_ASSIGNED_FAILURE,
+  CLEAR_ASSIGNED_MSG
 } from '../actions'
 import axios from 'axios'
+
+export function clearAssignedMsg () {
+  return {
+    type: CLEAR_ASSIGNED_MSG
+  }
+}
 
 export function saveAssigned (walker, clients) {
   return dispatch => {
