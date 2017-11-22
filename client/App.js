@@ -8,7 +8,7 @@ import Logout from './containers/auth/Logout'
 import Reset from './containers/auth/Reset'
 import Forgot from './containers/auth/Forgot'
 import Header from './containers/header/Header'
-import DogList from './containers/dogs/DogList'
+import DogListContainer from './containers/dogs/DogListContainer'
 import DogDetails from './containers/dogs/DogDetails'
 import UserTools from './containers/usertools/UserTools'
 import ClientTools from './containers/clienttools/ClientTools'
@@ -29,7 +29,7 @@ const App = () => (
           <Route path='/assign-dogs' component={AssignDogs} isPrivate adminOnly />
           <Route path='/client-tools' component={ClientTools} isPrivate adminOnly />
           <Route path='/dog-details/:id' component={DogDetails} isPrivate />
-          <Route path='/' component={DogList} isPrivate />
+          <Route path='/' component={DogListContainer} isPrivate />
         </Switch>
       </div>
     </div>

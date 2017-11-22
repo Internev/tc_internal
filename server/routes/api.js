@@ -180,6 +180,59 @@ router.post('/assign', (req, res) => {
     })
 })
 
+router.get('/dogs', (req, res) => {
+  console.log('req headers for dogs route:', req.headers)
+  Walk.findAll({
+    where: {
+      userId: req.headers.id,
+      date: {
+        $lt: new Date(),
+        $gt: new Date().setHours(0, 0, 0, 0)
+      }
+    },
+    include: [{model: Client}]
+  })
+    .then(walks => {
+      const clients = walks[0].clients
+      const dogReqs = clients.map(client => client.getDogs())
+      Promise.all(dogReqs)
+        .then(dogs => {
+          dogs = dogs.map(dog => {
+            dog = dog[0]
+            let client = clients.filter(c => c.id === dog.clientId)[0]
+            // This is depressing.
+            const doggy = {
+              id: dog.id,
+              name: dog.name,
+              breed: dog.breed,
+              dob: dog.dob,
+              photo: dog.photo,
+              gender: dog.gender,
+              recall: dog.recall,
+              desexed: dog.desexed,
+              vaccinated: dog.vaccinated,
+              vacdate: dog.vacdate,
+              insurance: dog.insurance,
+              insurer: dog.insurer,
+              medications: dog.medications,
+              injuries: dog.injuries,
+              issues: dog.issues,
+              allergies: dog.allergies,
+              notes: dog.notes,
+              address: client.address,
+              emergency: client.emergency,
+              owner: client.name,
+              phone: client.phone,
+              pickupdetails: client.pickupdetails,
+              vet: client.vet
+            }
+            return doggy
+          })
+          res.status(200).json({list: dogs})
+        })
+    })
+})
+
 module.exports = router
 // Find walks for specific walker (inc clients walked)
 // Walk.findAll({

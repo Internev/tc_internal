@@ -9,13 +9,15 @@ import { SIGNUP_REQUEST,
   LOGOUT_SUCCESS,
   UPDATE_AUTH_MSG,
   PASSWORD_TOKEN_CHECKING,
-  PASSWORD_TOKEN_RESULT
+  PASSWORD_TOKEN_RESULT,
+  CHECK_TOKEN_REQUEST
 } from '../actions'
 
 const DEFAULT_STATE = {
   name: '',
   email: '',
   phone: '',
+  id: null,
   walker: false,
   admin: false,
   isFetching: false,
@@ -85,6 +87,8 @@ const loginSuccess = (state, action) => {
     email: action.data.user.email,
     walker: action.data.user.walker,
     admin: action.data.user.admin,
+    phone: action.data.user.phone,
+    id: action.data.user.id,
     id_token: action.data.token,
     auth: {success: action.data.success, errors: {}}
   }
@@ -131,6 +135,11 @@ const passwordTokenResult = (state, action) => {
   return newState
 }
 
+const checkTokenRequest = (state, action) => {
+  const newState = {...state, ...{isFetching: action.isFetching}}
+  return newState
+}
+
 export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case SIGNUP_REQUEST:
@@ -157,6 +166,8 @@ export default function (state = DEFAULT_STATE, action) {
       return passwordTokenChecking(state, action)
     case PASSWORD_TOKEN_RESULT:
       return passwordTokenResult(state, action)
+    case CHECK_TOKEN_REQUEST:
+      return checkTokenRequest(state, action)
     default:
       return state
   }

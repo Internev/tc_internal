@@ -9,7 +9,8 @@ import {
   SIGNUP_FAILURE,
   UPDATE_AUTH_MSG,
   PASSWORD_TOKEN_CHECKING,
-  PASSWORD_TOKEN_RESULT
+  PASSWORD_TOKEN_RESULT,
+  CHECK_TOKEN_REQUEST
 } from '../actions'
 import axios from 'axios'
 
@@ -190,12 +191,20 @@ export function logoutUser () {
 
 export function checkToken (token) {
   return dispatch => {
-    axios.post('/auth/token', {token})
+    dispatch(checkTokenRequest())
+    return axios.post('/auth/token', {token})
     .then(res => {
       return dispatch(receiveLogin(res.data))
     })
     .catch(err => {
       if (err) return dispatch(loginError(err))
     })
+  }
+}
+
+function checkTokenRequest () {
+  return {
+    type: CHECK_TOKEN_REQUEST,
+    isFetching: true
   }
 }
