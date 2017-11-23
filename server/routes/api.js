@@ -199,7 +199,7 @@ router.get('/dogs', (req, res) => {
         .then(dogs => {
           dogs = dogs.map(dog => {
             dog = dog[0]
-            let client = clients.filter(c => c.id === dog.clientId)[0]
+            let client = clients.find(c => c.id === dog.clientId)
             // This is depressing.
             const doggy = {
               id: dog.id,
@@ -230,6 +230,10 @@ router.get('/dogs', (req, res) => {
           })
           res.status(200).json({list: dogs})
         })
+    })
+    .catch(err => {
+      console.log('err from trying to find walks.')
+      res.status(500).json({err, msg: 'Unable to find any walks assigned to you today.'})
     })
 })
 

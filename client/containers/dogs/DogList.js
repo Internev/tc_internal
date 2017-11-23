@@ -29,6 +29,7 @@ const DogList = ({dogs}) => (
   <Card.Group>
     {dogs.map(dog => (
       <Card
+        key={dog.id}
         header={dog.name}
         meta={`${dog.gender} ${dog.breed}`}
         image={img(dog)}
