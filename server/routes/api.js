@@ -197,37 +197,38 @@ router.get('/dogs', (req, res) => {
       const dogReqs = clients.map(client => client.getDogs())
       Promise.all(dogReqs)
         .then(dogs => {
-          dogs = dogs.map(dog => {
-            dog = dog[0]
-            let client = clients.find(c => c.id === dog.clientId)
-            // This is depressing.
-            const doggy = {
-              id: dog.id,
-              name: dog.name,
-              breed: dog.breed,
-              dob: dog.dob,
-              photo: dog.photo,
-              gender: dog.gender,
-              recall: dog.recall,
-              desexed: dog.desexed,
-              vaccinated: dog.vaccinated,
-              vacdate: dog.vacdate,
-              insurance: dog.insurance,
-              insurer: dog.insurer,
-              medications: dog.medications,
-              injuries: dog.injuries,
-              issues: dog.issues,
-              allergies: dog.allergies,
-              notes: dog.notes,
-              address: client.address,
-              emergency: client.emergency,
-              owner: client.name,
-              phone: client.phone,
-              pickupdetails: client.pickupdetails,
-              vet: client.vet
-            }
-            return doggy
-          })
+          dogs = dogs
+            .reduce((a, b) => a.concat(b))
+            .map(dog => {
+              let client = clients.find(c => c.id === dog.clientId)
+              // This is depressing.
+              const doggy = {
+                id: dog.id,
+                name: dog.name,
+                breed: dog.breed,
+                dob: dog.dob,
+                photo: dog.photo,
+                gender: dog.gender,
+                recall: dog.recall,
+                desexed: dog.desexed,
+                vaccinated: dog.vaccinated,
+                vacdate: dog.vacdate,
+                insurance: dog.insurance,
+                insurer: dog.insurer,
+                medications: dog.medications,
+                injuries: dog.injuries,
+                issues: dog.issues,
+                allergies: dog.allergies,
+                notes: dog.notes,
+                address: client.address,
+                emergency: client.emergency,
+                owner: client.name,
+                phone: client.phone,
+                pickupdetails: client.pickupdetails,
+                vet: client.vet
+              }
+              return doggy
+            })
           res.status(200).json({list: dogs})
         })
     })
