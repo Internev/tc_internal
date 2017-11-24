@@ -4,12 +4,25 @@
 
 .dog-details {
 
+  // display: flex;
   &_content {
-
+    display: flex;
+    align-items: flex-start;
+    @media (max-width: 991px) {
+      flex-direction: column;
+    }
+    &-photo {
+      margin: 0 2rem 2rem 0;
+      @media (max-width: 991px) {
+        margin: 0 auto 2rem auto;
+      }
+    }
     &-item {
-
-      >span {
-        font-weight: bold;
+    }
+    &-offset {
+      padding-left: 1rem;
+      div {
+        padding-left: 1rem;
       }
     }
   }
@@ -25,5 +38,18 @@
 .doglist_container {
   @media (max-width: 991px) {
     justify-content: center;
+  }
+}
+
+.doglist_desc {
+  display: flex;
+  flex-direction: column;
+  &-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    // button {
+    //   min-width: 7rem;
+    // }
   }
 }

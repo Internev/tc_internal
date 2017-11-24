@@ -14,6 +14,17 @@ export function setEditableDog (id) {
   }
 }
 
+export function getUserThenDogsThenEditable (id) {
+  return (dispatch, getState) => {
+    const token = localStorage.getItem('id_token')
+    // console.log('checktoken looks like:', checkToken(token), '\n**\n', dispatch)
+    return dispatch(checkToken(token)).then(() => {
+      const userId = getState().auth.id
+      return dispatch(getDogs(userId)).then(() => dispatch(setEditableDog(id)))
+    })
+  }
+}
+
 export function getUserThenDogs () {
   return (dispatch, getState) => {
     const token = localStorage.getItem('id_token')

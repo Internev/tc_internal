@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, Image, Button } from 'semantic-ui-react'
 import dogPlaceholder from '../../imgs/dog-placeholder.png'
+import './Dog.scss'
 
 const img = (dog) => {
   return dog.photo
@@ -16,12 +17,14 @@ const desc = (dog, link) => (
     <div>
       Issues: {dog.issues}
     </div>
-    <Button onClick={e => link(dog.id)}>
-      Details
-    </Button>
-    <Button>
-      Picked Up
-    </Button>
+    <div className='doglist_desc-buttons'>
+      <Button onClick={e => link(dog.id)}>
+        Details
+      </Button>
+      <Button>
+        Picked Up
+      </Button>
+    </div>
   </div>
 )
 

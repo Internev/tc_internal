@@ -1,140 +1,131 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { Image, Dimmer, Progress } from 'semantic-ui-react'
-import axios from 'axios'
-import dogPlaceholder from '../../imgs/dog-placeholder.png'
-import DogUploadModal from './DogUploadModal'
+import differenceInYears from 'date-fns/difference_in_years'
+import differenceInMonths from 'date-fns/difference_in_months'
+import { Image, Header, List, Icon } from 'semantic-ui-react'
 import './Dog.scss'
-import { setEditableDog } from '../../redux/creators/dogsCreators'
+import dogPlaceholder from '../../imgs/dog-placeholder.png'
 
-class DogDetails extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      modalOpen: false,
-      uploadProgress: false,
-      uploadPercentage: 0,
-      dogImagePreview: '',
-      file: ''
-    }
-    this.handleModalOpen = this.handleModalOpen.bind(this)
-    this.handleModalClose = this.handleModalClose.bind(this)
-    this.handleImagePreview = this.handleImagePreview.bind(this)
-    this.handleImageUpload = this.handleImageUpload.bind(this)
-  }
-  componentDidMount () {
-    const paramId = parseInt(this.props.match.params.id)
-    if ('' + this.props.dogs.editing.id !== paramId) {
-      this.props.dispatch(setEditableDog(paramId))
+const DogDetails = ({dog, handleModalOpen}) => {
+  const emergency = (em) => {
+    if (em) {
+      return (
+        <List.Item>
+          <List.Header>Emergency Contact</List.Header>
+          <List.Content><b>Name: </b>{em.name}</List.Content>
+          <List.Content><b>Phone: </b>{em.phone}</List.Content>
+        </List.Item>
+      )
     }
   }
-  componentDidUpdate () {
-    console.log('dog details state:', this.state)
-  }
-  handleModalOpen () { this.setState({modalOpen: true}) }
-  handleModalClose () { this.setState({modalOpen: false}) }
-  handleImagePreview (e) {
-    e.preventDefault()
-    let preview = new FileReader()
-    let binaryFile = new FileReader()
-    let file = e.target.files[0]
-    this.setState({file: file})
-    preview.onloadend = () => {
-      this.setState({dogImagePreview: preview.result})
-      console.log('file is:', file)
+  const vet = (v) => {
+    if (v) {
+      return (
+        <List.Item>
+          <List.Header>Veterinary Details</List.Header>
+          <List.Content><b>Practice: </b>{v.practice}</List.Content>
+          <List.Content><b>Phone: </b>{v.phone}</List.Content>
+          <List.Content><b>Address: </b>{v.address}</List.Content>
+          <List.Content><b>Preferred Vet: </b>{v.name}</List.Content>
+        </List.Item>
+      )
     }
-
-    preview.readAsDataURL(file)
   }
-  handleImageUpload (id) {
-    this.setState({modalOpen: false, uploadProgress: true})
-    const that = this
-    let config = {
-      headers: {
-        'authorization': localStorage.getItem('id_token'),
-        'content-type': 'multipart/form-data'
-      },
-      onUploadProgress (progressEvent) {
-        that.setState({uploadPercentage: Math.round((progressEvent.loaded * 100) / progressEvent.total)})
-      }
-    }
-    let fd = new FormData()
-    fd.append('file', this.state.file)
-    fd.append('id', id)
-
-    axios.post('/api/dog-upload', fd, config)
-      .then(res => {
-        console.log('upload finished, res:', res)
-        that.setState({uploadProgress: false})
-      })
-      .catch(err => {
-        console.log('Dog image upload failed, err:', err)
-        that.setState({uploadProgress: false})
-      })
+  const img = () => {
+    return dog.photo
+    ? <Image
+      src={dog.photo}
+      size='medium'
+      rounded
+      className='dog-details_content-photo'
+      />
+    : <Image
+      src={dogPlaceholder}
+      size='medium'
+      rounded
+      onClick={handleModalOpen}
+      className='dog-details_content-photo'
+      />
   }
-  render () {
-    const d = this.props.dogs.editing
-    const img = () => {
-      return d.photo
-      ? <Image
-        src={d.photo}
-        size='medium'
-        rounded
-        floated='left'
-        />
-      : <Image
-        src={dogPlaceholder}
-        size='medium'
-        rounded
-        floated='left'
-        onClick={this.handleModalOpen}
-        className='dog_upload'
-        />
+  const age = () => {
+    const years = differenceInYears(new Date(), new Date(dog.dob))
+    if (years < 1) {
+      return `${differenceInMonths(new Date(), new Date(dog.dob))} months old`
+    } else if (years < 2) {
+      return `1 year old`
+    } else {
+      return `${years} years old`
     }
-    return (
-      <div>
-        {d
-        ? <div className='dog-details'>
-          {img()}
-          <DogUploadModal
-            open={this.state.modalOpen}
-            handleClose={this.handleModalClose}
-            handleImagePreview={this.handleImagePreview}
-            handleImageUpload={this.handleImageUpload}
-            dogImagePreview={this.state.dogImagePreview}
-            uploadPercentage={this.state.uploadPercentage}
-            name={d.name}
-            id={d.id}
-            />
-          <Dimmer active={this.state.uploadProgress}>
-            Uploading Photo...
-            <Progress percent={this.state.uploadPercentage} autoSuccess size='large' indicating />
-          </Dimmer>
-          <div className='dog-details_content'>
-            <div className='dog-details_content-item'>
-              <span>Name: </span>{d.name}
-            </div>
-            <div className='dog-details_content-item'>
-              <span>Breed: </span>{d.breed}
-            </div>
-            <div className='dog-details_content-item'>
-              <span>Age: </span>{d.age}
-            </div>
-            <div className='dog-details_content-item'>
-              <span>Notes: </span>{d.notes}
-            </div>
-          </div>
-        </div>
-        : <div>Sorry, this dog doesn't exist, or you do not have access to its details at the moment.</div>}
+  }
+  return (
+    <div className='dog-details_content'>
+      {img()}
+      <div className='dog-details_content-items'>
+        <Header>
+          {dog.name}
+          <Header.Subheader>
+            {dog.gender} {dog.breed}
+          </Header.Subheader>
+        </Header>
+        <List divided verticalAlign='middle'>
+          <List.Item>
+            <List.Content><b>Age: </b>{age()}, (DOB: {dog.dob})</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Address: </b>{dog.address}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Recall: </b>{dog.recall}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Issues: </b>{dog.issues}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Notes: </b>{dog.notes}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Pickup Details: </b>{dog.pickupdetails}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Desexed: </b>{dog.desexed ? <Icon name='checkmark' /> : <Icon name='remove' />}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Vaccinated: </b>{
+              dog.vaccinated
+              ? <span><Icon name='checkmark' />{
+                dog.vacdate ? <span>(most recent: {dog.vacdate})</span> : null
+              }</span>
+              : <Icon name='remove' />
+            }</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Allergies: </b>{dog.allergies}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Medications: </b>{dog.medications}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Injuries: </b>{dog.injuries}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Header>Owner</List.Header>
+            <List.Content><b>Name: </b>{dog.owner}</List.Content>
+            <List.Content><b>Phone: </b>{dog.phone}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Insured: </b>{
+              dog.insurance
+              ? <span><Icon name='checkmark' />{
+                dog.insurer ? <span>(Insurer: {dog.insurer})</span> : null
+              }</span>
+              : <Icon name='remove' />
+            }</List.Content>
+          </List.Item>
+          {emergency(dog.emergency)}
+          {vet(dog.vet)}
+        </List>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    dogs: state.dogs
-  }
-}
-
-export default connect(mapStateToProps)(DogDetails)
+export default DogDetails
