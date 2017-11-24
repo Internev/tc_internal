@@ -1,6 +1,8 @@
 import {
   CLEAR_ASSIGNED,
-  ASSIGN_WALKER,
+  ASSIGN_WALKER_SUCCESS,
+  ASSIGN_WALKER_FAILURE,
+  ASSIGN_WALKER_REQUEST,
   ASSIGN_CLIENT,
   UNASSIGN_WALKER,
   UNASSIGN_CLIENT,
@@ -18,8 +20,18 @@ const DEFAULT_STATE = {
   isFetching: false
 }
 
-const assignWalker = (state, action) => {
-  const newState = {...state, ...{walker: action.walker}}
+const assignWalkerSuccess = (state, action) => {
+  const newState = {...state, ...{isFetching: false, walker: action.walker, clients: action.clients}}
+  return newState
+}
+
+const assignWalkerFailure = (state, action) => {
+  const newState = {...state, ...{isFetching: false, error: action.err, msg: 'Unable to contact database to check walker status. Try again in a bit!'}}
+  return newState
+}
+
+const assignWalkerRequest = (state, action) => {
+  const newState = {...state, ...{isFetching: true}}
   return newState
 }
 
@@ -66,8 +78,12 @@ export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case CLEAR_ASSIGNED:
       return DEFAULT_STATE
-    case ASSIGN_WALKER:
-      return assignWalker(state, action)
+    case ASSIGN_WALKER_SUCCESS:
+      return assignWalkerSuccess(state, action)
+    case ASSIGN_WALKER_FAILURE:
+      return assignWalkerFailure(state, action)
+    case ASSIGN_WALKER_REQUEST:
+      return assignWalkerRequest(state, action)
     case ASSIGN_CLIENT:
       return assignClient(state, action)
     case UNASSIGN_WALKER:

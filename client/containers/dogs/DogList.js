@@ -8,7 +8,7 @@ const img = (dog) => {
 : <Image src={dogPlaceholder} fluid />
 }
 
-const desc = (dog) => (
+const desc = (dog, link) => (
   <div className='doglist_desc'>
     <div>
       Address: {dog.address}
@@ -16,7 +16,7 @@ const desc = (dog) => (
     <div>
       Issues: {dog.issues}
     </div>
-    <Button>
+    <Button onClick={e => link(dog.id)}>
       Details
     </Button>
     <Button>
@@ -25,15 +25,15 @@ const desc = (dog) => (
   </div>
 )
 
-const DogList = ({dogs}) => (
-  <Card.Group>
+const DogList = ({dogs, detailsLink}) => (
+  <Card.Group className='doglist_container'>
     {dogs.map(dog => (
       <Card
         key={dog.id}
         header={dog.name}
         meta={`${dog.gender} ${dog.breed}`}
         image={img(dog)}
-        description={desc(dog)}
+        description={desc(dog, detailsLink)}
       />
     ))}
   </Card.Group>

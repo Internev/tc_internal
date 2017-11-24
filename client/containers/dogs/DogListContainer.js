@@ -13,7 +13,7 @@ class DogListContainer extends React.Component {
     // console.log('doglistcontainer mounted, props:', this.props)
     if (!this.props.auth.id) {
       this.props.dispatch(getUserThenDogs())
-    } else if (!this.props.dogs.list.length) {
+    } else {
       this.props.dispatch(getDogs(this.props.auth.id))
     }
   }
@@ -33,7 +33,10 @@ class DogListContainer extends React.Component {
         <Dimmer inverted active={this.props.auth.isFetching || this.props.dogs.isFetching}>
           <Loader />
         </Dimmer>
-        <DogList dogs={this.props.dogs.list} />
+        <DogList
+          dogs={this.props.dogs.list}
+          detailsLink={this.detailsLink}
+          />
       </div>
     )
   }

@@ -21,3 +21,9 @@
     padding: 1rem;
   }
 }
+
+.doglist_container {
+  @media (max-width: 991px) {
+    justify-content: center;
+  }
+}

@@ -20,7 +20,7 @@ class WalkerListContainer extends React.Component {
     console.log('WalkerListContainer users props:', this.props.users)
   }
   handleWalkerClick (walker) {
-    // console.log('Making walker active for assigning dogs.', walker)
+    console.log('Making walker active for assigning dogs.', walker)
     this.props.dispatch(assignWalker(walker))
   }
   handleSearchTerm (e) {

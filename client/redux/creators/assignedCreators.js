@@ -1,6 +1,8 @@
 import {
   CLEAR_ASSIGNED,
-  ASSIGN_WALKER,
+  ASSIGN_WALKER_REQUEST,
+  ASSIGN_WALKER_SUCCESS,
+  ASSIGN_WALKER_FAILURE,
   ASSIGN_CLIENT,
   UNASSIGN_WALKER,
   UNASSIGN_CLIENT,
@@ -63,9 +65,46 @@ export function clearAssigned () {
 }
 
 export function assignWalker (walker) {
+  return dispatch => {
+    dispatch(assignWalkerRequest)
+    const config = {
+      headers: {
+        'authorization': localStorage.getItem('id_token'),
+        'id': walker.id
+      }
+    }
+    axios.get('/api/assign', config)
+      .then(res => {
+        const clients = res.data.clients.map((client, i) => {
+          client.dogs = res.data.dogs[i]
+          return client
+        })
+        return dispatch(assignWalkerSuccess(walker, clients))
+      })
+      .catch(err => {
+        return dispatch(assignWalkerFailure(err))
+      })
+  }
+}
+
+function assignWalkerRequest () {
   return {
-    type: ASSIGN_WALKER,
-    walker
+    type: ASSIGN_WALKER_REQUEST
+  }
+}
+
+function assignWalkerSuccess (walker, clients) {
+  return {
+    type: ASSIGN_WALKER_SUCCESS,
+    walker,
+    clients
+  }
+}
+
+function assignWalkerFailure (err) {
+  return {
+    type: ASSIGN_WALKER_FAILURE,
+    err
   }
 }
 
