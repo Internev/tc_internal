@@ -36,8 +36,10 @@ export function getDogs (userId) {
     }
     return axios.get('/api/dogs', config)
       .then(res => {
-        // console.log('res from api/dogs get:', res)
-        return dispatch(getDogsSuccess(res.data.list))
+        console.log('res from api/dogs get:', res)
+        return res.data.list
+        ? dispatch(getDogsSuccess(res.data.list))
+        : dispatch(getDogsFailure(res.data.msg))
       })
       .catch(err => {
         // console.log('err from api/dogs get:', err)

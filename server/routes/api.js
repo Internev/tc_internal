@@ -247,11 +247,12 @@ router.get('/dogs', (req, res) => {
   })
     .then(walks => {
       const clients = walks[0].clients
+      if (clients.length < 1) return res.status(200).json({msg: 'No dogs assigned today.'})
       const dogReqs = clients.map(client => client.getDogs())
       Promise.all(dogReqs)
         .then(dogs => {
           dogs = dogs
-            .reduce((a, b) => a.concat(b))
+            .reduce((a, b) => a.concat(b), [])
             .map(dog => {
               let client = clients.find(c => c.id === dog.clientId)
               // This is depressing.

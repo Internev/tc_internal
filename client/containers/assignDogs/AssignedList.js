@@ -53,7 +53,7 @@ const AssignedList = ({walker, clients, unassignWalker, unassignClient, saveAssi
         </Card.Group>
       </div>
     </div>
-    {walker.name && clients.length
+    {walker.name
     ? <div className='assign_selected-actions'>
       <Button color='orange' onClick={clearAll}><Icon name='remove' /> Clear All</Button>
       <Button color='green' onClick={saveAssigned}><Icon name='checkmark' /> Save Assignments</Button>
