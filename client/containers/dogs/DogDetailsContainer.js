@@ -68,6 +68,7 @@ class DogDetailsContainer extends React.Component {
     axios.post('/api/dog-upload', fd, config)
       .then(res => {
         console.log('upload finished, res:', res)
+        this.props.dispatch(getUserThenDogsThenEditable(res.data.dog.id))
         that.setState({uploadProgress: false})
       })
       .catch(err => {

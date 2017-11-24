@@ -25,6 +25,10 @@ const DogEditor = ({dog, handleEditClientDog, index}) => (
       </Input>
     </div>
     <div>
+      <Input type='text' name='photo' fluid label={{content: 'Photo URL:'}}
+        value={dog.photo} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
+    </div>
+    <div>
       <Input type='text' name='allergies' fluid label={{content: 'Allergies:'}}
         value={dog.allergies} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
     </div>

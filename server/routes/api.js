@@ -77,25 +77,25 @@ router.post('/dog-upload', upload.single('file'), (req, res) => {
   console.log('req.file is:', req.file)
   console.log('req body?', req.body)
   // dogs db not implemented yet.
-  res.sendStatus(200)
-  // cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
-  //   if (err) console.log('cloudinary upload error:', err)
-  //   let adjustment = {photo: result.url}
-  //   Dog.update(
-  //     adjustment,
-  //     {where: {id: req.body.id},
-  //       returning: true,
-  //       plain: true}
-  //     )
-  //     .then(res => {
-  //       console.log('dog photo update result:', res)
-  //       res.status(200).json({dog: res.data})
-  //     })
-  //     .catch(err => {
-  //       console.log('dog photo update err:', err)
-  //       res.status(500).json({err})
-  //     })
-  // })
+  // res.sendStatus(200)
+  cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+    if (err) console.log('cloudinary upload error:', err)
+    let adjustment = {photo: result.url}
+    Dog.update(
+      adjustment,
+      {where: {id: req.body.id},
+        returning: true,
+        plain: true}
+      )
+      .then(dog => {
+        console.log('dog photo update result:', dog)
+        res.status(200).json({dog: dog[1]})
+      })
+      .catch(err => {
+        console.log('dog photo update err:', err)
+        res.status(500).json({err})
+      })
+  })
 })
 
 function promiseMap (xs, f) {
