@@ -1,5 +1,5 @@
 const express = require('express')
-const validator = require('validator')
+// const validator = require('validator')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../../config')
