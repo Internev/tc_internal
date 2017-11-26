@@ -39,7 +39,6 @@ class DogDetailsContainer extends React.Component {
   handleImagePreview (e) {
     e.preventDefault()
     let preview = new FileReader()
-    let binaryFile = new FileReader()
     let file = e.target.files[0]
     this.setState({file: file})
     preview.onloadend = () => {

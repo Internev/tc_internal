@@ -12,7 +12,7 @@ module.exports = {
   module: {
     rules: [{
       test: /\.jsx?$/,
-      exclude: /node_modules/,
+      exclude: /node_modules\/(?!(csv-parse)\/).*/,
       use: [
         'babel-loader'
       ]
@@ -32,36 +32,7 @@ module.exports = {
           limit: 100000
         }
       }
-    },
-    // {
-    //   test: /\.(jpe?g|png|gif|svg)$/i,
-    //   exclude: /node_modules/,
-    //   use: [
-    //     {
-    //       loader: 'file-loader',
-    //       options: {
-    //         query: {
-    //           name: '[name].[ext]'
-    //         }
-    //       }
-    //     },
-    //     {
-    //       loader: 'image-webpack-loader',
-    //       options: {
-    //         query: {
-    //           mozjpeg: {
-    //             progressive: true
-    //           },
-    //           gifsicle: {
-    //             interlaced: true
-    //           },
-    //           optipng: {
-    //             optimizationLevel: 7
-    //           }
-    //         }
-    //       }
-    //     }]
-    // }
+    }
     ]
   },
   plugins: [

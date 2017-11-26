@@ -106,13 +106,11 @@ class ClientTools extends React.Component {
           msg={this.props.clients.msg}
           modalOpen={this.state.modalOpen}
           handleCloseMsg={this.handleCloseMsg}
-          clients={this.state.searchTerm
-            ? this.props.clients.list.filter(client =>
+          clients={this.props.clients.list.filter(client =>
               this.state.searchTerm
               ? `${client.name}${client.email}`.toUpperCase().indexOf(this.state.searchTerm.toUpperCase()) >= 0
               : true
-            )
-            : []}
+            )}
           />
       </div>
     )
