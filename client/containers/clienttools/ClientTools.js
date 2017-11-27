@@ -22,6 +22,7 @@ class ClientTools extends React.Component {
     this.saveEditClient = this.saveEditClient.bind(this)
     this.handleEditClientObjectUpdate = this.handleEditClientObjectUpdate.bind(this)
     this.handleEditClientDog = this.handleEditClientDog.bind(this)
+    this.handleCommentRemove = this.handleCommentRemove.bind(this)
     this.handleCloseMsg = this.handleCloseMsg.bind(this)
   }
   componentDidMount () {
@@ -71,6 +72,15 @@ class ClientTools extends React.Component {
     update.dogs[index] = dogUpdate
     this.props.dispatch(updateActiveClient(update))
   }
+  handleCommentRemove (dog, index, comment, commentIndex) {
+    console.log('Handle comment remove:', dog, index, comment, commentIndex)
+    const dogUpdate = {...dog}
+    dogUpdate.comments.splice(commentIndex, 1)
+    const update = {}
+    update.dogs = [...this.props.clients.active.dogs]
+    update.dogs[index] = dogUpdate
+    this.props.dispatch(updateActiveClient(update))
+  }
   saveEditClient () {
     this.setState({modalOpen: false})
     console.log('going to save client:', this.props.clients.active)
@@ -106,6 +116,7 @@ class ClientTools extends React.Component {
           msg={this.props.clients.msg}
           modalOpen={this.state.modalOpen}
           handleCloseMsg={this.handleCloseMsg}
+          handleCommentRemove={this.handleCommentRemove}
           clients={this.props.clients.list.filter(client =>
               this.state.searchTerm
               ? `${client.name}${client.email}`.toUpperCase().indexOf(this.state.searchTerm.toUpperCase()) >= 0
