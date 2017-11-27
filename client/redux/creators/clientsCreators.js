@@ -126,9 +126,9 @@ export function updateClientDetails (client) {
         'authorization': localStorage.getItem('id_token')
       }
     }
-    axios.post('/api/client-update', client, config)
+    axios.post('/api/clients/update', client, config)
       .then(res => {
-        console.log('response from client-update:', res)
+        console.log('response from clients/update:', res)
         dispatch(updateClientDetailsSuccess(res.data.list))
       })
       .catch(err => {

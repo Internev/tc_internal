@@ -7,6 +7,18 @@ import {
 import axios from 'axios'
 import {checkToken} from './authCreators'
 
+export function addDogComment (name, comment) {
+  // return dispatch => {
+  //   dispatch(addCommentRequest())
+  //   const config = {
+  //     headers: {
+  //       'authorization': localStorage.getItem('id_token')
+  //     }
+  //   }
+  //
+  // }
+}
+
 export function setEditableDog (id) {
   return {
     type: SET_EDITABLE_DOG,
@@ -47,7 +59,7 @@ export function getDogs (userId) {
     }
     return axios.get('/api/dogs', config)
       .then(res => {
-        console.log('res from api/dogs get:', res)
+        // console.log('res from api/dogs get:', res)
         return res.data.list
         ? dispatch(getDogsSuccess(res.data.list))
         : dispatch(getDogsFailure(res.data.msg))
