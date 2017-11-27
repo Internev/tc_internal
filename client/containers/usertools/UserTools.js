@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Card, Input, Dimmer, Loader } from 'semantic-ui-react'
+import { Card, Input, Dimmer, Loader, Header } from 'semantic-ui-react'
 import { getUsers, updateUser } from '../../redux/creators/usersCreators'
 import UserCard from './UserCard'
 import './UserTools.scss'
@@ -33,7 +33,14 @@ class UserTools extends React.Component {
         <Dimmer inverted active={this.props.users.isFetching}>
           <Loader inverted>Contacting Database</Loader>
         </Dimmer>
-        <div className=''>User permissions can be updated here. Walker: regular walker rights (can be assigned dogs, can view details of assigned dogs). Administrator: full rights (can update everything).</div>
+        <Header>
+          User Management
+          <Header.Subheader>
+            User permissions can be updated here. <br />
+            Walker: regular walker rights (can be assigned dogs, can view details of assigned dogs).<br />
+            Administrator: full rights (can update everything).
+          </Header.Subheader>
+        </Header>
         <Input
           className='usertools_input'
           fluid

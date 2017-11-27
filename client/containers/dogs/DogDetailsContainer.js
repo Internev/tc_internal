@@ -41,8 +41,8 @@ class DogDetailsContainer extends React.Component {
   handleModalClose () { this.setState({modalOpen: false}) }
   handleCommentChange (e) { this.setState({comment: e.target.value}) }
   addComment () {
-    console.log('adding comment by', this.props.auth.name, '. Comment is:', this.state.comment)
-    // this.props.dispatch(addDogComment(this.props.auth.name, this.state.comment))
+    this.props.dispatch(addDogComment(this.props.dogs.editing.id, this.props.auth.name, this.state.comment))
+    this.setState({comment: ''})
   }
   handleImagePreview (e) {
     e.preventDefault()

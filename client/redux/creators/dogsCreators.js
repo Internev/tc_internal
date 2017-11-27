@@ -2,21 +2,50 @@ import {
   SET_EDITABLE_DOG,
   GET_DOGS_REQUEST,
   GET_DOGS_SUCCESS,
-  GET_DOGS_FAILURE
+  GET_DOGS_FAILURE,
+  ADD_COMMENT_REQUEST,
+  ADD_COMMENT_SUCCESS,
+  ADD_COMMENT_FAILURE
 } from '../actions'
 import axios from 'axios'
 import {checkToken} from './authCreators'
 
-export function addDogComment (name, comment) {
-  // return dispatch => {
-  //   dispatch(addCommentRequest())
-  //   const config = {
-  //     headers: {
-  //       'authorization': localStorage.getItem('id_token')
-  //     }
-  //   }
-  //
-  // }
+export function addDogComment (dogId, name, comment) {
+  return dispatch => {
+    dispatch(addCommentRequest())
+    const config = {
+      headers: {
+        'authorization': localStorage.getItem('id_token')
+      }
+    }
+    return axios.post('/api/dogs/comment', {dogId, name, comment}, config)
+      .then(res => {
+        return dispatch(addCommentSuccess(res.data.dog))
+      })
+      .catch(err => {
+        return dispatch(addCommentFailure(err))
+      })
+  }
+}
+
+function addCommentRequest () {
+  return {
+    type: ADD_COMMENT_REQUEST
+  }
+}
+
+function addCommentSuccess (dog) {
+  return {
+    type: ADD_COMMENT_SUCCESS,
+    dog
+  }
+}
+
+function addCommentFailure (err) {
+  return {
+    type: ADD_COMMENT_FAILURE,
+    err
+  }
 }
 
 export function setEditableDog (id) {

@@ -85,6 +85,7 @@ dogs.get('/', (req, res) => {
                 issues: dog.issues,
                 allergies: dog.allergies,
                 notes: dog.notes,
+                comments: dog.comments,
                 address: client.address,
                 emergency: client.emergency,
                 owner: client.name,
@@ -100,6 +101,24 @@ dogs.get('/', (req, res) => {
     .catch(err => {
       console.log('err from trying to find walks.')
       res.status(500).json({err, msg: 'Unable to find any walks assigned to you today.'})
+    })
+})
+
+dogs.post('/comment', (req, res) => {
+  Dog.findOne({where: {id: req.body.dogId}})
+    .then(dog => {
+      const comments = dog.comments ? [...dog.comments] : []
+      comments.push({name: req.body.name, msg: req.body.comment})
+      return dog.update({
+        comments
+      })
+    })
+    .then(dog => {
+      res.status(200).json({dog})
+    })
+    .catch(err => {
+      console.log('Error updating dog comment:', err)
+      res.status(500).json({err})
     })
 })
 
