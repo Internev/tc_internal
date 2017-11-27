@@ -1,11 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Image, Dimmer, Progress } from 'semantic-ui-react'
+import { Dimmer, Progress } from 'semantic-ui-react'
 import axios from 'axios'
 import DogUploadModal from './DogUploadModal'
 import DogDetails from './DogDetails'
 import './Dog.scss'
-import { getUserThenDogsThenEditable } from '../../redux/creators/dogsCreators'
+import { getUserThenDogsThenEditable, addDogComment } from '../../redux/creators/dogsCreators'
 
 class DogDetailsContainer extends React.Component {
   constructor (props) {
@@ -15,27 +15,35 @@ class DogDetailsContainer extends React.Component {
       uploadProgress: false,
       uploadPercentage: 0,
       dogImagePreview: '',
-      file: ''
+      file: '',
+      comment: ''
     }
     this.handleModalOpen = this.handleModalOpen.bind(this)
     this.handleModalClose = this.handleModalClose.bind(this)
+    this.handleCommentChange = this.handleCommentChange.bind(this)
+    this.addComment = this.addComment.bind(this)
     this.handleImagePreview = this.handleImagePreview.bind(this)
     this.handleImageUpload = this.handleImageUpload.bind(this)
   }
   componentDidMount () {
     const paramId = parseInt(this.props.match.params.id)
     if ('' + this.props.dogs.editing.id !== paramId) {
-      console.log('dispatching setEditableDog')
+      // console.log('dispatching setEditableDog')
       // this.props.dispatch(getUserThenDogs())
       this.props.dispatch(getUserThenDogsThenEditable(paramId))
     }
   }
   componentDidUpdate () {
-    console.log('dog details state:', this.state)
-    console.log('dog details props:', this.props)
+    // console.log('dog details state:', this.state)
+    // console.log('dog details props:', this.props)
   }
   handleModalOpen () { this.setState({modalOpen: true}) }
   handleModalClose () { this.setState({modalOpen: false}) }
+  handleCommentChange (e) { this.setState({comment: e.target.value}) }
+  addComment () {
+    console.log('adding comment by', this.props.auth.name, '. Comment is:', this.state.comment)
+    // this.props.dispatch(addDogComment(this.props.auth.name, this.state.comment))
+  }
   handleImagePreview (e) {
     e.preventDefault()
     let preview = new FileReader()
@@ -43,7 +51,7 @@ class DogDetailsContainer extends React.Component {
     this.setState({file: file})
     preview.onloadend = () => {
       this.setState({dogImagePreview: preview.result})
-      console.log('file is:', file)
+      // console.log('file is:', file)
     }
 
     preview.readAsDataURL(file)
@@ -64,7 +72,7 @@ class DogDetailsContainer extends React.Component {
     fd.append('file', this.state.file)
     fd.append('id', id)
 
-    axios.post('/api/dog-upload', fd, config)
+    axios.post('/api/dogs/upload', fd, config)
       .then(res => {
         console.log('upload finished, res:', res)
         this.props.dispatch(getUserThenDogsThenEditable(res.data.dog.id))
@@ -95,7 +103,13 @@ class DogDetailsContainer extends React.Component {
             Uploading Photo...
             <Progress percent={this.state.uploadPercentage} autoSuccess size='large' indicating />
           </Dimmer>
-          <DogDetails dog={d} handleModalOpen={this.handleModalOpen} />
+          <DogDetails
+            dog={d}
+            handleModalOpen={this.handleModalOpen}
+            comment={this.state.comment}
+            handleCommentChange={this.handleCommentChange}
+            addComment={this.addComment}
+            />
         </div>
         : <div>Sorry, this dog doesn't exist, or you do not have access to its details at the moment.</div>}
       </div>
@@ -105,7 +119,8 @@ class DogDetailsContainer extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    dogs: state.dogs
+    dogs: state.dogs,
+    auth: state.auth
   }
 }
 

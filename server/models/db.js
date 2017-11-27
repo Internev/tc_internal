@@ -44,7 +44,8 @@ const Dog = db.define('dog', {
   injuries: Sequelize.JSON,
   issues: Sequelize.JSON,
   allergies: Sequelize.JSON,
-  notes: Sequelize.JSON
+  notes: Sequelize.JSON,
+  comments: Sequelize.JSON
 })
 
 const Walk = db.define('walk', {
