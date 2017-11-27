@@ -22,7 +22,9 @@ class UserTools extends React.Component {
     this.setState({searchTerm: e.target.value})
   }
   toggleAdmin (user) {
-    this.props.dispatch(updateUser(user, 'admin'))
+    if (user.id !== this.props.auth.id) {
+      this.props.dispatch(updateUser(user, 'admin'))
+    }
   }
   toggleWalker (user) {
     this.props.dispatch(updateUser(user, 'walker'))
