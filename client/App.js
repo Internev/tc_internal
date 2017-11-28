@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import Route from './utils/AuthRoute'
 import './App.scss'
@@ -14,7 +15,7 @@ import UserTools from './containers/usertools/UserTools'
 import ClientTools from './containers/clienttools/ClientTools'
 import AssignDogs from './containers/assignDogs/AssignDogs'
 
-const App = () => (
+const App = ({...props}) => (
   <Router>
     <div>
       <Header />
@@ -26,14 +27,22 @@ const App = () => (
           <Route path='/reset/:token' component={Reset} />
           <Route path='/logout' component={Logout} isPrivate />
           <Route path='/user-tools' component={UserTools} isPrivate adminOnly />
-          <Route path='/assign-dogs' component={AssignDogs} isPrivate adminOnly />
+          <Route path='/assigned-dogs' component={DogListContainer} isPrivate adminOnly />
           <Route path='/client-tools' component={ClientTools} isPrivate adminOnly />
           <Route path='/dog-details/:id' component={DogDetailsContainer} isPrivate />
-          <Route path='/' component={DogListContainer} isPrivate />
+          <Route path='/' component={props.auth.admin
+              ? AssignDogs
+              : DogListContainer} isPrivate />
         </Switch>
       </div>
     </div>
   </Router>
 )
 
-export default App
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  }
+}
+
+export default connect(mapStateToProps)(App)
