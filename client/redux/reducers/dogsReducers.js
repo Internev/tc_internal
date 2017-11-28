@@ -33,7 +33,7 @@ const getDogsSuccess = (state, action) => {
 }
 
 const getDogsFailure = (state, action) => {
-  const newState = {...state, ...{isFetching: false, error: action.err, msg: 'Failed to retrieve assigned dogs. Please check login and try again.'}}
+  const newState = {...state, ...{isFetching: false, list: [], editing: {}, error: action.err, msg: 'Failed to retrieve assigned dogs. Please check login and try again.'}}
   return newState
 }
 
