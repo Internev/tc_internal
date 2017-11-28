@@ -18,8 +18,8 @@ export const headerLinks = [
     admin: true
   },
   {
-    key: 'assign-dogs',
-    content: <Link to='/assign-dogs' className='tcheader_nav-link'>Assign Dogs</Link>,
+    key: 'assigned-dogs',
+    content: <Link to='/assigned-dogs' className='tcheader_nav-link'>Assigned Dogs</Link>,
     admin: true
   },
   {
