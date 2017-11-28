@@ -41,7 +41,7 @@ class Signup extends React.Component {
     e.preventDefault()
     const creds = {
       name: this.state.name,
-      email: this.state.email,
+      email: this.state.email.toLowerCase(),
       phone: this.state.phone,
       password: this.state.pass
     }

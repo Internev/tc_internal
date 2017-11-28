@@ -38,7 +38,7 @@ class Login extends React.Component {
   handleFormSubmit (e) {
     e.preventDefault()
     const creds = {
-      email: this.state.email,
+      email: this.state.email.toLowerCase(),
       password: this.state.pass
     }
     this.props.dispatch(loginUser(creds))
