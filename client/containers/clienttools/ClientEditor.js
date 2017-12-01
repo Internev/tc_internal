@@ -93,7 +93,7 @@ const ClientEditor = ({
       </Modal>
       <div>
         <Input
-          placeholder='Search by client name or email address'
+          placeholder='Search by dog or client name'
           icon='search'
           fluid
           onChange={e => search(e)}

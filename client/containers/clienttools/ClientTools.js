@@ -119,7 +119,7 @@ class ClientTools extends React.Component {
           handleCommentRemove={this.handleCommentRemove}
           clients={this.props.clients.list.filter(client =>
               this.state.searchTerm
-              ? `${client.name}${client.email}`.toUpperCase().indexOf(this.state.searchTerm.toUpperCase()) >= 0
+              ? `${client.name}${client.dogs.map(dog => dog.name).join(' ')}`.toUpperCase().indexOf(this.state.searchTerm.toUpperCase()) >= 0
               : true
             )}
           />
