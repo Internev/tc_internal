@@ -13,6 +13,7 @@ import DogListContainer from './containers/dogs/DogListContainer'
 import DogDetailsContainer from './containers/dogs/DogDetailsContainer'
 import UserTools from './containers/usertools/UserTools'
 import ClientTools from './containers/clienttools/ClientTools'
+import CalendarContainer from './containers/calendar/CalendarContainer'
 import AssignDogs from './containers/assignDogs/AssignDogs'
 
 const App = ({...props}) => (
@@ -30,6 +31,7 @@ const App = ({...props}) => (
           <Route path='/assigned-dogs' component={DogListContainer} isPrivate adminOnly />
           <Route path='/client-tools' component={ClientTools} isPrivate adminOnly />
           <Route path='/dog-details/:id' component={DogDetailsContainer} isPrivate />
+          <Route path='/calendar' component={CalendarContainer} isPrivate adminOnly />
           <Route path='/' component={props.auth.admin
               ? AssignDogs
               : DogListContainer} isPrivate />

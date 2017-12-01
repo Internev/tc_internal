@@ -23,6 +23,11 @@ export const headerLinks = [
     admin: true
   },
   {
+    key: 'calendar',
+    content: <Link to='/calendar' className='tcheader_nav-link'>Calendar</Link>,
+    admin: true
+  },
+  {
     key: 'change-password',
     content: <Link to='/change-password' className='tcheader_nav-link'>Change Password</Link>,
     admin: false
