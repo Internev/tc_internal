@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import AssignedList from './AssignedList'
 import { unassignWalker, unassignClient, clearAssigned, saveAssigned, clearAssignedMsg } from '../../redux/creators/assignedCreators'
 
-class assignedContainer extends React.Component {
+class AssignedContainer extends React.Component {
   constructor (props) {
     super(props)
     this.state = {searchTerm: ''}
@@ -55,4 +55,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(assignedContainer)
+export default connect(mapStateToProps)(AssignedContainer)

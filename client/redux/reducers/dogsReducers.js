@@ -5,11 +5,15 @@ import {
   GET_DOGS_FAILURE,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
-  ADD_COMMENT_FAILURE
+  ADD_COMMENT_FAILURE,
+  GET_ALL_DOGS_REQUEST,
+  GET_ALL_DOGS_SUCCESS,
+  GET_ALL_DOGS_FAILURE
 } from '../actions'
 
 const DEFAULT_STATE = {
-  list: [],
+  all: [],
+  assigned: [],
   editing: {},
   isFetching: false,
   msg: '',
@@ -17,7 +21,7 @@ const DEFAULT_STATE = {
 }
 
 const setEditableDog = (state, action) => {
-  const newEditing = state.list.filter(dog => dog.id === action.id)
+  const newEditing = state.assigned.filter(dog => dog.id === action.id)
   const newState = {...state, ...{editing: newEditing[0]}}
   return newState
 }
@@ -28,12 +32,27 @@ const getDogsRequest = (state, action) => {
 }
 
 const getDogsSuccess = (state, action) => {
-  const newState = {...state, ...{isFetching: false, list: action.list}}
+  const newState = {...state, ...{isFetching: false, assigned: action.assigned}}
   return newState
 }
 
 const getDogsFailure = (state, action) => {
-  const newState = {...state, ...{isFetching: false, list: [], editing: {}, error: action.err, msg: 'Failed to retrieve assigned dogs. Please check login and try again.'}}
+  const newState = {...state, ...{isFetching: false, assigned: [], editing: {}, error: action.err, msg: 'Failed to retrieve assigned dogs. Please check login and try again.'}}
+  return newState
+}
+
+const getAllDogsRequest = (state, action) => {
+  const newState = {...state, ...{isFetching: true}}
+  return newState
+}
+
+const getAllDogsSuccess = (state, action) => {
+  const newState = {...state, ...{isFetching: false, all: action.all}}
+  return newState
+}
+
+const getAllDogsFailure = (state, action) => {
+  const newState = {...state, ...{isFetching: false, all: [], assigned: [], editing: {}, error: action.err, msg: 'Failed to retrieve dogs. Please check login and try again.'}}
   return newState
 }
 
@@ -64,6 +83,12 @@ export default function (state = DEFAULT_STATE, action) {
       return getDogsSuccess(state, action)
     case GET_DOGS_FAILURE:
       return getDogsFailure(state, action)
+    case GET_ALL_DOGS_REQUEST:
+      return getAllDogsRequest(state, action)
+    case GET_ALL_DOGS_SUCCESS:
+      return getAllDogsSuccess(state, action)
+    case GET_ALL_DOGS_FAILURE:
+      return getAllDogsFailure(state, action)
     case ADD_COMMENT_REQUEST:
       return addCommentRequest(state, action)
     case ADD_COMMENT_SUCCESS:

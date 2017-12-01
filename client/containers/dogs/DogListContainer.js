@@ -34,7 +34,7 @@ class DogListContainer extends React.Component {
           <Loader />
         </Dimmer>
         <DogList
-          dogs={this.props.dogs.list}
+          dogs={this.props.dogs.assigned}
           detailsLink={this.detailsLink}
           />
       </div>

@@ -5,10 +5,52 @@ import {
   GET_DOGS_FAILURE,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
-  ADD_COMMENT_FAILURE
+  ADD_COMMENT_FAILURE,
+  GET_ALL_DOGS_REQUEST,
+  GET_ALL_DOGS_SUCCESS,
+  GET_ALL_DOGS_FAILURE
 } from '../actions'
 import axios from 'axios'
 import {checkToken} from './authCreators'
+
+export function getAllDogs () {
+  return dispatch => {
+    dispatch(getAllDogsRequest())
+    const config = {
+      headers: {
+        'authorization': localStorage.getItem('id_token')
+      }
+    }
+    return axios.get('/api/dogs/all', config)
+      .then(res => {
+        console.log('response from dogs/all:', res)
+        return dispatch(getAllDogsSuccess(res.data.dogs))
+      })
+      .catch(err => {
+        return dispatch(getAllDogsFailure(err))
+      })
+  }
+}
+
+function getAllDogsRequest () {
+  return {
+    type: GET_ALL_DOGS_REQUEST
+  }
+}
+
+function getAllDogsSuccess (all) {
+  return {
+    type: GET_ALL_DOGS_SUCCESS,
+    all
+  }
+}
+
+function getAllDogsFailure (err) {
+  return {
+    type: GET_ALL_DOGS_FAILURE,
+    err
+  }
+}
 
 export function addDogComment (dogId, name, comment) {
   return dispatch => {
@@ -106,10 +148,10 @@ function getDogsRequest () {
   }
 }
 
-function getDogsSuccess (list) {
+function getDogsSuccess (assigned) {
   return {
     type: GET_DOGS_SUCCESS,
-    list
+    assigned
   }
 }
 

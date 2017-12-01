@@ -2,6 +2,18 @@ const dogs = require('express').Router()
 const config = require('../../../config')
 const { User, Dog, Client, Walk } = require('../../models/db')
 
+dogs.get('/all', (req, res) => {
+  Dog.findAll({include: [ Client ]})
+  .then(dogs => {
+    console.log('\n\nDogs from findAll:', dogs)
+    res.status(200).json({dogs})
+  })
+  .catch(err => {
+    console.log('Error finding all dogs:', err)
+    res.status(500).json({err})
+  })
+})
+
 const cloudinary = require('cloudinary')
 cloudinary.config({
   cloud_name: config.cloud_name,
