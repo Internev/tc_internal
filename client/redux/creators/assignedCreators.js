@@ -21,7 +21,7 @@ export function clearAssignedMsg () {
   }
 }
 
-export function saveAssigned (walker, clients, dogs) {
+export function saveAssigned (walker, dogs) {
   return dispatch => {
     dispatch(saveAssignedRequest())
     const config = {
@@ -29,7 +29,7 @@ export function saveAssigned (walker, clients, dogs) {
         'authorization': localStorage.getItem('id_token')
       }
     }
-    axios.post('/api/assign', {walker, clients, dogs}, config)
+    axios.post('/api/assign', {walker, dogs}, config)
       .then(res => {
         console.log('response from api/assign:', res)
         dispatch(saveAssignedSuccess())
@@ -77,11 +77,12 @@ export function assignWalker (walker) {
     }
     axios.get('/api/assign', config)
       .then(res => {
-        const clients = res.data.clients.map((client, i) => {
-          client.dogs = res.data.dogs[i]
-          return client
+        const dogs = res.data.dogs.map((dog, i) => {
+          dog.client = res.data.clients[i]
+          return dog
         })
-        return dispatch(assignWalkerSuccess(walker, clients))
+        console.log('mapped response from api/assign get:', dogs)
+        return dispatch(assignWalkerSuccess(walker, dogs))
       })
       .catch(err => {
         return dispatch(assignWalkerFailure(err))
@@ -95,11 +96,11 @@ function assignWalkerRequest () {
   }
 }
 
-function assignWalkerSuccess (walker, clients) {
+function assignWalkerSuccess (walker, dogs) {
   return {
     type: ASSIGN_WALKER_SUCCESS,
     walker,
-    clients
+    dogs
   }
 }
 
@@ -140,6 +141,6 @@ export function assignDog (dog) {
 export function unassignDog (dog) {
   return {
     type: UNASSIGN_DOG,
-    client
+    dog
   }
 }

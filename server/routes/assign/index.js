@@ -8,6 +8,7 @@ assign.post('/', (req, res) => {
     userId: req.body.walker.id,
     date: new Date()
   }
+  // res.sendStatus(200)
   Walk.findOne({
     where: {
       userId: req.body.walker.id,
@@ -16,15 +17,15 @@ assign.post('/', (req, res) => {
         $gt: new Date().setHours(0, 0, 0, 0)
       }
     },
-    include: [{model: Client}]
+    include: [{model: Dog}]
   })
   .then(walk => {
     if (walk) {
-      return walk.setClients(req.body.clients.map(client => client.id))
+      return walk.setDogs(req.body.dogs.map(dog => dog.id))
     } else {
       return Walk.create(walkObj)
       .then(walk => {
-        return walk.setClients(req.body.clients.map(client => client.id))
+        return walk.setDogs(req.body.dogs.map(dog => dog.id))
       })
     }
   })
@@ -46,27 +47,22 @@ assign.get('/', (req, res) => {
         $gt: new Date().setHours(0, 0, 0, 0)
       }
     },
-    include: [{model: Client}]
+    include: [{model: Dog}]
   })
   .then(walk => {
     if (walk) {
-      walk.getClients()
-      .then(clients => {
-        const dogReqs = clients.map(client => client.getDogs())
+      walk.getDogs()
+      .then(dogs => {
+        console.log('\n\n\nassign get dogs:\n', dogs)
+        const dogReqs = dogs.map(dog => dog.getClient())
         Promise.all(dogReqs)
-        .then(dogs => {
-          // clients = clients.map(client => {
-          //   client.dogs = [`i'm a dog lul`]
-          //   // client.dogs = dogs.filter(dog => client.id === dog.clientId)
-          //   console.log('client about to be mapped is:', client, client.dogs)
-          //   return client
-          // })
-          console.log('\n\n****\nreturn clients now.')
+        .then(clients => {
+          console.log('\n\n****\nreturn clients now., Clients:', clients)
           res.status(200).json({clients, dogs})
         })
       })
     } else {
-      res.status(200).json({clients: []})
+      res.status(200).json({clients: [], dogs: []})
     }
   })
   .catch(err => {

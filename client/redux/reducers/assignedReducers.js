@@ -24,7 +24,7 @@ const DEFAULT_STATE = {
 }
 
 const assignWalkerSuccess = (state, action) => {
-  const newState = {...state, ...{isFetching: false, walker: action.walker, clients: action.clients}}
+  const newState = {...state, ...{isFetching: false, walker: action.walker, dogs: action.dogs}}
   return newState
 }
 

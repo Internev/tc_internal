@@ -31,7 +31,7 @@ class AssignedContainer extends React.Component {
     this.props.dispatch(clearAssigned())
   }
   saveAssigned () {
-    this.props.dispatch(saveAssigned(this.props.assigned.walker, this.props.assigned.clients))
+    this.props.dispatch(saveAssigned(this.props.assigned.walker, this.props.assigned.dogs))
   }
   handleCloseMsg () {
     this.props.dispatch(clearAssignedMsg())
