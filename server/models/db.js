@@ -59,8 +59,8 @@ Dog.belongsTo(Client)
 Walk.belongsTo(User)
 // Walk.hasMany(Client)
 // through clientwalks or something...? Then can query it for client-specific walks details.
-Client.belongsToMany(Walk, {through: 'clientwalk'})
-Walk.belongsToMany(Client, {through: 'clientwalk'})
+Dog.belongsToMany(Walk, {through: 'dogwalk'})
+Walk.belongsToMany(Dog, {through: 'dogwalk'})
 
 db.sync()
 
