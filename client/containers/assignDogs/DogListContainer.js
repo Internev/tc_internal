@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import DogList from './DogList'
 import { getAllDogs } from '../../redux/creators/dogsCreators'
-import { assignClient } from '../../redux/creators/assignedCreators'
+import { assignDog } from '../../redux/creators/assignedCreators'
 
 class DogListContainer extends React.Component {
   constructor (props) {
@@ -21,7 +21,7 @@ class DogListContainer extends React.Component {
   }
   handleDogClick (dog) {
     console.log('Making dog active for assigning to walker.', dog)
-    // this.props.dispatch(assignClient(client))
+    this.props.dispatch(assignDog(dog))
   }
   handleSearchTerm (e) {
     this.setState({searchTerm: e.target.value})

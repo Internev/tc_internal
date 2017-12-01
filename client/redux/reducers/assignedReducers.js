@@ -6,6 +6,8 @@ import {
   ASSIGN_CLIENT,
   UNASSIGN_WALKER,
   UNASSIGN_CLIENT,
+  ASSIGN_DOG,
+  UNASSIGN_DOG,
   SAVE_ASSIGNED_REQUEST,
   SAVE_ASSIGNED_SUCCESS,
   SAVE_ASSIGNED_FAILURE,
@@ -15,6 +17,7 @@ import {
 const DEFAULT_STATE = {
   walker: {},
   clients: [],
+  dogs: [],
   error: '',
   msg: '',
   isFetching: false
@@ -43,6 +46,14 @@ const assignClient = (state, action) => {
   return newState
 }
 
+const assignDog = (state, action) => {
+  if (state.dogs.some(dog => dog.id === action.dog.id)) return state
+  const newDogs = [...state.dogs]
+  newDogs.push(action.dog)
+  const newState = {...state, ...{dogs: newDogs}}
+  return newState
+}
+
 const unassignWalker = (state, action) => {
   const newState = {...state, ...{walker: {}}}
   return newState
@@ -51,6 +62,12 @@ const unassignWalker = (state, action) => {
 const unassignClient = (state, action) => {
   const newClients = state.clients.filter(client => client.email !== action.client.email)
   const newState = {...state, ...{clients: newClients}}
+  return newState
+}
+
+const unassignDog = (state, action) => {
+  const newDogs = state.dogs.filter(dog => dog.id !== action.dog.id)
+  const newState = {...state, ...{dogs: newDogs}}
   return newState
 }
 
@@ -86,10 +103,14 @@ export default function (state = DEFAULT_STATE, action) {
       return assignWalkerRequest(state, action)
     case ASSIGN_CLIENT:
       return assignClient(state, action)
+    case ASSIGN_DOG:
+      return assignDog(state, action)
     case UNASSIGN_WALKER:
       return unassignWalker(state, action)
     case UNASSIGN_CLIENT:
       return unassignClient(state, action)
+    case UNASSIGN_DOG:
+      return unassignDog(state, action)
     case SAVE_ASSIGNED_REQUEST:
       return saveAssignedRequest(state, action)
     case SAVE_ASSIGNED_SUCCESS:

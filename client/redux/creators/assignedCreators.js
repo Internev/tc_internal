@@ -6,6 +6,8 @@ import {
   ASSIGN_CLIENT,
   UNASSIGN_WALKER,
   UNASSIGN_CLIENT,
+  ASSIGN_DOG,
+  UNASSIGN_DOG,
   SAVE_ASSIGNED_REQUEST,
   SAVE_ASSIGNED_SUCCESS,
   SAVE_ASSIGNED_FAILURE,
@@ -19,7 +21,7 @@ export function clearAssignedMsg () {
   }
 }
 
-export function saveAssigned (walker, clients) {
+export function saveAssigned (walker, clients, dogs) {
   return dispatch => {
     dispatch(saveAssignedRequest())
     const config = {
@@ -27,7 +29,7 @@ export function saveAssigned (walker, clients) {
         'authorization': localStorage.getItem('id_token')
       }
     }
-    axios.post('/api/assign', {walker, clients}, config)
+    axios.post('/api/assign', {walker, clients, dogs}, config)
       .then(res => {
         console.log('response from api/assign:', res)
         dispatch(saveAssignedSuccess())
@@ -108,6 +110,12 @@ function assignWalkerFailure (err) {
   }
 }
 
+export function unassignWalker () {
+  return {
+    type: UNASSIGN_WALKER
+  }
+}
+
 export function assignClient (client) {
   return {
     type: ASSIGN_CLIENT,
@@ -115,15 +123,23 @@ export function assignClient (client) {
   }
 }
 
-export function unassignWalker () {
-  return {
-    type: UNASSIGN_WALKER
-  }
-}
-
 export function unassignClient (client) {
   return {
     type: UNASSIGN_CLIENT,
+    client
+  }
+}
+
+export function assignDog (dog) {
+  return {
+    type: ASSIGN_DOG,
+    dog
+  }
+}
+
+export function unassignDog (dog) {
+  return {
+    type: UNASSIGN_DOG,
     client
   }
 }

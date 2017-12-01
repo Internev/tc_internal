@@ -11,7 +11,7 @@ const desc = (dogs) => (
   ))
 )
 
-const AssignedList = ({walker, clients, unassignWalker, unassignClient, saveAssigned, clearAll, isFetching, msg, handleCloseMsg}) => (
+const AssignedList = ({walker, clients, dogs, unassignWalker, unassignClient, unassignDog, saveAssigned, clearAll, isFetching, msg, handleCloseMsg}) => (
   <div className={walker.name || clients.length ? 'assign_selected' : ''}>
     <Dimmer active={isFetching}>
       <Loader>Saving Assignments...</Loader>
@@ -40,13 +40,13 @@ const AssignedList = ({walker, clients, unassignWalker, unassignClient, saveAssi
       </div>
       <div className='assign_selected-clients'>
         <Card.Group itemsPerRow={5}>
-          {clients.map((client, i) => (
+          {dogs.map((dog, i) => (
             <Card
               key={i}
-              header={client.name}
+              header={dog.name}
               meta='click to remove'
-              description={desc(client.dogs)}
-              onClick={() => unassignClient(client)}
+              description={`Owner: ${dog.client.name}`}
+              onClick={() => unassignDog(dog)}
               color='olive'
             />
           ))}
