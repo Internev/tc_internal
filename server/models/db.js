@@ -49,7 +49,8 @@ const Dog = db.define('dog', {
 })
 
 const Walk = db.define('walk', {
-  date: Sequelize.DATE
+  date: Sequelize.DATE,
+  comment: Sequelize.JSON
 })
 
 Client.Dog = Client.hasMany(Dog)
