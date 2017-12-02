@@ -130,10 +130,17 @@ export function getDogs (userId) {
     }
     return axios.get('/api/dogs', config)
       .then(res => {
-        // console.log('res from api/dogs get:', res)
-        return res.data.list
-        ? dispatch(getDogsSuccess(res.data.list))
-        : dispatch(getDogsFailure(res.data.msg))
+        console.log('res from api/dogs get:', res)
+        if (res.data.msg) {
+          dispatch(getDogsFailure(res.data.msg))
+        } else {
+          const dogs = res.data.dogs
+          const clients = res.data.clients
+          dogs.forEach((dog, i) => {
+            dog.client = clients[i]
+          })
+          dispatch(getDogsSuccess(dogs))
+        }
       })
       .catch(err => {
         // console.log('err from api/dogs get:', err)

@@ -61,6 +61,14 @@ const ClientEditor = ({
                 value={client.pickupdetails} labelPosition='left' onChange={e => handleEditClientChange(e)} />
             </div>
             <div>
+              <Input type='text' name='keylock' fluid label={{content: 'Keylock:'}}
+                value={client.keylock} labelPosition='left' onChange={e => handleEditClientChange(e)} />
+            </div>
+            <div>
+              <Input type='text' name='keycode' fluid label={{content: 'Keycode:'}}
+                value={client.keycode} labelPosition='left' onChange={e => handleEditClientChange(e)} />
+            </div>
+            <div>
               <Input type='text' name='social' fluid label={{content: 'Social Media:'}}
                 value={client.social} labelPosition='left' onChange={e => handleEditClientChange(e)} />
             </div>

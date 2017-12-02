@@ -31,7 +31,7 @@ clients.post('/', (req, res) => {
 })
 
 clients.get('/', (req, res) => {
-  Client.findAll({include: [ Dog ]})
+  Client.findAll({include: [ Dog ], order: [['updatedAt', 'DESC']]})
     .then(resp => {
       res.status(200).json({list: resp})
     })

@@ -83,7 +83,7 @@ const DogDetails = ({dog, handleModalOpen, addComment, comment, handleCommentCha
             <List.Content><b>Age: </b>{age()}, (DOB: {dog.dob})</List.Content>
           </List.Item>
           <List.Item>
-            <List.Content><b>Address: </b>{dog.address}</List.Content>
+            <List.Content><b>Address: </b>{dog.client && dog.client.address}</List.Content>
           </List.Item>
           <List.Item>
             <List.Content><b>Recall: </b>{dog.recall}</List.Content>
@@ -95,7 +95,13 @@ const DogDetails = ({dog, handleModalOpen, addComment, comment, handleCommentCha
             <List.Content><b>Notes: </b>{dog.notes}</List.Content>
           </List.Item>
           <List.Item>
-            <List.Content><b>Pickup Details: </b>{dog.pickupdetails}</List.Content>
+            <List.Content><b>Keylock: </b>{dog.client && dog.client.keylock ? <Icon name='checkmark' /> : <Icon name='remove' />}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Keycode: </b>{dog.client && dog.client.keycode}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content><b>Pickup Details: </b>{dog.client && dog.client.pickupdetails}</List.Content>
           </List.Item>
           <List.Item>
             <List.Content><b>Desexed: </b>{dog.desexed ? <Icon name='checkmark' /> : <Icon name='remove' />}</List.Content>
@@ -129,11 +135,11 @@ const DogDetails = ({dog, handleModalOpen, addComment, comment, handleCommentCha
           </List.Item>
           <List.Item>
             <List.Header>Owner</List.Header>
-            <List.Content><b>Name: </b>{dog.owner}</List.Content>
-            <List.Content><b>Phone: </b>{dog.phone}</List.Content>
+            <List.Content><b>Name: </b>{dog.client && dog.client.name}</List.Content>
+            <List.Content><b>Phone: </b>{dog.client && dog.client.phone}</List.Content>
           </List.Item>
-          {emergency(dog.emergency)}
-          {vet(dog.vet)}
+          {emergency(dog.client && dog.client.emergency)}
+          {vet(dog.client && dog.client.vet)}
           {comments(dog.comments)}
           <List.Item>
             <Form onSubmit={addComment}>

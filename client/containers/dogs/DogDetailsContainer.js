@@ -35,7 +35,7 @@ class DogDetailsContainer extends React.Component {
   }
   componentDidUpdate () {
     // console.log('dog details state:', this.state)
-    // console.log('dog details props:', this.props)
+    console.log('dog details props:', this.props)
   }
   handleModalOpen () { this.setState({modalOpen: true}) }
   handleModalClose () { this.setState({modalOpen: false}) }

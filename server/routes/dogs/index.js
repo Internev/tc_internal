@@ -66,49 +66,17 @@ dogs.get('/', (req, res) => {
         $gt: new Date().setHours(0, 0, 0, 0)
       }
     },
-    include: [{model: Client}]
+    include: [{model: Dog}]
   })
     .then(walks => {
-      const clients = walks[0].clients
-      if (clients.length < 1) return res.status(200).json({msg: 'No dogs assigned today.'})
-      const dogReqs = clients.map(client => client.getDogs())
+      // console.log('\n\nwalks is:', walks)
+      const dogs = walks[0].dogs
+      if (dogs.length < 1) return res.status(200).json({msg: 'No dogs assigned today.'})
+      const dogReqs = dogs.map(dog => dog.getClient())
       Promise.all(dogReqs)
-        .then(dogs => {
-          dogs = dogs
-            .reduce((a, b) => a.concat(b), [])
-            .map(dog => {
-              let client = clients.find(c => c.id === dog.clientId)
-              // This is depressing.
-              const doggy = {
-                id: dog.id,
-                name: dog.name,
-                breed: dog.breed,
-                dob: dog.dob,
-                photo: dog.photo,
-                gender: dog.gender,
-                recall: dog.recall,
-                desexed: dog.desexed,
-                vaccinated: dog.vaccinated,
-                vacdate: dog.vacdate,
-                insurance: dog.insurance,
-                insurer: dog.insurer,
-                medications: dog.medications,
-                injuries: dog.injuries,
-                issues: dog.issues,
-                allergies: dog.allergies,
-                notes: dog.notes,
-                comments: dog.comments,
-                address: client.address,
-                emergency: client.emergency,
-                owner: client.name,
-                phone: client.phone,
-                pickupdetails: client.pickupdetails,
-                vet: client.vet
-              }
-              return doggy
-            })
-          res.status(200).json({list: dogs})
-        })
+      .then(clients => {
+        res.status(200).json({clients, dogs})
+      })
     })
     .catch(err => {
       console.log('err from trying to find walks.')

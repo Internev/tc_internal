@@ -12,11 +12,19 @@ const img = (dog) => {
 const desc = (dog, link) => (
   <div className='doglist_desc'>
     <div>
-      Address: {dog.address}
+      Address: {dog.client.address}
     </div>
-    <div>
-      Issues: {dog.issues}
-    </div>
+    {dog.client && dog.client.keylock
+    ? (
+      <div>
+        Keycode: {dog.client.keycode}
+      </div>
+    )
+    : (
+      <div>
+        Pickup details: {dog.client && dog.client.pickupDetails}
+      </div>
+    )}
     <div className='doglist_desc-buttons'>
       <Button onClick={e => link(dog.id)}>
         Details

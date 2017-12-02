@@ -3,7 +3,7 @@ const assign = require('express').Router()
 const { User, Dog, Client, Walk } = require('../../models/db')
 
 assign.post('/', (req, res) => {
-  console.log('\n\nassign req body is:', req.body)
+  // console.log('\n\nassign req body is:', req.body)
   const walkObj = {
     userId: req.body.walker.id,
     date: new Date()
@@ -53,11 +53,11 @@ assign.get('/', (req, res) => {
     if (walk) {
       walk.getDogs()
       .then(dogs => {
-        console.log('\n\n\nassign get dogs:\n', dogs)
+        // console.log('\n\n\nassign get dogs:\n', dogs)
         const dogReqs = dogs.map(dog => dog.getClient())
         Promise.all(dogReqs)
         .then(clients => {
-          console.log('\n\n****\nreturn clients now., Clients:', clients)
+          // console.log('\n\n****\nreturn clients now., Clients:', clients)
           res.status(200).json({clients, dogs})
         })
       })
