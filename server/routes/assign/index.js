@@ -38,6 +38,38 @@ assign.post('/', (req, res) => {
   })
 })
 
+assign.post('/schedule', (req, res) => {
+  const walkObj = {
+    date: req.body.date
+  }
+  Walk.findOne({
+    where: {
+      date: {
+        $lt: req.body.date.setHours(23, 59, 59, 0),
+        $gt: req.body.date.setHours(0, 0, 0, 0)
+      }
+    },
+    include: [{model: Dog}]
+  })
+  .then(walk => {
+    if (walk) {
+      return walk.setDogs(req.body.dogs.map(dog => dog.id))
+    } else {
+      return Walk.create(walkObj)
+      .then(walk => {
+        return walk.setDogs(req.body.dogs.map(dog => dog.id))
+      })
+    }
+  })
+  .then(walk => {
+    res.status(200).json({walk})
+  })
+  .catch(err => {
+    console.log('\n\nassign error from db:', err)
+    res.status(500).json({err})
+  })
+})
+
 assign.get('/', (req, res) => {
   Walk.findOne({
     where: {

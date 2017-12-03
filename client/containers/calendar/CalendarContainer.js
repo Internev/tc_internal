@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { unassignWalker, unassignClient, clearAssigned, saveAssigned, clearAssignedMsg } from '../../redux/creators/assignedCreators'
 import BigCalendar from 'react-big-calendar'
+import ScheduleModal from './ScheduleModal'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import './Calendar.scss'
 import moment from 'moment'
@@ -11,48 +12,46 @@ BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 class CalendarContainer extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {searchTerm: ''}
-    this.unassignClientClick = this.unassignClientClick.bind(this)
-    this.unassignWalkerClick = this.unassignWalkerClick.bind(this)
-    this.saveAssigned = this.saveAssigned.bind(this)
-    this.clearAllAssigned = this.clearAllAssigned.bind(this)
-    this.handleCloseMsg = this.handleCloseMsg.bind(this)
+    this.state = {
+      modalOpen: false,
+      workingDate: null
+    }
+    this.openScheduleDogs = this.openScheduleDogs.bind(this)
+    this.cancelScheduleDogs = this.cancelScheduleDogs.bind(this)
   }
   componentDidMount () {
   }
   componentDidUpdate () {
   }
-  unassignClientClick (client) {
-    this.props.dispatch(unassignClient(client))
+  openScheduleDogs (date) {
+    console.log('date selected:', date)
+    this.setState({modalOpen: true, workingDate: moment(date).format('dddd MMMM Do, YYYY')})
   }
-  unassignWalkerClick () {
-    this.props.dispatch(unassignWalker())
-  }
-  clearAllAssigned () {
-    this.props.dispatch(clearAssigned())
-  }
-  saveAssigned () {
-    this.props.dispatch(saveAssigned(this.props.assigned.walker, this.props.assigned.clients))
-  }
-  handleCloseMsg () {
-    this.props.dispatch(clearAssignedMsg())
+  cancelScheduleDogs () {
+    this.setState({modalOpen: false})
   }
   render () {
     const events = [
       {
         title: 'Event number one',
+        allDay: true,
         start: new Date(),
         end: new Date()
       }
     ]
     return (
       <div className='calendar_container'>
+        <ScheduleModal
+          modalOpen={this.state.modalOpen}
+          date={this.state.workingDate}
+          cancelScheduleDogs={this.cancelScheduleDogs}
+        />
         <BigCalendar
           selectable
           events={events}
           defaultView='month'
           onSelectEvent={e => console.log('selected event:', e)}
-          onSelectSlot={slot => console.log('selected slot:', slot)}
+          onSelectSlot={slot => this.openScheduleDogs(slot.start)}
         />
       </div>
     )
