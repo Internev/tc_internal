@@ -4,11 +4,13 @@ import users from './usersReducers'
 import dogs from './dogsReducers'
 import clients from './clientsReducers'
 import assigned from './assignedReducers'
+import schedule from './scheduleReducers'
 
 export default combineReducers({
   auth,
   users,
   dogs,
   clients,
-  assigned
+  assigned,
+  schedule
 })

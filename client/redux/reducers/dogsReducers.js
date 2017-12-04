@@ -27,12 +27,12 @@ const setEditableDog = (state, action) => {
 }
 
 const getDogsRequest = (state, action) => {
-  const newState = {...state, ...{isFetching: true}}
+  const newState = {...state, ...{isFetching: true, msg: ''}}
   return newState
 }
 
 const getDogsSuccess = (state, action) => {
-  const newState = {...state, ...{isFetching: false, assigned: action.assigned}}
+  const newState = {...state, ...{isFetching: false, msg: '', assigned: action.assigned}}
   return newState
 }
 
@@ -42,12 +42,12 @@ const getDogsFailure = (state, action) => {
 }
 
 const getAllDogsRequest = (state, action) => {
-  const newState = {...state, ...{isFetching: true}}
+  const newState = {...state, ...{isFetching: true, msg: ''}}
   return newState
 }
 
 const getAllDogsSuccess = (state, action) => {
-  const newState = {...state, ...{isFetching: false, all: action.all}}
+  const newState = {...state, ...{isFetching: false, msg: '', all: action.all}}
   return newState
 }
 
@@ -57,14 +57,14 @@ const getAllDogsFailure = (state, action) => {
 }
 
 const addCommentRequest = (state, action) => {
-  const newState = {...state, ...{isFetching: true}}
+  const newState = {...state, ...{isFetching: true, msg: ''}}
   return newState
 }
 
 const addCommentSuccess = (state, action) => {
   const newEditing = {...state.editing, ...{comments: action.dog.comments}}
   // newEditing.comments = action.dog.comments
-  const newState = {...state, ...{isFetching: false, editing: newEditing}}
+  const newState = {...state, ...{isFetching: false, editing: newEditing, msg: ''}}
   return newState
 }
 

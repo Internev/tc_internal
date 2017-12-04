@@ -1,10 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { unassignWalker, unassignClient, clearAssigned, saveAssigned, clearAssignedMsg } from '../../redux/creators/assignedCreators'
+// import { unassignWalker, unassignClient, clearAssigned, saveAssigned, clearAssignedMsg } from '../../redux/creators/assignedCreators'
+import { getAllDogs } from '../../redux/creators/dogsCreators'
+import { setScheduleDate, scheduleDog } from '../../redux/creators/scheduleCreators'
 import BigCalendar from 'react-big-calendar'
 import ScheduleModal from './ScheduleModal'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import './Calendar.scss'
+import './Schedule.scss'
 import moment from 'moment'
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
@@ -14,17 +16,32 @@ class CalendarContainer extends React.Component {
     super(props)
     this.state = {
       modalOpen: false,
-      workingDate: null
+      workingDate: null,
+      searchTerm: ''
     }
     this.openScheduleDogs = this.openScheduleDogs.bind(this)
     this.cancelScheduleDogs = this.cancelScheduleDogs.bind(this)
+    this.handleDogClick = this.handleDogClick.bind(this)
+    this.handleSearchTerm = this.handleSearchTerm.bind(this)
   }
   componentDidMount () {
+    if (this.props.dogs.all.length < 1) {
+      this.props.dispatch(getAllDogs())
+    }
   }
   componentDidUpdate () {
+    console.log('ScheduleContainer props:', this.props)
+  }
+  handleDogClick (dog) {
+    // console.log('Making dog active for assigning to walker.', dog)
+    this.props.dispatch(scheduleDog(dog))
+  }
+  handleSearchTerm (e) {
+    this.setState({searchTerm: e.target.value})
   }
   openScheduleDogs (date) {
     console.log('date selected:', date)
+    this.props.dispatch(setScheduleDate(date))
     this.setState({modalOpen: true, workingDate: moment(date).format('dddd MMMM Do, YYYY')})
   }
   cancelScheduleDogs () {
@@ -45,6 +62,18 @@ class CalendarContainer extends React.Component {
           modalOpen={this.state.modalOpen}
           date={this.state.workingDate}
           cancelScheduleDogs={this.cancelScheduleDogs}
+          handleDogClick={this.handleDogClick}
+          handleSearchTerm={this.handleSearchTerm}
+          searchTerm={this.state.searchTerm}
+          dogs={this.state.searchTerm
+            ? this.props.dogs.all.filter(dog =>
+              this.state.searchTerm
+              ? `${dog.name}${dog.client.name}`.toUpperCase().indexOf(this.state.searchTerm.toUpperCase()) >= 0
+              : true
+            )
+            : this.props.dogs.all}
+          isFetching={this.props.dogs.isFetching}
+          error={this.props.dogs.error}
         />
         <BigCalendar
           selectable
@@ -60,7 +89,8 @@ class CalendarContainer extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    assigned: state.assigned
+    schedule: state.schedule,
+    dogs: state.dogs
   }
 }
 
