@@ -17,7 +17,7 @@ class WalkerListContainer extends React.Component {
     }
   }
   componentDidUpdate () {
-    console.log('WalkerListContainer users props:', this.props.users)
+    // console.log('WalkerListContainer users props:', this.props.users)
   }
   handleWalkerClick (walker) {
     // console.log('Making walker active for assigning dogs.', walker)

@@ -17,7 +17,7 @@ class DogListContainer extends React.Component {
     }
   }
   componentDidUpdate () {
-    console.log('DogListContainer props:', this.props)
+    // console.log('DogListContainer props:', this.props)
   }
   handleDogClick (dog) {
     console.log('Making dog active for assigning to walker.', dog)

@@ -1,6 +1,7 @@
 import {
   SET_SCHEDULE_DATE,
-  SCHEDULE_DOG
+  SCHEDULE_DOG,
+  UNSCHEDULE_DOG
 } from '../actions'
 
 const DEFAULT_STATE = {
@@ -25,12 +26,20 @@ const scheduleDog = (state, action) => {
   return newState
 }
 
+const unscheduleDog = (state, action) => {
+  const newDogs = state.dogs.filter(dog => dog.id !== action.id)
+  const newState = {...state, ...{dogs: newDogs}}
+  return newState
+}
+
 export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case SET_SCHEDULE_DATE:
       return setScheduleDate(state, action)
     case SCHEDULE_DOG:
       return scheduleDog(state, action)
+    case UNSCHEDULE_DOG:
+      return unscheduleDog(state, action)
     default:
       return state
   }

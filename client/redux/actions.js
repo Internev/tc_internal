@@ -36,6 +36,7 @@ export const UPDATE_CLIENT_DETAILS_FAILURE = 'UPDATE_CLIENT_DETAILS_FAILURE'
 // Schedule Management
 export const SET_SCHEDULE_DATE = 'SET_SCHEDULE_DATE'
 export const SCHEDULE_DOG = 'SCHEDULE_DOG'
+export const UNSCHEDULE_DOG = 'UNSCHEDULE_DOG'
 
 // Assignment Management
 export const CLEAR_ASSIGNED = 'CLEAR_ASSIGNED'

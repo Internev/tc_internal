@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 // import { unassignWalker, unassignClient, clearAssigned, saveAssigned, clearAssignedMsg } from '../../redux/creators/assignedCreators'
 import { getAllDogs } from '../../redux/creators/dogsCreators'
-import { setScheduleDate, scheduleDog } from '../../redux/creators/scheduleCreators'
+import { setScheduleDate, scheduleDog, unscheduleDog } from '../../redux/creators/scheduleCreators'
 import BigCalendar from 'react-big-calendar'
 import ScheduleModal from './ScheduleModal'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
@@ -20,9 +20,10 @@ class CalendarContainer extends React.Component {
       searchTerm: ''
     }
     this.openScheduleDogs = this.openScheduleDogs.bind(this)
-    this.cancelScheduleDogs = this.cancelScheduleDogs.bind(this)
+    this.handleCancelScheduleDogs = this.handleCancelScheduleDogs.bind(this)
     this.handleDogClick = this.handleDogClick.bind(this)
     this.handleSearchTerm = this.handleSearchTerm.bind(this)
+    this.handleUnscheduleDog = this.handleUnscheduleDog.bind(this)
   }
   componentDidMount () {
     if (this.props.dogs.all.length < 1) {
@@ -33,19 +34,20 @@ class CalendarContainer extends React.Component {
     console.log('ScheduleContainer props:', this.props)
   }
   handleDogClick (dog) {
-    // console.log('Making dog active for assigning to walker.', dog)
     this.props.dispatch(scheduleDog(dog))
   }
   handleSearchTerm (e) {
     this.setState({searchTerm: e.target.value})
   }
   openScheduleDogs (date) {
-    console.log('date selected:', date)
     this.props.dispatch(setScheduleDate(date))
     this.setState({modalOpen: true, workingDate: moment(date).format('dddd MMMM Do, YYYY')})
   }
-  cancelScheduleDogs () {
+  handleCancelScheduleDogs () {
     this.setState({modalOpen: false})
+  }
+  handleUnscheduleDog (id) {
+    this.props.dispatch(unscheduleDog(id))
   }
   render () {
     const events = [
@@ -61,11 +63,13 @@ class CalendarContainer extends React.Component {
         <ScheduleModal
           modalOpen={this.state.modalOpen}
           date={this.state.workingDate}
-          cancelScheduleDogs={this.cancelScheduleDogs}
+          cancelScheduleDogs={this.handleCancelScheduleDogs}
           handleDogClick={this.handleDogClick}
           handleSearchTerm={this.handleSearchTerm}
           searchTerm={this.state.searchTerm}
-          dogs={this.state.searchTerm
+          scheduledDogs={this.props.schedule.dogs}
+          unscheduleDog={this.handleUnscheduleDog}
+          allDogs={this.state.searchTerm
             ? this.props.dogs.all.filter(dog =>
               this.state.searchTerm
               ? `${dog.name}${dog.client.name}`.toUpperCase().indexOf(this.state.searchTerm.toUpperCase()) >= 0

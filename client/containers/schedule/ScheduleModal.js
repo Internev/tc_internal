@@ -1,6 +1,7 @@
 import React from 'react'
 import { Modal, Header } from 'semantic-ui-react'
 import DogList from '../assignDogs/DogList'
+import ScheduledList from './ScheduledList'
 import './Schedule.scss'
 
 const ScheduleModal = (
@@ -11,7 +12,9 @@ const ScheduleModal = (
     handleDogClick,
     handleSearchTerm,
     searchTerm,
-    dogs,
+    scheduledDogs,
+    unscheduleDog,
+    allDogs,
     isFetching,
     error
   }) => {
@@ -19,19 +22,21 @@ const ScheduleModal = (
     <Modal
       open={modalOpen}
       onClose={cancelScheduleDogs}
-      dimmer='blurring'
       closeOnDimmerClick={false}
       closeIcon
       className='calendar_modal'
     >
       <Header icon='add square' content={`Schedule dogs for ${date}`} />
       <Modal.Content>
-        <div>Assign dogs here.</div>
+        <ScheduledList
+          dogs={scheduledDogs}
+          unscheduleDog={unscheduleDog}
+        />
         <DogList
           handleDogClick={handleDogClick}
           handleSearchTerm={handleSearchTerm}
           searchTerm={searchTerm}
-          dogs={dogs}
+          dogs={allDogs}
           isFetching={isFetching}
           error={error}
           />
