@@ -42,7 +42,7 @@ clients.get('/', (req, res) => {
 })
 
 clients.post('/update', (req, res) => {
-  console.log('client update body is:', req.body)
+  // console.log('client update body is:', req.body)
   const client = req.body
   const dbUpdates = []
   dbUpdates.push(Client.update(client, {where: {id: client.id}}))
@@ -61,6 +61,19 @@ clients.post('/update', (req, res) => {
       console.log('error updating single client from api/client-update', err)
       res.status(500).json({err})
     })
+})
+
+clients.post('/delete', (req, res) => {
+  console.log('req.body.client to be deleted:', req.body.client)
+  Client.destroy({where: {id: req.body.client.id}})
+  .then(resp => {
+    console.log('\n\nresponse from client destroy:', resp)
+    res.sendStatus(200)
+  })
+  .catch(err => {
+    console.log('error deleting client:', err)
+    res.status(500).json({err})
+  })
 })
 
 module.exports = clients

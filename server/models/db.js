@@ -55,8 +55,8 @@ const Walk = db.define('walk', {
   comment: Sequelize.JSON
 })
 
-Client.Dog = Client.hasMany(Dog)
-Dog.belongsTo(Client)
+Client.Dog = Client.hasMany(Dog, {onDelete: 'cascade'})
+Dog.belongsTo(Client, {onDelete: 'cascade'})
 
 Walk.belongsTo(User)
 // Walk.hasMany(Client)

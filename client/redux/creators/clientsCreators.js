@@ -52,6 +52,25 @@ export function getClients () {
   }
 }
 
+export function deleteClient (client) {
+  return dispatch => {
+    dispatch(getClientsRequest())
+    const config = {
+      headers: {
+        'authorization': localStorage.getItem('id_token')
+      }
+    }
+    axios.post('/api/clients/delete', {client}, config)
+      .then(res => {
+        return dispatch(getClients())
+      })
+      .catch(err => {
+        return dispatch(getClients())
+      })
+  }
+}
+
+
 function uploadClientsRequest () {
   return {
     type: UPLOAD_CLIENTS_REQUEST

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Card, Icon, Modal, Header, Button, Loader } from 'semantic-ui-react'
+import { Input, Card, Icon, Modal, Header, Button, Loader, Popup } from 'semantic-ui-react'
 import DogEditor from './DogEditor'
 import './ClientTools.scss'
 
@@ -19,6 +19,7 @@ const ClientEditor = ({
   openEditClient,
   cancelEditClient,
   saveEditClient,
+  deleteClient,
   handleEditClientChange,
   handleEditClientObjectUpdate,
   handleEditClientDog,
@@ -32,7 +33,6 @@ const ClientEditor = ({
       <Modal
         open={modalOpen}
         onClose={cancelEditClient}
-        dimmer='blurring'
         closeOnDimmerClick={false}
         closeIcon
         >
@@ -95,8 +95,18 @@ const ClientEditor = ({
           </div>
         </Modal.Content>
         <Modal.Actions>
-          <Button color='orange' onClick={cancelEditClient}><Icon name='remove' /> Cancel Changes</Button>
-          <Button color='green' onClick={saveEditClient}><Icon name='checkmark' /> Save Changes</Button>
+          <Popup
+            trigger={<Button color='red' icon='remove user' content='Delete Client' />}
+            content={<Button color='red' content='Confirm Delete' onClick={() => deleteClient(client)} />}
+            on='click'
+            position='top right'
+          />
+          <Button color='orange' onClick={cancelEditClient}>
+            <Icon name='remove' /> Cancel Changes
+          </Button>
+          <Button color='green' onClick={saveEditClient}>
+            <Icon name='checkmark' /> Save Changes
+          </Button>
         </Modal.Actions>
       </Modal>
       <div>
