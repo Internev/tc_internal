@@ -16,7 +16,12 @@ const ScheduleModal = (
     unscheduleDog,
     allDogs,
     isFetching,
-    error
+    error,
+    handleSaveScheduled,
+    clearAllScheduled,
+    isScheduleFetching,
+    msg,
+    handleCloseMsg
   }) => {
   return (
     <Modal
@@ -31,6 +36,11 @@ const ScheduleModal = (
         <ScheduledList
           dogs={scheduledDogs}
           unscheduleDog={unscheduleDog}
+          handleSaveScheduled={handleSaveScheduled}
+          clearAllScheduled={clearAllScheduled}
+          isFetching={isScheduleFetching}
+          msg={msg}
+          handleCloseMsg={handleCloseMsg}
         />
         <DogList
           handleDogClick={handleDogClick}

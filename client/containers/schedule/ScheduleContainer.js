@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 // import { unassignWalker, unassignClient, clearAssigned, saveAssigned, clearAssignedMsg } from '../../redux/creators/assignedCreators'
 import { getAllDogs } from '../../redux/creators/dogsCreators'
-import { setScheduleDate, scheduleDog, unscheduleDog } from '../../redux/creators/scheduleCreators'
+import { setScheduleDate, scheduleDog, unscheduleDog, saveScheduled, getScheduled, clearMsg } from '../../redux/creators/scheduleCreators'
 import BigCalendar from 'react-big-calendar'
 import ScheduleModal from './ScheduleModal'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
@@ -24,6 +24,8 @@ class CalendarContainer extends React.Component {
     this.handleDogClick = this.handleDogClick.bind(this)
     this.handleSearchTerm = this.handleSearchTerm.bind(this)
     this.handleUnscheduleDog = this.handleUnscheduleDog.bind(this)
+    this.handleSaveScheduled = this.handleSaveScheduled.bind(this)
+    this.handleCloseMsg = this.handleCloseMsg.bind(this)
   }
   componentDidMount () {
     if (this.props.dogs.all.length < 1) {
@@ -41,6 +43,7 @@ class CalendarContainer extends React.Component {
   }
   openScheduleDogs (date) {
     this.props.dispatch(setScheduleDate(date))
+    this.props.dispatch(getScheduled(date))
     this.setState({modalOpen: true, workingDate: moment(date).format('dddd MMMM Do, YYYY')})
   }
   handleCancelScheduleDogs () {
@@ -48,6 +51,13 @@ class CalendarContainer extends React.Component {
   }
   handleUnscheduleDog (id) {
     this.props.dispatch(unscheduleDog(id))
+  }
+  handleSaveScheduled () {
+    console.log('save scheduled clicked!')
+    this.props.dispatch(saveScheduled(this.props.schedule.date, this.props.schedule.dogs))
+  }
+  handleCloseMsg () {
+    this.props.dispatch(clearMsg())
   }
   render () {
     const events = [
@@ -78,6 +88,11 @@ class CalendarContainer extends React.Component {
             : this.props.dogs.all}
           isFetching={this.props.dogs.isFetching}
           error={this.props.dogs.error}
+          handleSaveScheduled={this.handleSaveScheduled}
+          clearAll={this.clearAllScheduled}
+          isScheduleFetching={this.props.schedule.fetching}
+          msg={this.props.schedule.msg}
+          handleCloseMsg={this.handleCloseMsg}
         />
         <BigCalendar
           selectable

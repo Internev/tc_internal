@@ -2,7 +2,7 @@ import React from 'react'
 import './Schedule.scss'
 import { Input, Card, Icon, Message, Dimmer, Button, Loader } from 'semantic-ui-react'
 
-const ScheduledList = ({dogs, unscheduleDog, saveAssigned, clearAll, isFetching, msg, handleCloseMsg}) => (
+const ScheduledList = ({dogs, unscheduleDog, handleSaveScheduled, clearAllScheduled, isFetching, msg, handleCloseMsg}) => (
   <div>
     <Dimmer active={isFetching}>
       <Loader>Saving Assignments...</Loader>
@@ -28,8 +28,8 @@ const ScheduledList = ({dogs, unscheduleDog, saveAssigned, clearAll, isFetching,
       </div>
     </div>
     <div>
-      <Button color='orange' onClick={clearAll}><Icon name='remove' /> Clear All</Button>
-      <Button color='green' onClick={saveAssigned}><Icon name='checkmark' /> Save Assignments</Button>
+      <Button color='orange' onClick={clearAllScheduled}><Icon name='remove' /> Clear All</Button>
+      <Button color='green' onClick={handleSaveScheduled}><Icon name='checkmark' /> Save Assignments</Button>
     </div>
   </div>
 )
