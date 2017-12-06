@@ -63,7 +63,7 @@ const saveScheduledFailure = (state, action) => {
 }
 
 const getScheduledRequest = (state, action) => {
-  const newState = {...state, ...{isFetching: true, error: ''}}
+  const newState = {...state, ...{isFetching: true, error: '', dogs: []}}
   return newState
 }
 

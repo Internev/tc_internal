@@ -55,9 +55,12 @@ export function getAllEvents (startDate) {
     }
     return axios.get('/api/schedule/all', config)
       .then(res => {
-        const events = res.data.events.map(event => {
+        const events = res.data.events
+        .filter(event => event.dogs.length)
+        .map(event => {
+          const num = event.dogs.length
           const e = {allDay: true}
-          e.title = `${event.dogs.length} dogs scheduled.`
+          e.title = `${num} dog${num > 1 ? 's' : ''} scheduled.`
           e.start = event.date
           e.end = event.date
           return e

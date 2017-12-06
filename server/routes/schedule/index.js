@@ -71,7 +71,7 @@ assign.get('/all', (req, res) => {
     include: [{model: Dog}]
   })
   .then(walks => {
-    console.log('\n\n\n/schedule/all returns: walks', walks)
+    // console.log('\n\n\n/schedule/all returns: walks', walks)
     res.status(200).json({events: walks})
   })
 })
