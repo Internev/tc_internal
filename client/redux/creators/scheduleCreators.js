@@ -8,9 +8,13 @@ import {
   SAVE_SCHEDULED_FAILURE,
   GET_SCHEDULED_REQUEST,
   GET_SCHEDULED_SUCCESS,
-  GET_SCHEDULED_FAILURE
+  GET_SCHEDULED_FAILURE,
+  GET_ALL_EVENTS_REQUEST,
+  GET_ALL_EVENTS_SUCCESS,
+  GET_ALL_EVENTS_FAILURE
 } from '../actions'
 import axios from 'axios'
+import moment from 'moment'
 
 export function setScheduleDate (date) {
   return {
@@ -39,6 +43,53 @@ export function clearMsg () {
   }
 }
 
+export function getAllEvents (startDate) {
+  startDate = startDate || moment().subtract(2, 'weeks')
+  return dispatch => {
+    dispatch(getAllEventsRequest())
+    const config = {
+      headers: {
+        'authorization': localStorage.getItem('id_token'),
+        'startdate': startDate
+      }
+    }
+    return axios.get('/api/schedule/all', config)
+      .then(res => {
+        const events = res.data.events.map(event => {
+          const e = {allDay: true}
+          e.title = `${event.dogs.length} dogs scheduled.`
+          e.start = event.date
+          e.end = event.date
+          return e
+        })
+        return dispatch(getAllEventsSuccess(events))
+      })
+      .catch(err => {
+        return dispatch(getAllEventsFailure(err))
+      })
+  }
+}
+
+function getAllEventsRequest () {
+  return {
+    type: GET_ALL_EVENTS_REQUEST
+  }
+}
+
+function getAllEventsSuccess (events) {
+  return {
+    type: GET_ALL_EVENTS_SUCCESS,
+    events
+  }
+}
+
+function getAllEventsFailure (err) {
+  return {
+    type: GET_ALL_EVENTS_FAILURE,
+    err
+  }
+}
+
 export function getScheduled (date) {
   console.log('get scheduled for date:', date)
   return dispatch => {
@@ -49,7 +100,7 @@ export function getScheduled (date) {
         'scheduledate': date
       }
     }
-    return axios.get('/api/assign/schedule', config)
+    return axios.get('/api/schedule', config)
       .then(res => {
         console.log('response from get /api/assign/schedule:', res)
         const dogs = res.data.dogs
@@ -94,9 +145,10 @@ export function saveScheduled (date, dogs) {
         'authorization': localStorage.getItem('id_token')
       }
     }
-    return axios.post('/api/assign/schedule', {date, dogs}, config)
+    return axios.post('/api/schedule', {date, dogs}, config)
       .then(res => {
         // console.log('response from post /api/assign/schedule:', res)
+        dispatch(getAllEvents())
         return dispatch(saveScheduledSuccess(res.data.date, res.data.dogs))
       })
       .catch(err => {

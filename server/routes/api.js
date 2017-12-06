@@ -5,6 +5,7 @@ const users = require('./users')
 const clients = require('./clients')
 const assign = require('./assign')
 const dogs = require('./dogs')
+const schedule = require('./schedule')
 
 const router = new express.Router()
 
@@ -13,5 +14,6 @@ router.use('/clients', clients)
 router.use('/clients', clients)
 router.use('/assign', assign)
 router.use('/dogs', dogs)
+router.use('/schedule', schedule)
 
 module.exports = router

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 // import { unassignWalker, unassignClient, clearAssigned, saveAssigned, clearAssignedMsg } from '../../redux/creators/assignedCreators'
 import { getAllDogs } from '../../redux/creators/dogsCreators'
-import { setScheduleDate, scheduleDog, unscheduleDog, saveScheduled, getScheduled, clearMsg } from '../../redux/creators/scheduleCreators'
+import { setScheduleDate, scheduleDog, unscheduleDog, saveScheduled, getScheduled, clearMsg, getAllEvents } from '../../redux/creators/scheduleCreators'
 import BigCalendar from 'react-big-calendar'
 import ScheduleModal from './ScheduleModal'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
@@ -30,6 +30,10 @@ class CalendarContainer extends React.Component {
   componentDidMount () {
     if (this.props.dogs.all.length < 1) {
       this.props.dispatch(getAllDogs())
+    }
+    if (this.props.schedule.events < 1) {
+      const startDate = moment().subtract(2, 'weeks')
+      this.props.dispatch(getAllEvents(startDate))
     }
   }
   componentDidUpdate () {
@@ -60,14 +64,6 @@ class CalendarContainer extends React.Component {
     this.props.dispatch(clearMsg())
   }
   render () {
-    const events = [
-      {
-        title: 'Event number one',
-        allDay: true,
-        start: new Date(),
-        end: new Date()
-      }
-    ]
     return (
       <div className='calendar_container'>
         <ScheduleModal
@@ -96,7 +92,7 @@ class CalendarContainer extends React.Component {
         />
         <BigCalendar
           selectable
-          events={events}
+          events={this.props.schedule.events}
           defaultView='month'
           onSelectEvent={e => console.log('selected event:', e)}
           onSelectSlot={slot => this.openScheduleDogs(slot.start)}

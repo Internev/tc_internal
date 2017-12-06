@@ -8,7 +8,10 @@ import {
   SAVE_SCHEDULED_FAILURE,
   GET_SCHEDULED_REQUEST,
   GET_SCHEDULED_SUCCESS,
-  GET_SCHEDULED_FAILURE
+  GET_SCHEDULED_FAILURE,
+  GET_ALL_EVENTS_REQUEST,
+  GET_ALL_EVENTS_SUCCESS,
+  GET_ALL_EVENTS_FAILURE
 } from '../actions'
 
 const DEFAULT_STATE = {
@@ -74,6 +77,21 @@ const getScheduledFailure = (state, action) => {
   return newState
 }
 
+const getAllEventsRequest = (state, action) => {
+  const newState = {...state, ...{isFetching: true, error: ''}}
+  return newState
+}
+
+const getAllEventsSuccess = (state, action) => {
+  const newState = {...state, ...{isFetching: false, error: '', events: action.events}}
+  return newState
+}
+
+const getAllEventsFailure = (state, action) => {
+  const newState = {...state, ...{isFetching: false, events: [], msg: 'Failed to retrieve the schedule, check your connection and try again.', error: action.err}}
+  return newState
+}
+
 export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case SET_SCHEDULE_DATE:
@@ -96,6 +114,12 @@ export default function (state = DEFAULT_STATE, action) {
       return getScheduledSuccess(state, action)
     case GET_SCHEDULED_FAILURE:
       return getScheduledFailure(state, action)
+    case GET_ALL_EVENTS_REQUEST:
+      return getAllEventsRequest(state, action)
+    case GET_ALL_EVENTS_SUCCESS:
+      return getAllEventsSuccess(state, action)
+    case GET_ALL_EVENTS_FAILURE:
+      return getAllEventsFailure(state, action)
     default:
       return state
   }
