@@ -94,7 +94,7 @@ class CalendarContainer extends React.Component {
           selectable
           events={this.props.schedule.events}
           defaultView='month'
-          onSelectEvent={e => console.log('selected event:', e)}
+          onSelectEvent={e => this.openScheduleDogs(e.start)}
           onSelectSlot={slot => this.openScheduleDogs(slot.start)}
         />
       </div>
