@@ -11,9 +11,17 @@ import {
   SAVE_ASSIGNED_REQUEST,
   SAVE_ASSIGNED_SUCCESS,
   SAVE_ASSIGNED_FAILURE,
-  CLEAR_ASSIGNED_MSG
+  CLEAR_ASSIGNED_MSG,
+  SET_ASSIGN_DATE
 } from '../actions'
 import axios from 'axios'
+
+export function setAssignDate (date) {
+  return {
+    type: SET_ASSIGN_DATE,
+    date
+  }
+}
 
 export function clearAssignedMsg () {
   return {
@@ -21,7 +29,7 @@ export function clearAssignedMsg () {
   }
 }
 
-export function saveAssigned (walker, dogs) {
+export function saveAssigned (walker, dogs, date) {
   return dispatch => {
     dispatch(saveAssignedRequest())
     const config = {
@@ -29,7 +37,7 @@ export function saveAssigned (walker, dogs) {
         'authorization': localStorage.getItem('id_token')
       }
     }
-    axios.post('/api/assign', {walker, dogs}, config)
+    axios.post('/api/assign', {walker, dogs, date}, config)
       .then(res => {
         console.log('response from api/assign:', res)
         dispatch(saveAssignedSuccess())
@@ -66,13 +74,14 @@ export function clearAssigned () {
   }
 }
 
-export function assignWalker (walker) {
+export function assignWalker (walker, date) {
   return dispatch => {
     dispatch(assignWalkerRequest)
     const config = {
       headers: {
         'authorization': localStorage.getItem('id_token'),
-        'id': walker.id
+        'id': walker.id,
+        'scheduledate': date
       }
     }
     axios.get('/api/assign', config)

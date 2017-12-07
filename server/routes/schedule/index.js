@@ -37,24 +37,18 @@ assign.post('/', (req, res) => {
 
 assign.get('/', (req, res) => {
   let date = new Date(req.headers.scheduledate)
-  Walk.findOne({
+  Walk.findAll({
     where: {
       date: {
         $lt: date.setHours(23, 59, 59, 0),
         $gt: date.setHours(0, 0, 0, 0)
       }
     },
-    include: [{model: Dog}]
+    include: [{model: Dog, include: [{model: Client}]}, {model: User}]
   })
-  .then(walk => {
-    if (!walk) return res.status(200).json({walk: null, dogs: []})
-    return walk.getDogs()
-    .then(dogs => {
-      const dogReqs = dogs.map(dog => dog.getClient())
-      Promise.all(dogReqs).then(clients => {
-        res.status(200).json({walk, dogs, clients})
-      })
-    })
+  .then(walks => {
+    if (!walks) return res.status(200).json({walks: null})
+    res.status(200).json({walks})
   })
   .catch(err => {
     console.log('\n\nerror getting schedule:', err)
@@ -68,7 +62,7 @@ assign.get('/all', (req, res) => {
     where: {
       date: {$gt: startDate}
     },
-    include: [{model: Dog}]
+    include: [{model: Dog}, {model: User}]
   })
   .then(walks => {
     // console.log('\n\n\n/schedule/all returns: walks', walks)

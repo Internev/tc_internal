@@ -2,7 +2,7 @@ import React from 'react'
 import './Schedule.scss'
 import { Input, Card, Icon, Message, Dimmer, Button, Loader } from 'semantic-ui-react'
 
-const ScheduledList = ({dogs, unscheduleDog, handleSaveScheduled, clearAllScheduled, isFetching, msg, handleCloseMsg}) => (
+const ScheduledList = ({dogs, unscheduleDog, handleSaveScheduled, assignThisDay, isFetching, msg, handleCloseMsg}) => (
   <div>
     <Dimmer active={isFetching}>
       <Loader>Saving Assignments...</Loader>
@@ -19,17 +19,30 @@ const ScheduledList = ({dogs, unscheduleDog, handleSaveScheduled, clearAllSchedu
       : null}
     <div>
       <div className='scheduled_container'>
-        {dogs.map((dog, i) => (
+        {dogs
+          .filter(dog => !dog.assignedTo)
+          .map((dog, i) => (
           <div className='scheduled_card' key={i}>
             <div><b>{dog.name}</b><span> - {dog.client.name}</span></div>
-            <Button className='scheduled_card-button' size='mini' onClick={() => unscheduleDog(dog.id)}>Remove</Button>
+            <Button className='scheduled_card-right' size='mini' onClick={() => unscheduleDog(dog.id)}>Remove</Button>
           </div>
         ))}
       </div>
     </div>
+    <div className='scheduled_actions'>
+      <Button color='purple' onClick={assignThisDay}><Icon name='add user' /> Assign Walkers for this Schedule</Button>
+      <Button color='green' onClick={handleSaveScheduled}><Icon name='checkmark' /> Save Schedule</Button>
+    </div>
     <div>
-      <Button color='orange' onClick={clearAllScheduled}><Icon name='remove' /> Clear All</Button>
-      <Button color='green' onClick={handleSaveScheduled}><Icon name='checkmark' /> Save Assignments</Button>
+      Already assigned:
+      {dogs
+        .filter(dog => dog.assignedTo)
+        .map((dog, i) => (
+          <div className='scheduled_card' key={i}>
+            <div><b>{dog.name}</b><span> - {dog.client.name}. Walker: {dog.assignedTo.name}</span></div>
+          </div>
+        ))
+      }
     </div>
   </div>
 )

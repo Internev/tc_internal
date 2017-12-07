@@ -11,13 +11,15 @@ import {
   SAVE_ASSIGNED_REQUEST,
   SAVE_ASSIGNED_SUCCESS,
   SAVE_ASSIGNED_FAILURE,
-  CLEAR_ASSIGNED_MSG
+  CLEAR_ASSIGNED_MSG,
+  SET_ASSIGN_DATE
 } from '../actions'
 
 const DEFAULT_STATE = {
   walker: {},
   clients: [],
   dogs: [],
+  date: null,
   error: '',
   msg: '',
   isFetching: false
@@ -91,6 +93,11 @@ const clearAssignedMsg = (state, action) => {
   return newState
 }
 
+const setAssignDate = (state, action) => {
+  const newState = {...state, ...{date: action.date}}
+  return newState
+}
+
 export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case CLEAR_ASSIGNED:
@@ -119,6 +126,8 @@ export default function (state = DEFAULT_STATE, action) {
       return saveAssignedFailure(state, action)
     case CLEAR_ASSIGNED_MSG:
       return clearAssignedMsg(state, action)
+    case SET_ASSIGN_DATE:
+      return setAssignDate(state, action)
     default:
       return state
   }

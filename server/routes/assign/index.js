@@ -39,12 +39,15 @@ assign.post('/', (req, res) => {
 })
 
 assign.get('/', (req, res) => {
+  const date = req.headers.scheduleddate
+    ? new Date(req.headers.scheduledate)
+    : new Date()
   Walk.findOne({
     where: {
       userId: req.headers.id,
       date: {
-        $lt: new Date(),
-        $gt: new Date().setHours(0, 0, 0, 0)
+        $lt: date.setHours(23, 59, 59, 0),
+        $gt: date.setHours(0, 0, 0, 0)
       }
     },
     include: [{model: Dog}]

@@ -55,16 +55,21 @@ export function getAllEvents (startDate) {
     }
     return axios.get('/api/schedule/all', config)
       .then(res => {
+        console.log('response from /api/schedule/all, res.data.events:', res.data.events)
         const events = res.data.events
         .filter(event => event.dogs.length)
         .map(event => {
           const num = event.dogs.length
+          const user = event.user
           const e = {allDay: true}
-          e.title = `${num} dog${num > 1 ? 's' : ''} scheduled.`
+          e.title = user
+                  ? `${num} dog${num > 1 ? 's' : ''} assigned to ${user.name}.`
+                  : `${num} dog${num > 1 ? 's' : ''} scheduled.`
           e.start = event.date
           e.end = event.date
           return e
         })
+        console.log('and now events is:', events)
         return dispatch(getAllEventsSuccess(events))
       })
       .catch(err => {
@@ -94,7 +99,7 @@ function getAllEventsFailure (err) {
 }
 
 export function getScheduled (date) {
-  console.log('get scheduled for date:', date)
+  // console.log('get scheduled for date:', date)
   return dispatch => {
     dispatch(getScheduledRequest())
     const config = {
@@ -105,13 +110,16 @@ export function getScheduled (date) {
     }
     return axios.get('/api/schedule', config)
       .then(res => {
-        console.log('response from get /api/assign/schedule:', res)
-        const dogs = res.data.dogs
-        const clients = res.data.clients
-        dogs.forEach((dog, i) => {
-          dog.client = clients[i]
-        })
-        return dispatch(getScheduledSuccess(res.data.date, dogs))
+        console.log('response from get /api/schedule:', res)
+        const walks = res.data.walks
+        const dogs = walks.reduce((acc, walk) => {
+          walk.dogs.forEach(dog => {
+            if (walk.user) dog.assignedTo = walk.user
+            acc.push(dog)
+          })
+          return acc
+        }, [])
+        return dispatch(getScheduledSuccess(dogs))
       })
       .catch(err => {
         return dispatch(getScheduledFailure(err))
@@ -125,10 +133,9 @@ function getScheduledRequest () {
   }
 }
 
-function getScheduledSuccess (date, dogs) {
+function getScheduledSuccess (dogs) {
   return {
     type: GET_SCHEDULED_SUCCESS,
-    date,
     dogs
   }
 }

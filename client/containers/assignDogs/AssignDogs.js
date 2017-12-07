@@ -14,7 +14,7 @@ const AssignDogs = () => (
       <div className='assign_walkers'>
         <WalkerListContainer />
       </div>
-      <div className='assign_clients'>
+      <div className='assign_dogs'>
         <DogListContainer />
       </div>
     </div>

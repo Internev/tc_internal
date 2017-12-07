@@ -32,8 +32,9 @@ const App = ({...props}) => (
           <Route path='/client-tools' component={ClientTools} isPrivate adminOnly />
           <Route path='/dog-details/:id' component={DogDetailsContainer} isPrivate />
           <Route path='/calendar' component={ScheduleContainer} isPrivate adminOnly />
+          <Route path='/assign-dogs' component={AssignDogs} isPrivate adminOnly />
           <Route path='/' component={props.auth.admin
-              ? AssignDogs
+              ? ScheduleContainer
               : DogListContainer} isPrivate />
         </Switch>
       </div>

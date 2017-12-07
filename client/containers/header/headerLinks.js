@@ -28,6 +28,11 @@ export const headerLinks = [
     admin: true
   },
   {
+    key: 'assign-dogs',
+    content: <Link to='/assign-dogs' className='tcheader_nav-link'>Assign Dogs</Link>,
+    admin: true
+  },
+  {
     key: 'change-password',
     content: <Link to='/change-password' className='tcheader_nav-link'>Change Password</Link>,
     admin: false

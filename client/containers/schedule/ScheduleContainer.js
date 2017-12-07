@@ -57,7 +57,6 @@ class CalendarContainer extends React.Component {
     this.props.dispatch(unscheduleDog(id))
   }
   handleSaveScheduled () {
-    console.log('save scheduled clicked!')
     this.props.dispatch(saveScheduled(this.props.schedule.date, this.props.schedule.dogs))
   }
   handleCloseMsg () {
