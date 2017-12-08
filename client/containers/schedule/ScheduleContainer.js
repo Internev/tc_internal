@@ -33,10 +33,10 @@ class CalendarContainer extends React.Component {
     if (this.props.dogs.all.length < 1) {
       this.props.dispatch(getAllDogs())
     }
-    if (this.props.schedule.events < 1) {
-      const startDate = moment().subtract(2, 'weeks')
-      this.props.dispatch(getAllEvents(startDate))
-    }
+    // if (this.props.schedule.events < 1) {
+    const startDate = moment().subtract(2, 'weeks')
+    this.props.dispatch(getAllEvents(startDate))
+    // }
   }
   componentDidUpdate () {
     console.log('ScheduleContainer props:', this.props)
