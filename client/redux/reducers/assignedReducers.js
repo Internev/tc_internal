@@ -12,7 +12,9 @@ import {
   SAVE_ASSIGNED_SUCCESS,
   SAVE_ASSIGNED_FAILURE,
   CLEAR_ASSIGNED_MSG,
-  RECEIVE_DAY_SCHEDULE
+  RECEIVE_DAY_SCHEDULE,
+  GET_TODAYS_SCHEDULE_REQUEST,
+  GET_TODAYS_SCHEDULE_FAILURE
 } from '../actions'
 
 const DEFAULT_STATE = {
@@ -100,7 +102,7 @@ const clearAssignedMsg = (state, action) => {
 }
 
 const receiveDaySchedule = (state, action) => {
-  const newState = {...state, ...{date: action.date, scheduledDogs: action.scheduledDogs}}
+  const newState = {...state, ...{date: action.date, scheduledDogs: action.scheduledDogs, isFetching: false, msg: ''}}
   return newState
 }
 
@@ -115,6 +117,16 @@ const clearAssigned = (state, action) => {
       msg: '',
       isFetching: false
     }}
+  return newState
+}
+
+const getTodaysScheduleRequest = (state, action) => {
+  const newState = {...state, ...{isFetching: true, msg: ''}}
+  return newState
+}
+
+const getTodaysScheduleFailure = (state, action) => {
+  const newState = {...state, ...{isFetching: false, msg: 'Failed to retrieve scheduled dogs for today.', error: action.err}}
   return newState
 }
 
@@ -148,6 +160,10 @@ export default function (state = DEFAULT_STATE, action) {
       return clearAssignedMsg(state, action)
     case RECEIVE_DAY_SCHEDULE:
       return receiveDaySchedule(state, action)
+    case GET_TODAYS_SCHEDULE_REQUEST:
+      return getTodaysScheduleRequest(state, action)
+    case GET_TODAYS_SCHEDULE_FAILURE:
+      return getTodaysScheduleFailure(state, action)
     default:
       return state
   }

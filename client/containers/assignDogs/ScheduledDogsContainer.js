@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import ScheduledDogs from './ScheduledDogs'
-import { getAllDogs } from '../../redux/creators/dogsCreators'
-import { assignDog } from '../../redux/creators/assignedCreators'
+import { assignDog, getTodaysSchedule } from '../../redux/creators/assignedCreators'
 
 class ScheduledDogsContainer extends React.Component {
   constructor (props) {
@@ -13,8 +12,10 @@ class ScheduledDogsContainer extends React.Component {
   }
   componentDidMount () {
     if (this.props.assigned.scheduledDogs.length < 1) {
-      // this.props.dispatch(getAllDogs())
-      console.log('ScheduledDogsContainer: no scheduled dogs atm.')
+      const date = new Date()
+      date.setHours(2, 0, 0, 0)
+      this.props.dispatch(getTodaysSchedule(date))
+      // console.log('ScheduledDogsContainer: no scheduled dogs atm.')
     }
   }
   componentDidUpdate () {

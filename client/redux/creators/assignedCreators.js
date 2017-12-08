@@ -12,7 +12,9 @@ import {
   SAVE_ASSIGNED_SUCCESS,
   SAVE_ASSIGNED_FAILURE,
   CLEAR_ASSIGNED_MSG,
-  RECEIVE_DAY_SCHEDULE
+  RECEIVE_DAY_SCHEDULE,
+  GET_TODAYS_SCHEDULE_REQUEST,
+  GET_TODAYS_SCHEDULE_FAILURE
 } from '../actions'
 import axios from 'axios'
 
@@ -21,6 +23,48 @@ export function receiveDaySchedule (date, scheduledDogs) {
     type: RECEIVE_DAY_SCHEDULE,
     date,
     scheduledDogs
+  }
+}
+
+export function getTodaysSchedule (date) {
+  // console.log('get scheduled for date:', date)
+  return dispatch => {
+    dispatch(getTodaysScheduleRequest())
+    const config = {
+      headers: {
+        'authorization': localStorage.getItem('id_token'),
+        'scheduledate': date
+      }
+    }
+    return axios.get('/api/schedule', config)
+      .then(res => {
+        console.log('response from api/schedule for today:', res)
+        const walks = res.data.walks
+        const dogs = walks.reduce((acc, walk) => {
+          walk.dogs.forEach(dog => {
+            if (walk.user) dog.assignedTo = walk.user
+            acc.push(dog)
+          })
+          return acc
+        }, [])
+        return dispatch(receiveDaySchedule(date, dogs))
+      })
+      .catch(err => {
+        return dispatch(getTodaysScheduleFailure(err))
+      })
+  }
+}
+
+function getTodaysScheduleRequest () {
+  return {
+    type: GET_TODAYS_SCHEDULE_REQUEST
+  }
+}
+
+function getTodaysScheduleFailure (err) {
+  return {
+    type: GET_TODAYS_SCHEDULE_FAILURE,
+    err
   }
 }
 

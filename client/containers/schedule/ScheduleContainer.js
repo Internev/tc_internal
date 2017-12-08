@@ -39,7 +39,7 @@ class CalendarContainer extends React.Component {
     // }
   }
   componentDidUpdate () {
-    console.log('ScheduleContainer props:', this.props)
+    // console.log('ScheduleContainer props:', this.props)
   }
   handleDogClick (dog) {
     this.props.dispatch(scheduleDog(dog))

@@ -110,7 +110,6 @@ export function getScheduled (date) {
     }
     return axios.get('/api/schedule', config)
       .then(res => {
-        console.log('response from get /api/schedule:', res)
         const walks = res.data.walks
         const dogs = walks.reduce((acc, walk) => {
           walk.dogs.forEach(dog => {
