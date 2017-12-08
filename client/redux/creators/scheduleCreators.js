@@ -148,6 +148,9 @@ function getScheduledFailure (err) {
 }
 
 export function saveScheduled (date, dogs) {
+  console.log('save Scheduled about to run, dogs:', [...dogs])
+  dogs = dogs.filter(dog => !dog.assignedTo)
+  console.log('save Scheduled about to run, dogs filtered:', [...dogs])
   return dispatch => {
     dispatch(saveScheduledRequest())
     const config = {

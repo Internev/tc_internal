@@ -1,8 +1,7 @@
 import React from 'react'
 import './AssignDogs.scss'
 import WalkerListContainer from './WalkerListContainer'
-import ClientListContainer from './ClientListContainer'
-import DogListContainer from './DogListContainer'
+import ScheduledDogsContainer from './ScheduledDogsContainer'
 import AssignedContainer from './AssignedContainer'
 
 const AssignDogs = () => (
@@ -15,7 +14,7 @@ const AssignDogs = () => (
         <WalkerListContainer />
       </div>
       <div className='assign_dogs'>
-        <DogListContainer />
+        <ScheduledDogsContainer />
       </div>
     </div>
   </div>

@@ -21,7 +21,7 @@ class WalkerListContainer extends React.Component {
   }
   handleWalkerClick (walker) {
     // console.log('Making walker active for assigning dogs.', walker)
-    this.props.dispatch(assignWalker(walker))
+    this.props.dispatch(assignWalker(walker, this.props.assigned.date))
   }
   handleSearchTerm (e) {
     this.setState({searchTerm: e.target.value})
@@ -48,7 +48,8 @@ class WalkerListContainer extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    users: state.users
+    users: state.users,
+    assigned: state.assigned
   }
 }
 

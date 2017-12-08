@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal, Header } from 'semantic-ui-react'
-import DogList from '../assignDogs/DogList'
+import DogList from './DogList'
 import ScheduledList from './ScheduledList'
 import './Schedule.scss'
 
@@ -18,7 +18,7 @@ const ScheduleModal = (
     isFetching,
     error,
     handleSaveScheduled,
-    clearAllScheduled,
+    assignThisDay,
     isScheduleFetching,
     msg,
     handleCloseMsg
@@ -37,7 +37,7 @@ const ScheduleModal = (
           dogs={scheduledDogs}
           unscheduleDog={unscheduleDog}
           handleSaveScheduled={handleSaveScheduled}
-          clearAllScheduled={clearAllScheduled}
+          assignThisDay={assignThisDay}
           isFetching={isScheduleFetching}
           msg={msg}
           handleCloseMsg={handleCloseMsg}

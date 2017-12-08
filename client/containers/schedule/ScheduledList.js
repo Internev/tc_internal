@@ -14,7 +14,7 @@ const ScheduledList = ({dogs, unscheduleDog, handleSaveScheduled, assignThisDay,
         color='yellow'
         >
         <Icon name='info' size='small' />
-        {msg}
+      {msg}
       </Message>
       : null}
     <div>

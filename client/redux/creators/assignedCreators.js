@@ -12,14 +12,15 @@ import {
   SAVE_ASSIGNED_SUCCESS,
   SAVE_ASSIGNED_FAILURE,
   CLEAR_ASSIGNED_MSG,
-  SET_ASSIGN_DATE
+  RECEIVE_DAY_SCHEDULE
 } from '../actions'
 import axios from 'axios'
 
-export function setAssignDate (date) {
+export function receiveDaySchedule (date, scheduledDogs) {
   return {
-    type: SET_ASSIGN_DATE,
-    date
+    type: RECEIVE_DAY_SCHEDULE,
+    date,
+    scheduledDogs
   }
 }
 
@@ -29,7 +30,16 @@ export function clearAssignedMsg () {
   }
 }
 
-export function saveAssigned (walker, dogs, date) {
+export function saveAssigned (walker, dogs, date, scheduledDogs) {
+  scheduledDogs = scheduledDogs.map(dog => {
+    if (dog.assignedTo && dog.assignedTo.id === walker.id) delete dog.assignedTo
+    return dog
+  })
+  dogs.forEach(dog => {
+    const i = scheduledDogs.findIndex(sdog => sdog.id === dog.id)
+    if (i > -1) scheduledDogs[i].assignedTo = walker
+  })
+  scheduledDogs = scheduledDogs.filter(dog => !dog.assignedTo)
   return dispatch => {
     dispatch(saveAssignedRequest())
     const config = {
@@ -37,10 +47,17 @@ export function saveAssigned (walker, dogs, date) {
         'authorization': localStorage.getItem('id_token')
       }
     }
-    axios.post('/api/assign', {walker, dogs, date}, config)
+    axios.post('/api/assign', {walker, dogs, date, scheduledDogs}, config)
       .then(res => {
         console.log('response from api/assign:', res)
-        dispatch(saveAssignedSuccess())
+        const scheduledDogs = res.data.walks.reduce((acc, walk) => {
+          walk.dogs.forEach(dog => {
+            if (walk.user) dog.assignedTo = walk.user
+            acc.push(dog)
+          })
+          return acc
+        }, [])
+        dispatch(saveAssignedSuccess(scheduledDogs))
       })
       .catch(err => {
         console.log('err from api/assign:', err)
@@ -55,9 +72,10 @@ function saveAssignedRequest () {
   }
 }
 
-function saveAssignedSuccess () {
+function saveAssignedSuccess (scheduledDogs) {
   return {
-    type: SAVE_ASSIGNED_SUCCESS
+    type: SAVE_ASSIGNED_SUCCESS,
+    scheduledDogs
   }
 }
 
@@ -86,12 +104,8 @@ export function assignWalker (walker, date) {
     }
     axios.get('/api/assign', config)
       .then(res => {
-        const dogs = res.data.dogs.map((dog, i) => {
-          dog.client = res.data.clients[i]
-          return dog
-        })
-        console.log('mapped response from api/assign get:', dogs)
-        return dispatch(assignWalkerSuccess(walker, dogs))
+        // const dogs = res.data.walk ? res.data.walk.dogs : []
+        return dispatch(assignWalkerSuccess(walker, res.data.walk.dogs))
       })
       .catch(err => {
         return dispatch(assignWalkerFailure(err))

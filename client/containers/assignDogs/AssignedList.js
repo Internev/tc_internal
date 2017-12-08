@@ -55,7 +55,7 @@ const AssignedList = ({walker, clients, dogs, unassignWalker, unassignClient, un
     </div>
     {walker.name
     ? <div className='assign_selected-actions'>
-      <Button color='orange' onClick={clearAll}><Icon name='remove' /> Clear All</Button>
+      <Button color='orange' onClick={clearAll}><Icon name='remove' /> Cancel</Button>
       <Button color='green' onClick={saveAssigned}><Icon name='checkmark' /> Save Assignments</Button>
     </div>
     : null}

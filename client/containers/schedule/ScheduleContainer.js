@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 // import { unassignWalker, unassignClient, clearAssigned, saveAssigned, clearAssignedMsg } from '../../redux/creators/assignedCreators'
 import { getAllDogs } from '../../redux/creators/dogsCreators'
 import { setScheduleDate, scheduleDog, unscheduleDog, saveScheduled, getScheduled, clearMsg, getAllEvents } from '../../redux/creators/scheduleCreators'
+import {receiveDaySchedule} from '../../redux/creators/assignedCreators'
 import BigCalendar from 'react-big-calendar'
 import ScheduleModal from './ScheduleModal'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
@@ -26,6 +27,7 @@ class CalendarContainer extends React.Component {
     this.handleUnscheduleDog = this.handleUnscheduleDog.bind(this)
     this.handleSaveScheduled = this.handleSaveScheduled.bind(this)
     this.handleCloseMsg = this.handleCloseMsg.bind(this)
+    this.assignThisDay = this.assignThisDay.bind(this)
   }
   componentDidMount () {
     if (this.props.dogs.all.length < 1) {
@@ -62,6 +64,11 @@ class CalendarContainer extends React.Component {
   handleCloseMsg () {
     this.props.dispatch(clearMsg())
   }
+  assignThisDay () {
+    console.log('Assign this day, date:', this.props.schedule.date, '\ndogs:', this.props.schedule.dogs)
+    this.props.dispatch(receiveDaySchedule(this.props.schedule.date, this.props.schedule.dogs))
+    this.props.history.push('/assign-dogs')
+  }
   render () {
     return (
       <div className='calendar_container'>
@@ -84,7 +91,7 @@ class CalendarContainer extends React.Component {
           isFetching={this.props.dogs.isFetching}
           error={this.props.dogs.error}
           handleSaveScheduled={this.handleSaveScheduled}
-          clearAll={this.clearAllScheduled}
+          assignThisDay={this.assignThisDay}
           isScheduleFetching={this.props.schedule.fetching}
           msg={this.props.schedule.msg}
           handleCloseMsg={this.handleCloseMsg}

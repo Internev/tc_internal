@@ -12,13 +12,14 @@ import {
   SAVE_ASSIGNED_SUCCESS,
   SAVE_ASSIGNED_FAILURE,
   CLEAR_ASSIGNED_MSG,
-  SET_ASSIGN_DATE
+  RECEIVE_DAY_SCHEDULE
 } from '../actions'
 
 const DEFAULT_STATE = {
   walker: {},
   clients: [],
   dogs: [],
+  scheduledDogs: [],
   date: null,
   error: '',
   msg: '',
@@ -79,7 +80,12 @@ const saveAssignedRequest = (state, action) => {
 }
 
 const saveAssignedSuccess = (state, action) => {
-  const newState = {...DEFAULT_STATE, ...{msg: 'Assignments saved.'}}
+  const newState = {
+    ...DEFAULT_STATE,
+    ...{
+      msg: 'Assignments saved.',
+      scheduledDogs: action.scheduledDogs
+    }}
   return newState
 }
 
@@ -93,15 +99,29 @@ const clearAssignedMsg = (state, action) => {
   return newState
 }
 
-const setAssignDate = (state, action) => {
-  const newState = {...state, ...{date: action.date}}
+const receiveDaySchedule = (state, action) => {
+  const newState = {...state, ...{date: action.date, scheduledDogs: action.scheduledDogs}}
+  return newState
+}
+
+const clearAssigned = (state, action) => {
+  const newState = {
+    ...state,
+    ...{
+      walker: {},
+      clients: [],
+      dogs: [],
+      error: '',
+      msg: '',
+      isFetching: false
+    }}
   return newState
 }
 
 export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case CLEAR_ASSIGNED:
-      return DEFAULT_STATE
+      return clearAssigned(state, action)
     case ASSIGN_WALKER_SUCCESS:
       return assignWalkerSuccess(state, action)
     case ASSIGN_WALKER_FAILURE:
@@ -126,8 +146,8 @@ export default function (state = DEFAULT_STATE, action) {
       return saveAssignedFailure(state, action)
     case CLEAR_ASSIGNED_MSG:
       return clearAssignedMsg(state, action)
-    case SET_ASSIGN_DATE:
-      return setAssignDate(state, action)
+    case RECEIVE_DAY_SCHEDULE:
+      return receiveDaySchedule(state, action)
     default:
       return state
   }
