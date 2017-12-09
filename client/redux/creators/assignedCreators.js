@@ -14,9 +14,17 @@ import {
   CLEAR_ASSIGNED_MSG,
   RECEIVE_DAY_SCHEDULE,
   GET_TODAYS_SCHEDULE_REQUEST,
-  GET_TODAYS_SCHEDULE_FAILURE
+  GET_TODAYS_SCHEDULE_FAILURE,
+  UPDATE_ASSIGNED_COMMENT
 } from '../actions'
 import axios from 'axios'
+
+export function updateAssignedComment (comment) {
+  return {
+    type: UPDATE_ASSIGNED_COMMENT,
+    comment
+  }
+}
 
 export function receiveDaySchedule (date, scheduledDogs) {
   return {
@@ -74,7 +82,7 @@ export function clearAssignedMsg () {
   }
 }
 
-export function saveAssigned (walker, dogs, date, scheduledDogs) {
+export function saveAssigned (walker, dogs, date, scheduledDogs, comment) {
   scheduledDogs = scheduledDogs.map(dog => {
     if (dog.assignedTo && dog.assignedTo.id === walker.id) delete dog.assignedTo
     return dog
@@ -91,7 +99,7 @@ export function saveAssigned (walker, dogs, date, scheduledDogs) {
         'authorization': localStorage.getItem('id_token')
       }
     }
-    axios.post('/api/assign', {walker, dogs, date, scheduledDogs}, config)
+    axios.post('/api/assign', {walker, dogs, date, scheduledDogs, comment}, config)
       .then(res => {
         console.log('response from api/assign:', res)
         const scheduledDogs = res.data.walks.reduce((acc, walk) => {
@@ -149,7 +157,7 @@ export function assignWalker (walker, date) {
     axios.get('/api/assign', config)
       .then(res => {
         // const dogs = res.data.walk ? res.data.walk.dogs : []
-        return dispatch(assignWalkerSuccess(walker, res.data.walk.dogs))
+        return dispatch(assignWalkerSuccess(walker, res.data.walk.dogs, res.data.walk.comment))
       })
       .catch(err => {
         return dispatch(assignWalkerFailure(err))
@@ -163,11 +171,12 @@ function assignWalkerRequest () {
   }
 }
 
-function assignWalkerSuccess (walker, dogs) {
+function assignWalkerSuccess (walker, dogs, comment) {
   return {
     type: ASSIGN_WALKER_SUCCESS,
     walker,
-    dogs
+    dogs,
+    comment
   }
 }
 

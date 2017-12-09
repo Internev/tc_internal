@@ -1,17 +1,9 @@
 import React from 'react'
 import './AssignDogs.scss'
-import { Input, Card, Icon, Message, Dimmer, Button, Loader } from 'semantic-ui-react'
+import { Form, Card, Icon, Message, Dimmer, Button, Loader, Label } from 'semantic-ui-react'
 
-const desc = (dogs) => (
-  dogs.map((dog, i) => (
-    <div key={i}>
-      <Icon name='paw' />
-      {dog.name}
-    </div>
-  ))
-)
-
-const AssignedList = ({walker, clients, dogs, unassignWalker, unassignClient, unassignDog, saveAssigned, clearAll, isFetching, msg, handleCloseMsg}) => (
+const AssignedList = ({walker, clients, dogs, unassignWalker, unassignClient, unassignDog, saveAssigned, clearAll, isFetching, msg, handleCloseMsg, comment,
+handleCommentChange}) => (
   <div className={walker.name || clients.length ? 'assign_selected' : ''}>
     <Dimmer active={isFetching}>
       <Loader>Saving Assignments...</Loader>
@@ -55,6 +47,16 @@ const AssignedList = ({walker, clients, dogs, unassignWalker, unassignClient, un
     </div>
     {walker.name
     ? <div className='assign_selected-actions'>
+      <Form className='assign_selected-actions-comment'>
+        <Form.Field>
+          <Label size='large'>Comment:</Label>
+          <textarea
+            rows='2'
+            name='comment'
+            value={comment || ''}
+            onChange={e => handleCommentChange(e)} />
+        </Form.Field>
+      </Form>
       <Button color='orange' onClick={clearAll}><Icon name='remove' /> Cancel</Button>
       <Button color='green' onClick={saveAssigned}><Icon name='checkmark' /> Save Assignments</Button>
     </div>

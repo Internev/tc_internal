@@ -8,10 +8,12 @@ assign.post('/', (req, res) => {
   const dogs = req.body.dogs
   const date = new Date(req.body.date)
   const scheduledDogs = req.body.scheduledDogs
+  const comment = req.body.comment || ''
   const walkObj = {
     userId: walker.id,
     date: date.setHours(2, 0, 0, 0),
-    dogs: dogs
+    dogs,
+    comment
   }
 
   Walk.findOne({
@@ -25,7 +27,11 @@ assign.post('/', (req, res) => {
   })
   .then(walk => {
     if (walk) {
-      return walk.setDogs(dogs.map(dog => dog.id))
+      return walk.update({
+        comment
+      }).then(walk => {
+        return walk.setDogs(dogs.map(dog => dog.id))
+      })
     } else {
       return Walk.create(walkObj)
       .then(walk => {
@@ -82,7 +88,7 @@ assign.get('/', (req, res) => {
   const date = req.headers.scheduledate
     ? new Date(req.headers.scheduledate)
     : new Date()
-  // console.log('date is set to:', date)
+  console.log('\n\n\ndate is set to:', date, '\n\n\n')
   Walk.findOne({
     where: {
       userId: req.headers.id,

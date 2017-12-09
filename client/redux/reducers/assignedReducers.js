@@ -14,7 +14,8 @@ import {
   CLEAR_ASSIGNED_MSG,
   RECEIVE_DAY_SCHEDULE,
   GET_TODAYS_SCHEDULE_REQUEST,
-  GET_TODAYS_SCHEDULE_FAILURE
+  GET_TODAYS_SCHEDULE_FAILURE,
+  UPDATE_ASSIGNED_COMMENT
 } from '../actions'
 
 const DEFAULT_STATE = {
@@ -22,6 +23,7 @@ const DEFAULT_STATE = {
   clients: [],
   dogs: [],
   scheduledDogs: [],
+  comment: '',
   date: null,
   error: '',
   msg: '',
@@ -29,7 +31,7 @@ const DEFAULT_STATE = {
 }
 
 const assignWalkerSuccess = (state, action) => {
-  const newState = {...state, ...{isFetching: false, walker: action.walker, dogs: action.dogs}}
+  const newState = {...state, ...{isFetching: false, walker: action.walker, dogs: action.dogs, comment: action.comment || ''}}
   return newState
 }
 
@@ -83,9 +85,10 @@ const saveAssignedRequest = (state, action) => {
 
 const saveAssignedSuccess = (state, action) => {
   const newState = {
-    ...DEFAULT_STATE,
+    ...state,
     ...{
       msg: 'Assignments saved.',
+      isFetching: false,
       scheduledDogs: action.scheduledDogs
     }}
   return newState
@@ -102,7 +105,16 @@ const clearAssignedMsg = (state, action) => {
 }
 
 const receiveDaySchedule = (state, action) => {
-  const newState = {...state, ...{date: action.date, scheduledDogs: action.scheduledDogs, isFetching: false, msg: ''}}
+  const newState = {
+    ...state,
+    ...{
+      date: action.date,
+      scheduledDogs: action.scheduledDogs,
+      walker: {},
+      dogs: [],
+      isFetching: false,
+      msg: ''
+    }}
   return newState
 }
 
@@ -127,6 +139,11 @@ const getTodaysScheduleRequest = (state, action) => {
 
 const getTodaysScheduleFailure = (state, action) => {
   const newState = {...state, ...{isFetching: false, msg: 'Failed to retrieve scheduled dogs for today.', error: action.err}}
+  return newState
+}
+
+const updateAssignedComment = (state, action) => {
+  const newState = {...state, ...{comment: action.comment}}
   return newState
 }
 
@@ -164,6 +181,8 @@ export default function (state = DEFAULT_STATE, action) {
       return getTodaysScheduleRequest(state, action)
     case GET_TODAYS_SCHEDULE_FAILURE:
       return getTodaysScheduleFailure(state, action)
+    case UPDATE_ASSIGNED_COMMENT:
+      return updateAssignedComment(state, action)
     default:
       return state
   }

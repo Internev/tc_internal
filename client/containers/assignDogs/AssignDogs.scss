@@ -40,7 +40,9 @@
       flex: 3;
     }
     &-actions {
-      // margin-bottom: 0.5rem;
+      &-comment {
+        margin-bottom: 0.5rem;
+      }
     }
   }
 }

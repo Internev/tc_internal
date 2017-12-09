@@ -1,18 +1,22 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import AssignedList from './AssignedList'
-import { unassignWalker, unassignClient, unassignDog, clearAssigned, saveAssigned, clearAssignedMsg } from '../../redux/creators/assignedCreators'
+import { unassignWalker, unassignClient, unassignDog, clearAssigned, saveAssigned, clearAssignedMsg, updateAssignedComment } from '../../redux/creators/assignedCreators'
 
 class AssignedContainer extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {searchTerm: ''}
+    this.state = {
+      searchTerm: '',
+      comment: null
+    }
     this.unassignClientClick = this.unassignClientClick.bind(this)
     this.unassignDogClick = this.unassignDogClick.bind(this)
     this.unassignWalkerClick = this.unassignWalkerClick.bind(this)
     this.saveAssigned = this.saveAssigned.bind(this)
     this.clearAllAssigned = this.clearAllAssigned.bind(this)
     this.handleCloseMsg = this.handleCloseMsg.bind(this)
+    this.handleCommentChange = this.handleCommentChange.bind(this)
   }
   componentDidMount () {
   }
@@ -31,10 +35,13 @@ class AssignedContainer extends React.Component {
     this.props.dispatch(clearAssigned())
   }
   saveAssigned () {
-    this.props.dispatch(saveAssigned(this.props.assigned.walker, this.props.assigned.dogs, this.props.assigned.date, this.props.assigned.scheduledDogs))
+    this.props.dispatch(saveAssigned(this.props.assigned.walker, this.props.assigned.dogs, this.props.assigned.date, this.props.assigned.scheduledDogs, this.props.assigned.comment))
   }
   handleCloseMsg () {
     this.props.dispatch(clearAssignedMsg())
+  }
+  handleCommentChange (e) {
+    this.props.dispatch(updateAssignedComment(e.target.value))
   }
   render () {
     return (
@@ -50,6 +57,8 @@ class AssignedContainer extends React.Component {
         isFetching={this.props.assigned.isFetching}
         msg={this.props.assigned.msg}
         handleCloseMsg={this.handleCloseMsg}
+        comment={this.props.assigned.comment}
+        handleCommentChange={this.handleCommentChange}
        />
     )
   }
