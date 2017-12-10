@@ -58,7 +58,7 @@ dogs.post('/upload', upload.single('file'), (req, res) => {
 
 dogs.get('/', (req, res) => {
   console.log('req headers for dogs route:', req.headers)
-  Walk.findAll({
+  Walk.findOne({
     where: {
       userId: req.headers.id,
       date: {
@@ -66,20 +66,14 @@ dogs.get('/', (req, res) => {
         $gt: new Date().setHours(0, 0, 0, 0)
       }
     },
-    include: [{model: Dog}]
+    include: [{model: Dog, include: [{model: Client}]}]
   })
-    .then(walks => {
-      // console.log('\n\nwalks is:', walks)
-      const dogs = walks[0].dogs
-      if (dogs.length < 1) return res.status(200).json({msg: 'No dogs assigned today.'})
-      const dogReqs = dogs.map(dog => dog.getClient())
-      Promise.all(dogReqs)
-      .then(clients => {
-        res.status(200).json({clients, dogs})
-      })
+    .then(walk => {
+      if (!walk || !walk.dogs || walk.dogs.length < 1) return res.status(200).json({msg: 'No dogs assigned today.'})
+      res.status(200).json({walk})
     })
     .catch(err => {
-      console.log('err from trying to find walks.')
+      console.log('err from trying to find walks.', err)
       res.status(500).json({err, msg: 'Unable to find any walks assigned to you today.'})
     })
 })

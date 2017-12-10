@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Dimmer, Loader } from 'semantic-ui-react'
+import { Dimmer, Loader, Message } from 'semantic-ui-react'
 import DogList from './DogList'
 import { setEditableDog, getDogs, getUserThenDogs } from '../../redux/creators/dogsCreators'
 
@@ -33,6 +33,15 @@ class DogListContainer extends React.Component {
         <Dimmer inverted active={this.props.auth.isFetching || this.props.dogs.isFetching}>
           <Loader />
         </Dimmer>
+        {this.props.dogs.walkComment
+          ? <Message
+            info
+            visible
+            icon='announcement'
+            content={this.props.dogs.walkComment}
+            />
+          : null
+        }
         <DogList
           dogs={this.props.dogs.assigned}
           detailsLink={this.detailsLink}

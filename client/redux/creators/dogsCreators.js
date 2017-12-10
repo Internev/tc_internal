@@ -134,12 +134,8 @@ export function getDogs (userId) {
         if (res.data.msg) {
           dispatch(getDogsFailure(res.data.msg))
         } else {
-          const dogs = res.data.dogs
-          const clients = res.data.clients
-          dogs.forEach((dog, i) => {
-            dog.client = clients[i]
-          })
-          dispatch(getDogsSuccess(dogs))
+          const walk = res.data.walk
+          dispatch(getDogsSuccess(walk.dogs, walk.comment))
         }
       })
       .catch(err => {
@@ -155,10 +151,11 @@ function getDogsRequest () {
   }
 }
 
-function getDogsSuccess (assigned) {
+function getDogsSuccess (assigned, comment) {
   return {
     type: GET_DOGS_SUCCESS,
-    assigned
+    assigned,
+    comment
   }
 }
 

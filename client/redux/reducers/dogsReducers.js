@@ -15,6 +15,7 @@ const DEFAULT_STATE = {
   all: [],
   assigned: [],
   editing: {},
+  walkComment: '',
   isFetching: false,
   msg: '',
   error: ''
@@ -32,12 +33,12 @@ const getDogsRequest = (state, action) => {
 }
 
 const getDogsSuccess = (state, action) => {
-  const newState = {...state, ...{isFetching: false, msg: '', assigned: action.assigned}}
+  const newState = {...state, ...{isFetching: false, msg: '', assigned: action.assigned, walkComment: action.comment}}
   return newState
 }
 
 const getDogsFailure = (state, action) => {
-  const newState = {...state, ...{isFetching: false, assigned: [], editing: {}, error: action.err, msg: 'Failed to retrieve assigned dogs. Please check login and try again.'}}
+  const newState = {...state, ...{isFetching: false, assigned: [], editing: {}, error: action.err, walkComment: '', msg: 'Failed to retrieve assigned dogs. Please check login and try again.'}}
   return newState
 }
 
