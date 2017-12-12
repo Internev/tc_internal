@@ -14,11 +14,26 @@ clients.post('/', (req, res) => {
       include: [ Dog ],
       defaults: client
     })
-    .spread((user, created) => user)
+    .spread((user, created) => {
+      // handle update to dogs for known client.
+      if (user.dogs.length !== client.dogs.length) {
+        const dogReqs = client.dogs.map(dog => Dog.findCreateFind({
+          where: {clientId: user.id, name: dog.name},
+          defaults: dog
+        }))
+        Promise.all(dogReqs)
+        .then(() => {
+          return user
+        })
+      } else {
+        return user
+      }
+    })
   }
-
+  console.log('\n\nclients post req body:', req.body, '\n\n')
   promiseMap(req.body, writeToDB)
     .then(resp => {
+      // console.log('\n\n************\n\nresponse from clients post promiseMap:', resp)
       Client.findAll({include: [ Dog ]})
         .then(resp => {
           res.status(200).json({list: resp})
