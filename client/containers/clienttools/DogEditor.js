@@ -1,9 +1,9 @@
 import React from 'react'
-import { Input, Label, Form, Icon } from 'semantic-ui-react'
+import { Input, Label, Form, Icon, Button, Popup } from 'semantic-ui-react'
 import './ClientTools.scss'
 import differenceInYears from 'date-fns/difference_in_years'
 
-const DogEditor = ({dog, handleEditClientDog, index, handleCommentRemove}) => {
+const DogEditor = ({dog, handleEditClientDog, handleRemoveClientDog, index, handleCommentRemove}) => {
   const comments = (com) => {
     if (com) {
       return (
@@ -97,6 +97,12 @@ const DogEditor = ({dog, handleEditClientDog, index, handleCommentRemove}) => {
         </Form>
       </div>
       {comments(dog.comments)}
+      <Popup
+        trigger={<Button color='grey' icon='remove' size='tiny' content='Remove Dog' />}
+        content={<Button color='red' icon='warning' content='Confirm Remove' onClick={() => handleRemoveClientDog(dog)} />}
+        on='click'
+        position='top right'
+      />
     </div>
   )
 }

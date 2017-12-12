@@ -22,6 +22,7 @@ class ClientTools extends React.Component {
     this.saveEditClient = this.saveEditClient.bind(this)
     this.handleEditClientObjectUpdate = this.handleEditClientObjectUpdate.bind(this)
     this.handleEditClientDog = this.handleEditClientDog.bind(this)
+    this.handleRemoveClientDog = this.handleRemoveClientDog.bind(this)
     this.handleCommentRemove = this.handleCommentRemove.bind(this)
     this.handleCloseMsg = this.handleCloseMsg.bind(this)
     this.deleteClient = this.deleteClient.bind(this)
@@ -73,6 +74,11 @@ class ClientTools extends React.Component {
     update.dogs[index] = dogUpdate
     this.props.dispatch(updateActiveClient(update))
   }
+  handleRemoveClientDog (dog) {
+    const update = {}
+    update.dogs = this.props.clients.active.dogs.filter(d => d.id !== dog.id)
+    this.props.dispatch(updateActiveClient(update))
+  }
   handleCommentRemove (dog, index, comment, commentIndex) {
     // console.log('Handle comment remove:', dog, index, comment, commentIndex)
     const dogUpdate = {...dog}
@@ -118,6 +124,7 @@ class ClientTools extends React.Component {
           cancelEditClient={this.cancelEditClient}
           handleEditClientChange={this.handleEditClientChange}
           handleEditClientDog={this.handleEditClientDog}
+          handleRemoveClientDog={this.handleRemoveClientDog}
           handleEditClientObjectUpdate={this.handleEditClientObjectUpdate}
           saveEditClient={this.saveEditClient}
           deleteClient={this.deleteClient}

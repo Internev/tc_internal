@@ -23,6 +23,7 @@ const ClientEditor = ({
   handleEditClientChange,
   handleEditClientObjectUpdate,
   handleEditClientDog,
+  handleRemoveClientDog,
   handleCommentRemove,
   modalOpen
 }) => {
@@ -73,7 +74,7 @@ const ClientEditor = ({
                 value={client.social} labelPosition='left' onChange={e => handleEditClientChange(e)} />
             </div>
             <h4>{client.dogs && client.dogs.length > 1 ? 'Dogs' : 'Dog'}</h4>
-            {client.dogs ? client.dogs.map((dog, i) => <DogEditor key={dog.id} dog={dog} handleEditClientDog={handleEditClientDog} index={i} handleCommentRemove={handleCommentRemove} />) : null}
+            {client.dogs ? client.dogs.map((dog, i) => <DogEditor key={dog.id} dog={dog} handleEditClientDog={handleEditClientDog} handleRemoveClientDog={handleRemoveClientDog} index={i} handleCommentRemove={handleCommentRemove} />) : null}
             <h4>Emergency Contact Details</h4>
             <div>
               <Input type='text' name='emergency.name' fluid label={{content: 'Emergency Contact:'}}
@@ -97,7 +98,7 @@ const ClientEditor = ({
         <Modal.Actions>
           <Popup
             trigger={<Button color='red' icon='remove user' content='Delete Client' />}
-            content={<Button color='red' content='Confirm Delete' onClick={() => deleteClient(client)} />}
+            content={<Button color='red' icon='warning' content='Confirm Delete' onClick={() => deleteClient(client)} />}
             on='click'
             position='top right'
           />
