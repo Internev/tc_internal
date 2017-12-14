@@ -5,6 +5,7 @@ import dogs from './dogsReducers'
 import clients from './clientsReducers'
 import assigned from './assignedReducers'
 import schedule from './scheduleReducers'
+import walkHistory from './walkHistoryReducers'
 
 export default combineReducers({
   auth,
@@ -12,5 +13,6 @@ export default combineReducers({
   dogs,
   clients,
   assigned,
-  schedule
+  schedule,
+  walkHistory
 })
