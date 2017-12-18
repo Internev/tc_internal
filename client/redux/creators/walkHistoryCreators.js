@@ -5,6 +5,7 @@ import {
 } from '../actions'
 import {checkToken} from './authCreators'
 import axios from 'axios'
+import moment from 'moment'
 
 export function getWalkHistory (id) {
   return dispatch => {
@@ -17,8 +18,39 @@ export function getWalkHistory (id) {
     }
     axios.get('api/history', config)
     .then(res => {
-      console.log('response from api/history:', res)
-      return dispatch(populateWalkHistory(res.data.walks))
+      let startDate, endDate
+      if (moment().week() % 2 === 0) {
+        startDate = moment().day(-7)
+        endDate = moment().day(6)
+      } else {
+        startDate = moment().day(0)
+        endDate = moment().day(14)
+      }
+      const currentPeriodStart = moment(startDate)
+      const groupedWalks = res.data.walks.reduce((a, walk) => {
+        let group
+        console.log('walk date:', walk.date, 'start date:', startDate)
+        if (moment(startDate).isBefore(walk.date)) {
+          group = a.pop() || {date: startDate.toDate(), walks: []}
+          group.walks.push(walk)
+        } else {
+          startDate = moment(startDate).day(-14)
+          group = {date: startDate.toDate(), walks: []}
+          group.walks.push(walk)
+        }
+        a.push(group)
+        return a
+      }, [])
+      console.log('grouped walks:', groupedWalks)
+      if (moment(groupedWalks[0].date).isBefore(moment())) {
+        console.log('first walk is current')
+      } else {
+        console.log('first walk is not current')
+      }
+      const currentPeriodWalks = moment(groupedWalks[0].date).isBefore(moment())
+        ? groupedWalks.pop()
+        : {date: currentPeriodStart.toDate(), walks: []}
+      return dispatch(populateWalkHistory(groupedWalks, currentPeriodWalks))
     })
     .catch(err => {
       console.log('error from api/history:', err)
@@ -43,10 +75,11 @@ function isFetching () {
   }
 }
 
-function populateWalkHistory (walks) {
+function populateWalkHistory (all, current) {
   return {
     type: WALK_HISTORY_POPULATE,
-    walks
+    all,
+    current
   }
 }
 

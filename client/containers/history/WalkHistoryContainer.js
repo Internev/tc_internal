@@ -6,11 +6,6 @@ import { getWalkHistory, getIdThenWalkHistory } from '../../redux/creators/walkH
 class HistoryContainer extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-      searchTerm: '',
-      comment: null
-    }
-
     this.handleCommentChange = this.handleCommentChange.bind(this)
   }
   componentDidMount () {

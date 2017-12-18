@@ -21,7 +21,7 @@ const isFetching = (state, action) => {
 }
 
 const populateWalkHistory = (state, action) => {
-  const newState = {...state, ...{isFetching: false, all: action.walks}}
+  const newState = {...state, ...{isFetching: false, all: action.all, current: action.current}}
   return newState
 }
 

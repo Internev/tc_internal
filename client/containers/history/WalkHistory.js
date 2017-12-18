@@ -1,5 +1,5 @@
 import React from 'react'
-import { Accordion, Icon } from 'semantic-ui-react'
+import { Accordion } from 'semantic-ui-react'
 import moment from 'moment'
 
 const WalkHistory = ({all, handleAccordionClick, activeIndex}) => {
@@ -17,7 +17,7 @@ const WalkHistory = ({all, handleAccordionClick, activeIndex}) => {
               ))}
             </div>
           ),
-          key: 'content-dog'
+          key: walk.id
         }
       }
     })
@@ -25,7 +25,8 @@ const WalkHistory = ({all, handleAccordionClick, activeIndex}) => {
   return (
     <div>
       <h4>Walk History</h4>
-      <Accordion styled defaultActiveIndex={0} panels={panels(all)} />
+      {// <Accordion styled defaultActiveIndex={0} panels={panels(all)} />
+      }
     </div>
   )
 }
