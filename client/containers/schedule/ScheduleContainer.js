@@ -34,7 +34,7 @@ class CalendarContainer extends React.Component {
       this.props.dispatch(getAllDogs())
     }
     // if (this.props.schedule.events < 1) {
-    const startDate = moment().subtract(2, 'weeks')
+    const startDate = moment().subtract(6, 'months')
     this.props.dispatch(getAllEvents(startDate))
     // }
   }

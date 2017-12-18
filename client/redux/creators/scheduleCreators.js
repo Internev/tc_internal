@@ -44,7 +44,7 @@ export function clearMsg () {
 }
 
 export function getAllEvents (startDate) {
-  startDate = startDate || moment().subtract(2, 'weeks')
+  startDate = startDate || moment().subtract(6, 'months')
   return dispatch => {
     dispatch(getAllEventsRequest())
     const config = {
