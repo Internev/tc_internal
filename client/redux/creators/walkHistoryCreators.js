@@ -29,7 +29,6 @@ export function getWalkHistory (id) {
       const currentPeriodStart = moment(startDate)
       const groupedWalks = res.data.walks.reduce((a, walk) => {
         let group
-        console.log('walk date:', walk.date, 'start date:', startDate)
         if (moment(startDate).isBefore(walk.date)) {
           group = a.pop() || {date: startDate.toDate(), walks: []}
           group.walks.push(walk)
@@ -41,12 +40,6 @@ export function getWalkHistory (id) {
         a.push(group)
         return a
       }, [])
-      console.log('grouped walks:', groupedWalks)
-      if (moment(groupedWalks[0].date).isBefore(moment())) {
-        console.log('first walk is current')
-      } else {
-        console.log('first walk is not current')
-      }
       const currentPeriodWalks = moment(groupedWalks[0].date).isBefore(moment())
         ? groupedWalks.pop()
         : {date: currentPeriodStart.toDate(), walks: []}

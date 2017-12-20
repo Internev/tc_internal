@@ -14,7 +14,7 @@ class HistoryContainer extends React.Component {
       : this.props.dispatch(getIdThenWalkHistory())
   }
   componentDidUpdate () {
-    console.log('History Container updated, props:', this.props)
+    // console.log('History Container updated, props:', this.props)
   }
   handleCommentChange (e) {
     // this.props.dispatch(updateAssignedComment(e.target.value))

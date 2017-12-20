@@ -3,23 +3,7 @@ import { Accordion } from 'semantic-ui-react'
 import moment from 'moment'
 
 const WalkHistory = ({all, current, handleAccordionClick, activeIndex}) => {
-  const rootPanels = (dateBlocks) => {
-    return dateBlocks.map((dateBlock, i) => {
-      return {
-        title: `Fortnight starting ${moment(dateBlock.date).format('MMMM Do YYYY')}`,
-        content: {
-          content: (
-            <div>
-              <h4>Total {dateBlock.walks.reduce((a, w) => a += w.dogs.length, 0)} Dogs Walked</h4>
-              <Accordion.Accordion styled panels={innerPanels(dateBlock.walks)} />
-            </div>
-          )
-        },
-        key: dateBlock.date
-      }
-    })
-  }
-  const innerPanels = (walks) => {
+  const innerPanels = walks => {
     return walks
     .filter(walk => walk.dogs.length)
     .map(walk => {
@@ -29,11 +13,27 @@ const WalkHistory = ({all, current, handleAccordionClick, activeIndex}) => {
           content: (
             <div>
               {walk.dogs.map((dog, i) => (
-                <div key={i}><b>{dog.name}</b> (owned by {dog.client.name})</div>
+                <div key={dog.id}><b>{dog.name}</b> (owned by {dog.client.name})</div>
               ))}
             </div>
           ),
           key: walk.id
+        }
+      }
+    })
+  }
+  const rootPanels = dateBlocks => {
+    return dateBlocks.map((dateBlock, i) => {
+      return {
+        title: `Fortnight starting ${moment(dateBlock.date).format('MMMM Do YYYY')}`,
+        content: {
+          content: (
+            <div>
+              <h4>Total {dateBlock.walks.reduce((a, w) => a += w.dogs.length, 0)} Dogs Walked</h4>
+              <Accordion.Accordion panels={innerPanels(dateBlock.walks)} />
+            </div>
+          ),
+          key: i
         }
       }
     })
