@@ -83,7 +83,9 @@ const DogDetails = ({dog, handleModalOpen, addComment, comment, handleCommentCha
             <List.Content><b>Age: </b>{age()}, (DOB: {dog.dob})</List.Content>
           </List.Item>
           <List.Item>
-            <List.Content><b>Address: </b>{dog.client && dog.client.address}</List.Content>
+            <List.Content><b>Address: </b>
+              <a href={`https://maps.google.com.au/maps?q=${dog.client && dog.client.address}`} target='_blank'>{dog.client && dog.client.address}</a>
+            </List.Content>
           </List.Item>
           <List.Item>
             <List.Content><b>Recall: </b>{dog.recall}</List.Content>

@@ -12,7 +12,7 @@ const img = (dog) => {
 const desc = (dog, link) => (
   <div className='doglist_desc'>
     <div>
-      Address: {dog.client.address}
+      Address: <a href={`https://maps.google.com.au/maps?q=${dog.client.address}`} target='_blank'>{dog.client.address}</a>
     </div>
     {dog.client && dog.client.keylock
     ? (
