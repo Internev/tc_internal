@@ -8,10 +8,20 @@ import {
   ADD_COMMENT_FAILURE,
   GET_ALL_DOGS_REQUEST,
   GET_ALL_DOGS_SUCCESS,
-  GET_ALL_DOGS_FAILURE
+  GET_ALL_DOGS_FAILURE,
+  UPDATE_DOG_STATUS
 } from '../actions'
 import axios from 'axios'
 import {checkToken} from './authCreators'
+
+export function updateDogStatus (index, id, status) {
+  return {
+    type: UPDATE_DOG_STATUS,
+    index,
+    id,
+    status
+  }
+}
 
 export function getAllDogs () {
   return dispatch => {

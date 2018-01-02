@@ -8,7 +8,8 @@ import {
   ADD_COMMENT_FAILURE,
   GET_ALL_DOGS_REQUEST,
   GET_ALL_DOGS_SUCCESS,
-  GET_ALL_DOGS_FAILURE
+  GET_ALL_DOGS_FAILURE,
+  UPDATE_DOG_STATUS
 } from '../actions'
 
 const DEFAULT_STATE = {
@@ -74,6 +75,18 @@ const addCommentFailure = (state, action) => {
   return newState
 }
 
+const updateDogStatus = (state, action) => {
+  const newDog = state.assigned[action.index]
+  if (action.status === 'picked up') {
+    newDog.pickedUp = true
+  } else if (action.status === 'dropped off') {
+    newDog.droppedOff = true
+  }
+  const newState = {...state}
+  newState.assigned[action.index] = newDog
+  return newState
+}
+
 export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case SET_EDITABLE_DOG:
@@ -96,6 +109,8 @@ export default function (state = DEFAULT_STATE, action) {
       return addCommentSuccess(state, action)
     case ADD_COMMENT_FAILURE:
       return addCommentFailure(state, action)
+    case UPDATE_DOG_STATUS:
+      return updateDogStatus(state, action)
     default:
       return state
   }

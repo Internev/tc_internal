@@ -2,12 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Dimmer, Loader, Message } from 'semantic-ui-react'
 import DogList from './DogList'
-import { setEditableDog, getDogs, getUserThenDogs } from '../../redux/creators/dogsCreators'
+import { setEditableDog, getDogs, getUserThenDogs, updateDogStatus } from '../../redux/creators/dogsCreators'
 
 class DogListContainer extends React.Component {
   constructor (props) {
     super(props)
+    this.state = {
+      popups: {}
+    }
     this.detailsLink = this.detailsLink.bind(this)
+    this.handleUpdateStatus = this.handleUpdateStatus.bind(this)
+    this.handlePopupOpen = this.handlePopupOpen.bind(this)
+    this.handlePopupClose = this.handlePopupClose.bind(this)
   }
   componentDidMount () {
     // console.log('doglistcontainer mounted, props:', this.props)
@@ -20,8 +26,22 @@ class DogListContainer extends React.Component {
   componentDidUpdate () {
     console.log('doglistcontainer updated, props:', this.props)
   }
-  uploadDogImage () {
-
+  handleUpdateStatus (index, id, status) {
+    status = status || 'picked up'
+    this.setState({popups: {}})
+    this.props.dispatch(updateDogStatus(index, id, status))
+  }
+  handlePopupOpen (id) {
+    const update = {}
+    update[id] = true
+    const newPopups = {...this.state.popups, ...update}
+    this.setState({popups: newPopups})
+  }
+  handlePopupClose (id) {
+    const update = {}
+    update[id] = false
+    const newPopups = {...this.state.popups, ...update}
+    this.setState({popups: newPopups})
   }
   detailsLink (id) {
     this.props.dispatch(setEditableDog(id))
@@ -45,6 +65,10 @@ class DogListContainer extends React.Component {
         <DogList
           dogs={this.props.dogs.assigned}
           detailsLink={this.detailsLink}
+          handleUpdateStatus={this.handleUpdateStatus}
+          handlePopupOpen={this.handlePopupOpen}
+          handlePopupClose={this.handlePopupClose}
+          popups={this.state.popups}
           />
       </div>
     )
