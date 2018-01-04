@@ -25,18 +25,24 @@ const ScheduledDogs = ({
       sameOwner[key] = `rgba(${r}, ${g}, ${b}, 0.2)`
     }
   }
-  console.log('SameOwner obj:', sameOwner)
-  const desc = (dog) => (
-    <div className='assign_doglist-desc'>
-      <div>
-        {`Owner: ${dog.client.name}`}
+  const desc = (dog) => {
+    const addr = dog.client.address.split(',')
+    const suburb = addr[addr.length - 3]
+    return (
+      <div className='assign_doglist-desc'>
+        <div>
+          {`Owner: ${dog.client.name}`}
+        </div>
+        {dog.assignedTo && dog.assignedTo.name
+        ? <div>{`Assigned to: ${dog.assignedTo.name}`}</div>
+        : null
+        }
+        <div>
+          {`Suburb: ${suburb}`}
+        </div>
       </div>
-      {dog.assignedTo && dog.assignedTo.name
-      ? <div>{`Assigned to: ${dog.assignedTo.name}`}</div>
-      : null
-      }
-    </div>
-  )
+    )
+  }
   return (
     <div className='assign_doglist'>
       <Loader active={isFetching} />
