@@ -22,6 +22,11 @@
   &_filter {
     margin-bottom: 1rem;
   }
+  &_doglist {
+    &-desc {
+      color: black;
+    }
+  }
   &_selected {
     border: 1px solid lightgrey;
     padding: 0.5rem;
