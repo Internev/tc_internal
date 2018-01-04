@@ -41,7 +41,7 @@ export function getWalkHistory (id) {
         return a
       }, [])
       const currentPeriodWalks = moment(groupedWalks[0].date).isBefore(moment())
-        ? groupedWalks.pop()
+        ? groupedWalks.shift()
         : {date: currentPeriodStart.toDate(), walks: []}
       return dispatch(populateWalkHistory(groupedWalks, currentPeriodWalks))
     })
