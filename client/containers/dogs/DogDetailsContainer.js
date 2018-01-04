@@ -109,6 +109,7 @@ class DogDetailsContainer extends React.Component {
             comment={this.state.comment}
             handleCommentChange={this.handleCommentChange}
             addComment={this.addComment}
+            history={this.props.history}
             />
         </div>
         : <div>Sorry, this dog doesn't exist, or you do not have access to its details at the moment.</div>}

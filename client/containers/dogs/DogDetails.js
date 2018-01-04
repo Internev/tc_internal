@@ -1,11 +1,11 @@
 import React from 'react'
 import differenceInYears from 'date-fns/difference_in_years'
 import differenceInMonths from 'date-fns/difference_in_months'
-import { Image, Header, List, Icon, Form } from 'semantic-ui-react'
+import { Image, Header, List, Icon, Form, Button } from 'semantic-ui-react'
 import './Dog.scss'
 import dogPlaceholder from '../../imgs/dog-placeholder.png'
 
-const DogDetails = ({dog, handleModalOpen, addComment, comment, handleCommentChange}) => {
+const DogDetails = ({dog, handleModalOpen, addComment, comment, handleCommentChange, history}) => {
   const emergency = (em) => {
     if (em) {
       return (
@@ -70,6 +70,13 @@ const DogDetails = ({dog, handleModalOpen, addComment, comment, handleCommentCha
   }
   return (
     <div className='dog-details_content'>
+      <div className='dog-details_nav'>
+        <Button
+          content='Back'
+          size='tiny'
+          onClick={() => history.goBack()}
+          />
+      </div>
       {img()}
       <div className='dog-details_content-items'>
         <Header>

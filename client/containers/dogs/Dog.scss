@@ -5,6 +5,9 @@
 .dog-details {
 
   // display: flex;
+  &_nav {
+    margin-bottom: 1rem;
+  }
   &_content {
     display: flex;
     align-items: flex-start;
