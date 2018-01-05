@@ -25,7 +25,6 @@ export function uploadClients (clients) {
     }
     axios.post('/api/clients', clients, config)
     .then(res => {
-      console.log('response from api/clients:', res)
       dispatch(uploadClientsSuccess(res.data.list))
     })
     .catch(err => {
@@ -147,7 +146,6 @@ export function updateClientDetails (client) {
     }
     axios.post('/api/clients/update', client, config)
       .then(res => {
-        console.log('response from clients/update:', res)
         dispatch(updateClientDetailsSuccess(res.data.list))
       })
       .catch(err => {

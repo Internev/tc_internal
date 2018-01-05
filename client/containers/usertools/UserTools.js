@@ -16,13 +16,11 @@ class UserTools extends React.Component {
     this.props.dispatch(getUsers())
   }
   componentDidUpdate () {
-    console.log('User Tools props:', this.props)
   }
   filterUsers (e) {
     this.setState({searchTerm: e.target.value})
   }
   toggleAdmin (user) {
-    console.log('useR:', user, 'props:', this.props.auth)
     if (user.id !== this.props.auth.id) {
       this.props.dispatch(updateUser(user, 'admin'))
     }

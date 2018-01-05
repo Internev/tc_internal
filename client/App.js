@@ -16,6 +16,7 @@ import ClientTools from './containers/clienttools/ClientTools'
 import ScheduleContainer from './containers/schedule/ScheduleContainer'
 import AssignDogs from './containers/assignDogs/AssignDogs'
 import WalkHistoryContainer from './containers/history/WalkHistoryContainer'
+import CommentHistoryContainer from './containers/commentHistory/CommentHistoryContainer'
 
 const App = ({...props}) => (
   <Router>
@@ -34,6 +35,7 @@ const App = ({...props}) => (
           <Route path='/dog-details/:id' component={DogDetailsContainer} isPrivate />
           <Route path='/calendar' component={ScheduleContainer} isPrivate adminOnly />
           <Route path='/assign-dogs' component={AssignDogs} isPrivate adminOnly />
+          <Route path='/comment-history' component={CommentHistoryContainer} isPrivate adminOnly />
           <Route path='/history' component={WalkHistoryContainer} isPrivate />
           <Route path='/' component={props.auth.admin
               ? ScheduleContainer

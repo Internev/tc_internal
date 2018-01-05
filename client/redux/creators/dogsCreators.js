@@ -33,7 +33,6 @@ export function getAllDogs () {
     }
     return axios.get('/api/dogs/all', config)
       .then(res => {
-        console.log('response from dogs/all:', res)
         return dispatch(getAllDogsSuccess(res.data.dogs))
       })
       .catch(err => {
@@ -140,7 +139,6 @@ export function getDogs (userId) {
     }
     return axios.get('/api/dogs', config)
       .then(res => {
-        console.log('res from api/dogs get:', res)
         if (res.data.msg) {
           dispatch(getDogsFailure(res.data.msg))
         } else {

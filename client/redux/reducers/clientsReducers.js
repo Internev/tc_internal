@@ -80,7 +80,6 @@ const updateClientDetailsRequest = (state, action) => {
 
 const updateClientDetailsSuccess = (state, action) => {
   const newState = {...state, ...{isFetching: false, list: action.list, active: {}, msg: 'Client details updated and saved to database.'}}
-  console.log('updateClientDetailsSuccess state:', state, 'newState', newState)
   return newState
 }
 

@@ -22,7 +22,7 @@ class ScheduledDogsContainer extends React.Component {
     // console.log('ScheduledDogsContainer props:', this.props)
   }
   handleDogClick (dog) {
-    console.log('Making dog active for assigning to walker.', dog)
+    // console.log('Making dog active for assigning to walker.', dog)
     this.props.dispatch(assignDog(dog))
   }
   handleSearchTerm (e) {

@@ -37,11 +37,11 @@ export const headerLinks = [
     content: <Link to='/history' className='tcheader_nav-link'>Walk History</Link>,
     admin: true
   },
-  // {
-  //   key: 'change-password',
-  //   content: <Link to='/change-password' className='tcheader_nav-link'>Change Password</Link>,
-  //   admin: false
-  // },
+  {
+    key: 'comment-history',
+    content: <Link to='/comment-history' className='tcheader_nav-link'>Comment History</Link>,
+    admin: true
+  },
   {
     key: 'logout',
     content: <Link to='/logout' className='tcheader_nav-link'>Logout</Link>,

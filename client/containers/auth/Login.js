@@ -18,12 +18,12 @@ class Login extends React.Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
   componentWillMount () {
-    console.log('login component mounting, state:', this.state)
-    console.log('login component mounting, props:', this.props)
+    // console.log('login component mounting, state:', this.state)
+    // console.log('login component mounting, props:', this.props)
   }
   componentDidMount () {
-    console.log('login component mounted, state:', this.state)
-    console.log('login component mounted, props:', this.props)
+    // console.log('login component mounted, state:', this.state)
+    // console.log('login component mounted, props:', this.props)
   }
   componentDidUpdate () {
     if (this.props.auth.auth.success) {

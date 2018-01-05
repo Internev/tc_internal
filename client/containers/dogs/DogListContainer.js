@@ -24,7 +24,6 @@ class DogListContainer extends React.Component {
     }
   }
   componentDidUpdate () {
-    console.log('doglistcontainer updated, props:', this.props)
   }
   handleUpdateStatus (index, id, status) {
     status = status || 'picked up'

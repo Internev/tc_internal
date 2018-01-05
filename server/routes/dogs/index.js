@@ -3,7 +3,10 @@ const config = require('../../../config')
 const { User, Dog, Client, Walk } = require('../../models/db')
 
 dogs.get('/all', (req, res) => {
-  Dog.findAll({include: [ Client ]})
+  Dog.findAll({
+    include: [ Client ],
+    order: [['updatedAt', 'DESC']]
+  })
   .then(dogs => {
     console.log('\n\nDogs from findAll:', dogs)
     res.status(200).json({dogs})
@@ -95,5 +98,18 @@ dogs.post('/comment', (req, res) => {
       res.status(500).json({err})
     })
 })
+
+// dogs.get('/comments', (req, res) => {
+//   Dog.findAll({
+//     order: [['updatedAt', 'DESC']]
+//   })
+//     .then(dogs => {
+//       res.status(200).json({dogs})
+//     })
+//     .catch(err => {
+//       console.log('Error getting dogs for comments:', err)
+//       res.status(500).json({err})
+//     })
+// })
 
 module.exports = dogs

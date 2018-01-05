@@ -65,7 +65,7 @@ class CalendarContainer extends React.Component {
     this.props.dispatch(clearMsg())
   }
   assignThisDay () {
-    console.log('Assign this day, date:', this.props.schedule.date, '\ndogs:', this.props.schedule.dogs)
+    // console.log('Assign this day, date:', this.props.schedule.date, '\ndogs:', this.props.schedule.dogs)
     this.props.dispatch(receiveDaySchedule(this.props.schedule.date, this.props.schedule.dogs))
     this.props.history.push('/assign-dogs')
   }

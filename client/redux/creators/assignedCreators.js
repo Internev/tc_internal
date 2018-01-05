@@ -46,7 +46,6 @@ export function getTodaysSchedule (date) {
     }
     return axios.get('/api/schedule', config)
       .then(res => {
-        console.log('response from api/schedule for today:', res)
         const walks = res.data.walks
         const dogs = walks.reduce((acc, walk) => {
           walk.dogs.forEach(dog => {
@@ -101,7 +100,6 @@ export function saveAssigned (walker, dogs, date, scheduledDogs, comment) {
     }
     axios.post('/api/assign', {walker, dogs, date, scheduledDogs, comment}, config)
       .then(res => {
-        console.log('response from api/assign:', res)
         const scheduledDogs = res.data.walks.reduce((acc, walk) => {
           walk.dogs.forEach(dog => {
             if (walk.user) dog.assignedTo = walk.user

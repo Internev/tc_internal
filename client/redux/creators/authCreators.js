@@ -53,7 +53,6 @@ export function signupUser (creds) {
 
     axios.post('/auth/signup', {name: creds.name, phone: creds.phone, email: creds.email, password: creds.password})
       .then(res => {
-        console.log('userCreator redux, signupUser response:', res)
         return dispatch(receiveSignup(res.data))
       })
       .catch(err => {
@@ -126,7 +125,6 @@ export function resetPasswordCheck (token) {
     }
     return axios.get('/auth/reset', config)
       .then(res => {
-        console.log('response from server reset token check:', res)
         dispatch(passwordTokenResult(res.data.resetToken))
       })
       .catch(err => {

@@ -34,8 +34,6 @@ class DogDetailsContainer extends React.Component {
     }
   }
   componentDidUpdate () {
-    // console.log('dog details state:', this.state)
-    console.log('dog details props:', this.props)
   }
   handleModalOpen () { this.setState({modalOpen: true}) }
   handleModalClose () { this.setState({modalOpen: false}) }
@@ -74,7 +72,7 @@ class DogDetailsContainer extends React.Component {
 
     axios.post('/api/dogs/upload', fd, config)
       .then(res => {
-        console.log('upload finished, res:', res)
+        // console.log('upload finished, res:', res)
         this.props.dispatch(getUserThenDogsThenEditable(res.data.dog.id))
         that.setState({uploadProgress: false})
       })

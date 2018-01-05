@@ -97,7 +97,7 @@ class ClientTools extends React.Component {
     this.props.dispatch(clearClientsMsg())
   }
   deleteClient (client) {
-    console.log('deleting client:', client)
+    // console.log('deleting client:', client)
     this.setState({modalOpen: false, searchTerm: ''})
     this.props.dispatch(deleteClient(client))
   }

@@ -55,7 +55,6 @@ export function getAllEvents (startDate) {
     }
     return axios.get('/api/schedule/all', config)
       .then(res => {
-        console.log('response from /api/schedule/all, res.data.events:', res.data.events)
         const events = res.data.events
         .filter(event => event.dogs.length)
         .map(event => {
@@ -69,7 +68,6 @@ export function getAllEvents (startDate) {
           e.end = event.date
           return e
         })
-        console.log('and now events is:', events)
         return dispatch(getAllEventsSuccess(events))
       })
       .catch(err => {
@@ -147,9 +145,7 @@ function getScheduledFailure (err) {
 }
 
 export function saveScheduled (date, dogs) {
-  console.log('save Scheduled about to run, dogs:', [...dogs])
   dogs = dogs.filter(dog => !dog.assignedTo)
-  console.log('save Scheduled about to run, dogs filtered:', [...dogs])
   return dispatch => {
     dispatch(saveScheduledRequest())
     const config = {
