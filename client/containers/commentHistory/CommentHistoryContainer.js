@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import CommentHistory from './CommentHistory'
 import { getAllDogs } from '../../redux/creators/dogsCreators'
+import { Item } from 'semantic-ui-react'
 
 class commentHistoryContainer extends React.Component {
   constructor (props) {
@@ -8,8 +10,8 @@ class commentHistoryContainer extends React.Component {
     this.handleCommentChange = this.handleCommentChange.bind(this)
   }
   componentDidMount () {
-    if (!this.props.dogs.all.length) this.props.dispatch(getAllDogs())
-    console.log('CommentHistory Container mounted, props:', this.props)
+    this.props.dispatch(getAllDogs())
+    console.log('CommentHistory Container mounted, props:', this.props.dogs.all.filter(dog => dog.comments))
   }
   componentDidUpdate () {
     console.log('CommentHistory Container updated, props:', this.props)
@@ -19,7 +21,12 @@ class commentHistoryContainer extends React.Component {
   }
   render () {
     return (
-      <div>cmmenthistry</div>
+      <div>
+        {this.props.dogs.all
+          .filter(dog => dog.comments)
+          .map(dog => <CommentHistory dog={dog} />)
+        }
+      </div>
     )
   }
 }
