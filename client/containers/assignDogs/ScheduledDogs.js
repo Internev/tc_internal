@@ -84,6 +84,10 @@ const ScheduledDogs = ({
               meta={dog.breed}
               color='green'
               description={desc(dog)}
+              style={sameOwner[dog.client.name]
+                ? {background: sameOwner[dog.client.name]}
+                : null
+              }
             />
         ))}
       </Card.Group>
