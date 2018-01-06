@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-// import { unassignWalker, unassignClient, clearAssigned, saveAssigned, clearAssignedMsg } from '../../redux/creators/assignedCreators'
+import DetailsView from './DetailsView'
 import { getAllDogs } from '../../redux/creators/dogsCreators'
 import { setScheduleDate, scheduleDog, unscheduleDog, saveScheduled, getScheduled, clearMsg, getAllEvents } from '../../redux/creators/scheduleCreators'
 import {receiveDaySchedule} from '../../redux/creators/assignedCreators'
@@ -48,6 +48,7 @@ class CalendarContainer extends React.Component {
     this.setState({searchTerm: e.target.value})
   }
   openScheduleDogs (date) {
+    console.log('open schedule dogs, receives date:', date)
     this.props.dispatch(setScheduleDate(date))
     this.props.dispatch(getScheduled(date))
     this.setState({modalOpen: true, workingDate: moment(date).format('dddd MMMM Do, YYYY')})
@@ -99,7 +100,13 @@ class CalendarContainer extends React.Component {
         <BigCalendar
           selectable
           events={this.props.schedule.events}
-          defaultView='month'
+          views={{
+            day: DetailsView,
+            week: true,
+            month: true,
+            agenda: true
+          }}
+          defaultView='day'
           onSelectEvent={e => this.openScheduleDogs(e.start)}
           onSelectSlot={slot => this.openScheduleDogs(slot.start)}
         />
