@@ -3,7 +3,7 @@ import BigCalendar from 'react-big-calendar'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { getScheduled } from '../../redux/creators/scheduleCreators'
-import { Button, Card } from 'semantic-ui-react'
+import { Button, Card, Message, Icon } from 'semantic-ui-react'
 import './Schedule.scss'
 
 class DetailsView extends React.Component {
@@ -23,7 +23,7 @@ class DetailsView extends React.Component {
   render () {
     const sortedByWalkerObj = this.props.schedule.dogs.reduce((a, dog) => {
       const walker = dog.assignedTo && dog.assignedTo.name
-      console.log('walker is:', walker)
+      // console.log('walker is:', walker)
       if (!walker) {
         if (a['Unassigned']) {
           a['Unassigned'].push(dog)
@@ -45,7 +45,7 @@ class DetailsView extends React.Component {
       const addr = dog.client.address.split(',')
       const suburb = addr[addr.length - 3]
       return (
-        <div className='assign_doglist-desc'>
+        <div className='assign_doglist-desc' key={dog.id}>
           <div>
             {`Owner: ${dog.client.name}`}
           </div>
@@ -55,10 +55,22 @@ class DetailsView extends React.Component {
         </div>
       )
     }
-    const dogCards = (dogs) => (
+    const ic = <Icon name='announcement' size='mini' />
+    const dogCards = (dogs, walkComment) => (
       <Card.Group>
+        {walkComment
+          ? <Message
+            size='mini'
+            color='teal'
+            icon={ic}
+            content={walkComment}
+            className='details-view_message'
+          />
+          : null
+        }
         {dogs.map((dog, i) => (
           <Card
+            key={i}
             header={dog.name}
             meta={dog.breed}
             description={desc(dog)}
@@ -80,11 +92,13 @@ class DetailsView extends React.Component {
             const name = dogs[0].assignedTo
               ? dogs[0].assignedTo.name
               : 'Unassigned'
+            const walkComment = dogs[0].walkComment || ''
             return (
               <Card
+                key={i}
                 header={name}
                 meta={name === 'Unassigned' ? `nobody's walking these hounds yet` : 'is scheduled to walk'}
-                description={dogCards(dogs)}
+                description={dogCards(dogs, walkComment)}
                 />
             )
           })}

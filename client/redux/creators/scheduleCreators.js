@@ -112,6 +112,7 @@ export function getScheduled (date) {
         const dogs = walks.reduce((acc, walk) => {
           walk.dogs.forEach(dog => {
             if (walk.user) dog.assignedTo = walk.user
+            if (walk.comment) dog.walkComment = walk.comment
             acc.push(dog)
           })
           return acc

@@ -48,7 +48,7 @@ class CalendarContainer extends React.Component {
     this.setState({searchTerm: e.target.value})
   }
   openScheduleDogs (date) {
-    console.log('open schedule dogs, receives date:', date)
+    // console.log('open schedule dogs, receives date:', date)
     this.props.dispatch(setScheduleDate(date))
     this.props.dispatch(getScheduled(date))
     this.setState({modalOpen: true, workingDate: moment(date).format('dddd MMMM Do, YYYY')})

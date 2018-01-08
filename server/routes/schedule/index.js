@@ -4,7 +4,7 @@ const { User, Dog, Client, Walk } = require('../../models/db')
 const subWeeks = require('date-fns/sub_weeks')
 
 assign.post('/', (req, res) => {
-  console.log('\n\n\nSchedule post subroute hit, req.body:', req.body)
+  // console.log('\n\n\nSchedule post subroute hit, req.body:', req.body)
   let date = new Date(req.body.date)
   const walkObj = { date: date.setHours(1, 0, 0, 0) }
   Walk.findOne({

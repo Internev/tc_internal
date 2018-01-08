@@ -14,7 +14,7 @@ const ScheduledList = ({dogs, unscheduleDog, handleSaveScheduled, assignThisDay,
         color='yellow'
         >
         <Icon name='info' size='small' />
-      {msg}
+        {msg}
       </Message>
       : null}
     <div>
@@ -22,10 +22,10 @@ const ScheduledList = ({dogs, unscheduleDog, handleSaveScheduled, assignThisDay,
         {dogs
           .filter(dog => !dog.assignedTo)
           .map((dog, i) => (
-          <div className='scheduled_card' key={i}>
-            <div><b>{dog.name}</b><span> - {dog.client.name}</span></div>
-            <Button className='scheduled_card-right' size='mini' onClick={() => unscheduleDog(dog.id)}>Remove</Button>
-          </div>
+            <div className='scheduled_card' key={i}>
+              <div><b>{dog.name}</b><span> - {dog.client.name}</span></div>
+              <Button className='scheduled_card-right' size='mini' onClick={() => unscheduleDog(dog.id)}>Remove</Button>
+            </div>
         ))}
       </div>
     </div>

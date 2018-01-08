@@ -42,6 +42,9 @@
 
 .details-view {
   &_button {
-    margin-bottom: 1rem !important;
+    margin: 1rem 0 !important;
+  }
+  &_message {
+    margin-top: 1rem !important;
   }
 }
