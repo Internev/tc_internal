@@ -18,7 +18,9 @@ class CalendarContainer extends React.Component {
     this.state = {
       modalOpen: false,
       workingDate: null,
-      searchTerm: ''
+      searchTerm: '',
+      recurrence: {},
+      recurrenceModal: {}
     }
     this.openScheduleDogs = this.openScheduleDogs.bind(this)
     this.handleCancelScheduleDogs = this.handleCancelScheduleDogs.bind(this)
@@ -28,6 +30,10 @@ class CalendarContainer extends React.Component {
     this.handleSaveScheduled = this.handleSaveScheduled.bind(this)
     this.handleCloseMsg = this.handleCloseMsg.bind(this)
     this.assignThisDay = this.assignThisDay.bind(this)
+    this.handleRecurrenceFreq = this.handleRecurrenceFreq.bind(this)
+    this.handleRecurrenceDuration = this.handleRecurrenceDuration.bind(this)
+    this.handleRecurrenceCancel = this.handleRecurrenceCancel.bind(this)
+    this.handleRecurrenceModal = this.handleRecurrenceModal.bind(this)
   }
   componentDidMount () {
     if (this.props.dogs.all.length < 1) {
@@ -39,7 +45,7 @@ class CalendarContainer extends React.Component {
     // }
   }
   componentDidUpdate () {
-    // console.log('ScheduleContainer props:', this.props)
+    // console.log('ScheduleContainer state:', this.state)
   }
   handleDogClick (dog) {
     this.props.dispatch(scheduleDog(dog))
@@ -51,7 +57,7 @@ class CalendarContainer extends React.Component {
     // console.log('open schedule dogs, receives date:', date)
     this.props.dispatch(setScheduleDate(date))
     this.props.dispatch(getScheduled(date))
-    this.setState({modalOpen: true, workingDate: moment(date).format('dddd MMMM Do, YYYY')})
+    this.setState({modalOpen: true, workingDate: date})
   }
   handleCancelScheduleDogs () {
     this.setState({modalOpen: false})
@@ -60,7 +66,7 @@ class CalendarContainer extends React.Component {
     this.props.dispatch(unscheduleDog(id))
   }
   handleSaveScheduled () {
-    this.props.dispatch(saveScheduled(this.props.schedule.date, this.props.schedule.dogs))
+    this.props.dispatch(saveScheduled(this.props.schedule.date, this.props.schedule.dogs, this.state.recurrence))
   }
   handleCloseMsg () {
     this.props.dispatch(clearMsg())
@@ -69,6 +75,29 @@ class CalendarContainer extends React.Component {
     // console.log('Assign this day, date:', this.props.schedule.date, '\ndogs:', this.props.schedule.dogs)
     this.props.dispatch(receiveDaySchedule(this.props.schedule.date, this.props.schedule.dogs))
     this.props.history.push('/assign-dogs')
+  }
+  handleRecurrenceFreq (dog, freq) {
+    const newRec = {...this.state.recurrence}
+    if (!newRec[dog.id]) newRec[dog.id] = {freq: 1, duration: 0}
+    newRec[dog.id].freq = freq
+    this.setState({recurrence: newRec})
+  }
+  handleRecurrenceDuration (dog, duration) {
+    const newRec = {...this.state.recurrence}
+    if (!newRec[dog.id]) newRec[dog.id] = {freq: 1, duration: 0}
+    newRec[dog.id].duration = parseInt(duration)
+    this.setState({recurrence: newRec})
+  }
+  handleRecurrenceCancel (dog) {
+    const newRec = {...this.state.recurrence}
+    delete newRec[dog.id]
+    this.setState({recurrence: newRec})
+    this.handleRecurrenceModal(dog.id, false)
+  }
+  handleRecurrenceModal (id, open) {
+    const newRecModal = {...this.state.recurrenceModal}
+    newRecModal[id] = open
+    this.setState({recurrenceModal: newRecModal})
   }
   render () {
     return (
@@ -96,6 +125,12 @@ class CalendarContainer extends React.Component {
           isScheduleFetching={this.props.schedule.fetching}
           msg={this.props.schedule.msg}
           handleCloseMsg={this.handleCloseMsg}
+          recurrenceState={this.state.recurrence}
+          handleRecurrenceFreq={this.handleRecurrenceFreq}
+          handleRecurrenceDuration={this.handleRecurrenceDuration}
+          handleRecurrenceCancel={this.handleRecurrenceCancel}
+          recurrenceModal={this.state.recurrenceModal}
+          handleRecurrenceModal={this.handleRecurrenceModal}
         />
         <BigCalendar
           selectable

@@ -1,7 +1,7 @@
 const assign = require('express').Router()
 // const config = require('../../config')
 const { User, Dog, Client, Walk } = require('../../models/db')
-const subWeeks = require('date-fns/sub_weeks')
+const moment = require('moment')
 
 assign.post('/', (req, res) => {
   // console.log('\n\n\nSchedule post subroute hit, req.body:', req.body)
@@ -27,6 +27,36 @@ assign.post('/', (req, res) => {
     }
   })
   .then(walk => {
+    const recurringWalks = []
+    for (let id in req.body.recurrence) {
+      let event = req.body.recurrence[id]
+      for (let i = 0; i < event.duration; i++) {
+        date = moment(date).add(event.freq, 'weeks').toDate()
+        const walkObj = { date: date.setHours(1, 0, 0, 0) }
+        Walk.findOne({
+          where: {
+            date: {
+              $lt: date.setHours(23, 59, 59, 0),
+              $gt: date.setHours(0, 0, 0, 0)
+            }
+          },
+          include: [{model: Dog}]
+        })
+        .then(walk => {
+          if (walk) {
+            return walk.addDog(id)
+          } else {
+            return Walk.create(walkObj)
+            .then(walk => {
+              return walk.addDog(id)
+            })
+          }
+        })
+        .then(walk => {
+          console.log('added walk for date', date, id)
+        })
+      }
+    }
     res.status(200).json({walk})
   })
   .catch(err => {

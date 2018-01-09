@@ -145,7 +145,7 @@ function getScheduledFailure (err) {
   }
 }
 
-export function saveScheduled (date, dogs) {
+export function saveScheduled (date, dogs, recurrence) {
   dogs = dogs.filter(dog => !dog.assignedTo)
   return dispatch => {
     dispatch(saveScheduledRequest())
@@ -154,7 +154,7 @@ export function saveScheduled (date, dogs) {
         'authorization': localStorage.getItem('id_token')
       }
     }
-    return axios.post('/api/schedule', {date, dogs}, config)
+    return axios.post('/api/schedule', {date, dogs, recurrence}, config)
       .then(res => {
         // console.log('response from post /api/assign/schedule:', res)
         dispatch(getAllEvents())

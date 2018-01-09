@@ -18,6 +18,7 @@ const DEFAULT_STATE = {
   date: null,
   dogs: [],
   events: [],
+  recurring: [],
   isFetching: false,
   error: '',
   msg: ''

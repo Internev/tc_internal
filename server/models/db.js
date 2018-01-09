@@ -59,8 +59,7 @@ Client.Dog = Client.hasMany(Dog, {onDelete: 'cascade'})
 Dog.belongsTo(Client, {onDelete: 'cascade'})
 
 Walk.belongsTo(User)
-// Walk.hasMany(Client)
-// through clientwalks or something...? Then can query it for client-specific walks details.
+
 Dog.belongsToMany(Walk, {through: 'dogwalk'})
 Walk.belongsToMany(Dog, {through: 'dogwalk'})
 

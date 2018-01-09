@@ -38,6 +38,11 @@
       display: inline-block;
     }
   }
+  &_recurrence {
+    div {
+      margin: 0.5rem 0;
+    }
+  }
 }
 
 .details-view {

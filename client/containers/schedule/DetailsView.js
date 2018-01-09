@@ -15,7 +15,7 @@ class DetailsView extends React.Component {
     this.props.dispatch(getScheduled(this.props.date))
   }
   componentDidUpdate () {
-    console.log('Details View updated, props:', this.props)
+    // console.log('Details View updated, props:', this.props)
   }
   handleAssignClick () {
     this.props.onSelectSlot({start: this.props.date})

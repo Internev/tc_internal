@@ -3,6 +3,7 @@ import { Modal, Header } from 'semantic-ui-react'
 import DogList from './DogList'
 import ScheduledList from './ScheduledList'
 import './Schedule.scss'
+import moment from 'moment'
 
 const ScheduleModal = (
   {
@@ -21,7 +22,13 @@ const ScheduleModal = (
     assignThisDay,
     isScheduleFetching,
     msg,
-    handleCloseMsg
+    handleCloseMsg,
+    recurrenceState,
+    handleRecurrenceFreq,
+    handleRecurrenceDuration,
+    handleRecurrenceCancel,
+    recurrenceModal,
+    handleRecurrenceModal
   }) => {
   return (
     <Modal
@@ -31,7 +38,7 @@ const ScheduleModal = (
       closeIcon
       className='calendar_modal'
     >
-      <Header icon='add square' content={`Schedule dogs for ${date}`} />
+      <Header icon='add square' content={`Schedule dogs for ${moment(date).format('dddd MMMM Do, YYYY')}`} />
       <Modal.Content>
         <ScheduledList
           dogs={scheduledDogs}
@@ -41,6 +48,13 @@ const ScheduleModal = (
           isFetching={isScheduleFetching}
           msg={msg}
           handleCloseMsg={handleCloseMsg}
+          date={date}
+          handleRecurrenceFreq={handleRecurrenceFreq}
+          handleRecurrenceDuration={handleRecurrenceDuration}
+          handleRecurrenceCancel={handleRecurrenceCancel}
+          recurrenceModal={recurrenceModal}
+          handleRecurrenceModal={handleRecurrenceModal}
+          recurrenceState={recurrenceState}
         />
         <DogList
           handleDogClick={handleDogClick}
