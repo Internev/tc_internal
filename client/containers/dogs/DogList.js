@@ -29,37 +29,6 @@ const desc = (dog, link, update, index, handlePopupOpen, handlePopupClose, popup
       <Button onClick={e => link(dog.id)}>
         Details
       </Button>
-      {!dog.pickedUp
-        ? <Popup
-          key={dog.id}
-          trigger={<Button content='Picked Up' />}
-          content={
-            <Button
-              content='Confirm Pickup'
-              onClick={() => update(index, dog.id, 'picked up')} />}
-          on='click'
-          open={popups[dog.id]}
-          onOpen={() => handlePopupOpen(dog.id)}
-          onClose={() => handlePopupClose(dog.id)}
-          position='top left'
-          />
-        : !dog.droppedOff
-          ? <Popup
-            key={dog.id}
-            trigger={<Button content='Dropped Off' />}
-            content={
-              <Button
-                content='Confirm Drop Off'
-                onClick={() => update(index, dog.id, 'dropped off')} />}
-            on='click'
-            open={popups[dog.id]}
-            onOpen={() => handlePopupOpen(dog.id)}
-            onClose={() => handlePopupClose(dog.id)}
-            position='top left'
-            />
-          : null
-      }
-
     </div>
   </div>
 )
