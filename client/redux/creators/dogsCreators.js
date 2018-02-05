@@ -9,17 +9,58 @@ import {
   GET_ALL_DOGS_REQUEST,
   GET_ALL_DOGS_SUCCESS,
   GET_ALL_DOGS_FAILURE,
-  UPDATE_DOG_STATUS
+  UPDATE_DOG_STATUS_REQUEST,
+  UPDATE_DOG_STATUS_SUCCESS,
+  UPDATE_DOG_STATUS_FAILURE
 } from '../actions'
 import axios from 'axios'
 import {checkToken} from './authCreators'
 
-export function updateDogStatus (index, id, status) {
+export function updateDogStatus (index, dog, status) {
+  return dispatch => {
+    dispatch(updateDogStatusRequest())
+    const config = {
+      headers: {
+        'authorization': localStorage.getItem('id_token'),
+        'dogname': dog.name,
+        'doggender': dog.gender,
+        'phone': dog.client.phone,
+        'dogstatus': status
+      }
+    }
+    return axios.get('/api/dogs/sms', config)
+      .then(res => {
+        console.log('response from sms:', res)
+        return dispatch(updateDogStatusSuccess(index, dog, status))
+      })
+      .catch(err => {
+        return dispatch(updateDogStatusFailure(index, dog, status, err))
+      })
+  }
+}
+
+function updateDogStatusRequest () {
   return {
-    type: UPDATE_DOG_STATUS,
+    type: UPDATE_DOG_STATUS_REQUEST
+  }
+}
+
+function updateDogStatusSuccess (index, id, status) {
+  return {
+    type: UPDATE_DOG_STATUS_SUCCESS,
     index,
     id,
     status
+  }
+}
+
+function updateDogStatusFailure (index, id, status, err) {
+  return {
+    type: UPDATE_DOG_STATUS_FAILURE,
+    index,
+    id,
+    status,
+    err
   }
 }
 

@@ -1,5 +1,6 @@
 const dogs = require('express').Router()
 const config = require('../../../config')
+const sendSMS = require('../../utils/sms').sendSMS
 const { User, Dog, Client, Walk } = require('../../models/db')
 
 dogs.get('/all', (req, res) => {
@@ -97,6 +98,16 @@ dogs.post('/comment', (req, res) => {
       console.log('Error updating dog comment:', err)
       res.status(500).json({err})
     })
+})
+
+dogs.get('/sms', (req, res) => {
+  console.log('\n\n\nreq headers for sms:', req.headers)
+  const phone = req.headers.phone
+  const name = req.headers.dogname
+  const gender = req.headers.doggender
+  const status = req.headers.dogstatus
+  sendSMS(name, gender, '0414641576', status)
+  res.sendStatus(200)
 })
 
 // dogs.get('/comments', (req, res) => {

@@ -9,7 +9,9 @@ import {
   GET_ALL_DOGS_REQUEST,
   GET_ALL_DOGS_SUCCESS,
   GET_ALL_DOGS_FAILURE,
-  UPDATE_DOG_STATUS
+  UPDATE_DOG_STATUS_REQUEST,
+  UPDATE_DOG_STATUS_SUCCESS,
+  UPDATE_DOG_STATUS_FAILURE
 } from '../actions'
 
 const DEFAULT_STATE = {
@@ -75,7 +77,7 @@ const addCommentFailure = (state, action) => {
   return newState
 }
 
-const updateDogStatus = (state, action) => {
+const updateDogStatusSuccess = (state, action) => {
   const newDog = state.assigned[action.index]
   if (action.status === 'picked up') {
     newDog.pickedUp = true
@@ -109,8 +111,8 @@ export default function (state = DEFAULT_STATE, action) {
       return addCommentSuccess(state, action)
     case ADD_COMMENT_FAILURE:
       return addCommentFailure(state, action)
-    case UPDATE_DOG_STATUS:
-      return updateDogStatus(state, action)
+    case UPDATE_DOG_STATUS_SUCCESS:
+      return updateDogStatusSuccess(state, action)
     default:
       return state
   }
