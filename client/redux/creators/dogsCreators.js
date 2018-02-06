@@ -16,12 +16,14 @@ import {
 import axios from 'axios'
 import {checkToken} from './authCreators'
 
-export function updateDogStatus (index, dog, status) {
+export function updateDogStatus (index, dog, status, id) {
   return dispatch => {
     dispatch(updateDogStatusRequest())
     const config = {
       headers: {
         'authorization': localStorage.getItem('id_token'),
+        'id': id,
+        'dogid': dog.id,
         'dogname': dog.name,
         'doggender': dog.gender,
         'phone': dog.client.phone,
@@ -184,7 +186,23 @@ export function getDogs (userId) {
           dispatch(getDogsFailure(res.data.msg))
         } else {
           const walk = res.data.walk
-          dispatch(getDogsSuccess(walk.dogs, walk.comment))
+          const sms = res.data.walk.sms
+          const dogs = walk.dogs
+          if (sms) {
+            for (let key in sms) {
+              dogs.forEach(dog => {
+                if (dog.id === parseInt(key)) {
+                  if (sms[key].includes('picked up')) {
+                    dog.pickedUp = true
+                  }
+                  if (sms[key].includes('dropped off')) {
+                    dog.droppedOff = true
+                  }
+                }
+              })
+            }
+          }
+          dispatch(getDogsSuccess(dogs, walk.comment))
         }
       })
       .catch(err => {

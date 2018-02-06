@@ -106,8 +106,28 @@ dogs.get('/sms', (req, res) => {
   const name = req.headers.dogname
   const gender = req.headers.doggender
   const status = req.headers.dogstatus
-  sendSMS(name, gender, '0414641576', status)
-  res.sendStatus(200)
+  const dogid = req.headers.dogid
+  // sendSMS(name, gender, '0414641576', status)
+  Walk.findOne({
+    where: {
+      userId: req.headers.id,
+      date: {
+        $lt: new Date(),
+        $gt: new Date().setHours(0, 0, 0, 0)
+      }
+    }
+  })
+  .then(walk => {
+    const sms = walk.get('sms') || {}
+    const dogstatus = sms[dogid] ? sms[dogid] : []
+    dogstatus.push(status)
+    sms[dogid] = dogstatus
+    return walk.update({sms})
+  })
+  .then(walk => {
+    console.log('\n\n\nupdated walk:\n\n', walk, '\n', walk.sms)
+    res.sendStatus(200)
+  })
 })
 
 // dogs.get('/comments', (req, res) => {

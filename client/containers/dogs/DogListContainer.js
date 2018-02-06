@@ -28,7 +28,7 @@ class DogListContainer extends React.Component {
   handleUpdateStatus (index, dog, status) {
     status = status || 'picked up'
     this.setState({popups: {}})
-    this.props.dispatch(updateDogStatus(index, dog, status))
+    this.props.dispatch(updateDogStatus(index, dog, status, this.props.auth.id))
   }
   handlePopupOpen (id) {
     const update = {}
