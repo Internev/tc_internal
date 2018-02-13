@@ -1,5 +1,6 @@
 import React from 'react'
 import { Input, Label, Form, Icon, Button, Popup } from 'semantic-ui-react'
+import DogEditorRadio from './DogEditorRadio'
 import './ClientTools.scss'
 import differenceInYears from 'date-fns/difference_in_years'
 
@@ -53,16 +54,28 @@ const DogEditor = ({dog, handleEditClientDog, handleRemoveClientDog, index, hand
           value={dog.allergies} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
       </div>
       <div>
-        <Input type='text' name='desexed' fluid label={{content: 'Desexed:'}}
-          value={dog.desexed} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
+        <DogEditorRadio
+          heading='Desexed'
+          fieldname='desexed'
+          clientProp={dog.desexed}
+          handleEditClientDog={handleEditClientDog}
+          dog={dog}
+          index={index}
+          />
       </div>
       <div>
         <Input type='text' name='injuries' fluid label={{content: 'Injuries:'}}
           value={dog.injuries} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
       </div>
       <div>
-        <Input type='text' name='insurance' fluid label={{content: 'Insurance:'}}
-          value={dog.insurance} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
+        <DogEditorRadio
+          heading='Insurance'
+          fieldname='insurance'
+          clientProp={dog.insurance}
+          handleEditClientDog={handleEditClientDog}
+          dog={dog}
+          index={index}
+          />
       </div>
       <div>
         <Input type='text' name='insurer' fluid label={{content: 'Insurer:'}}
@@ -81,8 +94,14 @@ const DogEditor = ({dog, handleEditClientDog, handleRemoveClientDog, index, hand
           value={dog.recall} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
       </div>
       <div>
-        <Input type='text' name='vaccinated' fluid label={{content: 'Vaccinated:'}}
-          value={dog.vaccinated} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
+        <DogEditorRadio
+          heading='Vaccinated'
+          fieldname='vaccinated'
+          clientProp={dog.vaccinated}
+          handleEditClientDog={handleEditClientDog}
+          dog={dog}
+          index={index}
+          />
       </div>
       <div>
         <Input type='text' name='vacdate' fluid label={{content: 'Date of last vaccination:'}}

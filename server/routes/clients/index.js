@@ -62,9 +62,8 @@ clients.post('/update', (req, res) => {
   const dbUpdates = []
   dbUpdates.push(Client.update(client, {where: {id: client.id}}))
   client.dogs.forEach(dog => {
-    dbUpdates.push(Dog.update(dog, {where: {clientId: client.id}}))
+    dbUpdates.push(Dog.update(dog, {where: {id: dog.id}}))
   })
-
   Promise.all(dbUpdates)
     .then(() => {
       return Client.findAll({include: [ Dog ]})

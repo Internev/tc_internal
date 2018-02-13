@@ -56,6 +56,7 @@ class ClientTools extends React.Component {
   handleEditClientChange (e) {
     const update = {}
     update[e.target.name] = e.target.value
+    console.log('updating edit client change with:', update, 'e is:', e)
     this.props.dispatch(updateActiveClient(update))
   }
   handleEditClientObjectUpdate (e) {

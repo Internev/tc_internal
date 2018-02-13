@@ -1,6 +1,7 @@
 import React from 'react'
-import { Input, Card, Icon, Modal, Header, Button, Loader, Popup } from 'semantic-ui-react'
+import { Input, Card, Icon, Modal, Header, Button, Loader, Popup, Radio, Form, Label } from 'semantic-ui-react'
 import DogEditor from './DogEditor'
+import ClientEditorRadio from './ClientEditorRadio'
 import './ClientTools.scss'
 
 const desc = (dogs) => (
@@ -62,8 +63,12 @@ const ClientEditor = ({
                 value={client.pickupdetails} labelPosition='left' onChange={e => handleEditClientChange(e)} />
             </div>
             <div>
-              <Input type='text' name='keylock' fluid label={{content: 'Keylock:'}}
-                value={client.keylock} labelPosition='left' onChange={e => handleEditClientChange(e)} />
+              <ClientEditorRadio
+                heading='Keylock'
+                fieldname='keylock'
+                clientProp={client.keylock}
+                handleEditClientChange={handleEditClientChange}
+                />
             </div>
             <div>
               <Input type='text' name='keycode' fluid label={{content: 'Keycode:'}}
