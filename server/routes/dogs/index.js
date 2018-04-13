@@ -107,7 +107,7 @@ dogs.get('/sms', (req, res) => {
   const gender = req.headers.doggender
   const status = req.headers.dogstatus
   const dogid = req.headers.dogid
-  // sendSMS(name, gender, '0414641576', status)
+  sendSMS(name, gender, phone, status)
   Walk.findOne({
     where: {
       userId: req.headers.id,

@@ -1,28 +1,47 @@
 const config = require('../../config')
-const esendex = require('esendex')(config.sms)
+const axios = require('axios')
 
-const messages = {
-  accountreference: 'EX0209145'
+function makeMessage (number, msg) {
+  return {
+    'messages': [
+      {
+        'source': 'javascript',
+        'from': 'Tom + Captain',
+        'body': msg,
+        // 'to': number
+        'to': '+61411111111' // test number.
+
+      }
+    ]
+  }
 }
 
 function sendSMS (name, gender, number, type) {
+  console.log('\n\nsendSMS Init\n\n')
   gender = gender === 'Male' ? 'his' : 'her'
+  let msg
   if (type === 'picked up') {
-    messages.message = [{
-      to: '0414641576',
-      body: `Hi there, letting you know that ${name} has just been picked up for ${gender} adventure!`
-    }]
+    msg = makeMessage(number, `Hi there, letting you know that ${name} has just been picked up for ${gender} adventure!`)
   } else if (type === 'dropped off') {
-    messages.message = [{
-      to: '0414641576',
-      body: `${name} has returned from ${gender} adventure. Thank you, Tom and Captain.`
-    }]
+    msg = makeMessage(number, `${name} has returned from ${gender} adventure. Thank you, Tom and Captain.`)
   }
-  if (messages.message) {
-    esendex.messages.send(messages, function (err, response) {
-      if (err) return console.log('error: ', err)
-      console.dir(response)
-    })
+  if (msg) {
+    const options = {
+      method: 'POST',
+      url: 'https://rest.clicksend.com/v3/sms/send',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': config.sms.auth
+      },
+      data: msg
+    }
+    axios(options)
+      .then(res => {
+        console.log('sms response:', res)
+      })
+      .catch(err => {
+        console.log('sms error:', err)
+      })
   }
 }
 
