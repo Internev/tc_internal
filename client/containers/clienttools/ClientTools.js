@@ -32,12 +32,13 @@ class ClientTools extends React.Component {
     if (this.props.clients.list.length < 1) this.props.dispatch(getClients())
   }
   componentDidUpdate () {
-    // console.log('Client Tools props:', this.props, this.state)
+    console.log('Client Tools props:', this.props, this.state)
     // console.log('Clients message is:', this.props.clients.msg)
   }
   handleClientCSVUpload (e) {
     let reader = new FileReader()
     reader.onload = (file) => {
+      // console.log('clients:', parseClientCSV(file.target.result))
       this.props.dispatch(uploadClients(parseClientCSV(file.target.result)))
     }
     reader.readAsText(e.target.files[0])

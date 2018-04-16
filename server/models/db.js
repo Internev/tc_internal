@@ -26,8 +26,7 @@ const Client = db.define('client', {
   social: Sequelize.STRING,
   vet: Sequelize.JSON,
   pickupdetails: {type: Sequelize.STRING, defaultValue: ''},
-  keylock: {type: Sequelize.BOOLEAN, defaultValue: false},
-  keycode: {type: Sequelize.STRING, defaultValue: ''}
+  access: Sequelize.JSON
 })
 
 const Dog = db.define('dog', {

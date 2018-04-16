@@ -32,6 +32,7 @@ const ClientEditor = ({
     <div className='client_editor'>
       <h3>Edit Client Details</h3>
       <Loader active={clients.isFetching} />
+      {console.log('**client', client)}
       <Modal
         open={modalOpen}
         onClose={cancelEditClient}
@@ -63,16 +64,16 @@ const ClientEditor = ({
                 value={client.pickupdetails} labelPosition='left' onChange={e => handleEditClientChange(e)} />
             </div>
             <div>
-              <ClientEditorRadio
-                heading='Keylock'
-                fieldname='keylock'
-                clientProp={client.keylock}
-                handleEditClientChange={handleEditClientChange}
-                />
+              <Input type='text' name='accessType' fluid label={{content: 'Access Type:'}}
+                value={client.access && client.access.type} labelPosition='left' onChange={e => handleEditClientChange(e)} />
             </div>
             <div>
-              <Input type='text' name='keycode' fluid label={{content: 'Keycode:'}}
-                value={client.keycode} labelPosition='left' onChange={e => handleEditClientChange(e)} />
+              <Input type='text' name='accessInfo' fluid label={{content: 'Access Info:'}}
+                value={client.access && client.access.info} labelPosition='left' onChange={e => handleEditClientChange(e)} />
+            </div>
+            <div>
+              <Input type='text' name='accessCode' fluid label={{content: 'Access Code:'}}
+                value={client.access && client.access.code} labelPosition='left' onChange={e => handleEditClientChange(e)} />
             </div>
             <div>
               <Input type='text' name='social' fluid label={{content: 'Social Media:'}}

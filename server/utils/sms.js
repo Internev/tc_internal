@@ -9,7 +9,7 @@ function makeMessage (number, msg) {
         'from': 'Tom + Captain',
         'body': msg,
         // 'to': number
-        'to': '+61411111111' // test number.
+        'to': '+61414641576' // test number.
 
       }
     ]

@@ -6,24 +6,29 @@ export const parseClientCSV = (csv) => {
   rows.shift()
   rows.shift()
   return rows.map(row => {
+    console.log('\n\nROW\n', row)
     const client = {}
     client.name = row[9]
     let street = row[12] ? `${row[11]}, ${row[12]}` : row[11]
     client.address = `${street}, ${row[13]}, ${row[14]}, ${row[15]}`
     client.email = row[17]
     client.phone = row[18]
-    client.social = `${row[19]} ${row[20]}`
+    client.social = `${row[19]}`
     client.emergency = {
-      name: row[23],
-      phone: row[32]
+      name: row[22],
+      phone: row[31]
     }
     client.dogs = makeDogArray(row)
-    let vstreet = row[86] ? `${row[85]}, ${row[86]}` : row[85]
+    let vstreet = row[85] ? `${row[84]}, ${row[85]}` : row[84]
     client.vet = {
-      practice: row[83],
-      name: row[84],
-      address: `${vstreet}, ${row[87]}, ${row[88]}, ${row[89]}`,
-      phone: row[92]
+      practice: row[82],
+      name: row[83],
+      address: `${vstreet}, ${row[86]}, ${row[87]}, ${row[88]}`,
+      phone: row[91]
+    }
+    client.access = {
+      type: row[92],
+      info: row[93]
     }
     return client
   })
@@ -31,14 +36,14 @@ export const parseClientCSV = (csv) => {
 
 function makeDogArray (row, a, i) {
   a = a || []
-  i = i || 33
+  i = i || 32
   let dog = {
     name: row[i],
     dob: new Date(row[i + 1]),
     breed: row[i + 2],
     gender: row[i + 3],
     recall: row[i + 4],
-    issues: row[i + 6],
+    issues: row[i + 5] === 'Yes' ? row[i + 6] : 'None',
     desexed: row[i + 7] === 'Yes',
     vaccinated: row[i + 8] === 'Yes',
     vacdate: row[i + 9],
@@ -71,32 +76,37 @@ function makeDogArray (row, a, i) {
   22: referral (if referred)
   23: Emergency contact name
   32: Emergency contact number
-  33, 50, 67: dog name
-  34: dog dob (ideally, some people put in their own birthday...)
-  35: breed
-  36: sex
-  37: recall
-  38: issues around dogs y/n
-  39: issues (if yes)
-  40: Desexed
-  41: Vaccinated
-  42: Date of last vaccination
-  43: Allergies
-  44: Medications
-  45: Pre-existing injuries
-  46: Pet insurance y/n
-  47: Insurance company
-  48, 65, 82: Additional info
-  49: another dog?
-  50 -> 82 2 more sets of dog questions.
-  83: Vet practice
-  84: Vet name
-  85: Vet street 1
-  86: Vet street 2
-  87: Vet suburb
-  88: Vet state
-  89: Vet postcode
-  90: Vet country (unused)
-  91: Vet email
-  92: Vet phone
+  32, 49, 66: dog name
+  33: dog dob (ideally, some people put in their own birthday...)
+  34: breed
+  35: sex
+  36: recall
+  37: issues around dogs y/n
+  38: issues (if yes)
+  39: Desexed
+  40: Vaccinated
+  41: Date of last vaccination
+  42: Allergies
+  43: Medications
+  44: Pre-existing injuries
+  45: Pet insurance y/n
+  46: Insurance company
+  47, 64, 81: Additional info
+  48: another dog?
+  49 -> 81 2 more sets of dog questions.
+  82: Vet practice
+  83: Vet name
+  84: Vet street 1
+  85: Vet street 2
+  86: Vet suburb
+  87: Vet state
+  88: Vet postcode
+  89: Vet country (unused)
+  90: Vet email
+  91: Vet phone
+  92: Access type
+  93: Access More info
+  94: Mailing List YN
+  95: ToC Agree
+  96: Signature
   */
