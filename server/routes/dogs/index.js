@@ -1,30 +1,15 @@
 const dogs = require('express').Router()
 const config = require('../../../config')
-const sendSMS = require('../../utils/sms').sendSMS
+const {sendSMS, sendMMS} = require('../../utils/sms')
 const { User, Dog, Client, Walk } = require('../../models/db')
-
-dogs.get('/all', (req, res) => {
-  Dog.findAll({
-    include: [ Client ],
-    order: [['updatedAt', 'DESC']]
-  })
-  .then(dogs => {
-    console.log('\n\nDogs from findAll:', dogs)
-    res.status(200).json({dogs})
-  })
-  .catch(err => {
-    console.log('Error finding all dogs:', err)
-    res.status(500).json({err})
-  })
-})
-
+const multer = require('multer')
+const fs = require('fs')
 const cloudinary = require('cloudinary')
 cloudinary.config({
   cloud_name: config.cloud_name,
   api_key: config.cloud_api_key,
   api_secret: config.cloud_api_secret
 })
-const multer = require('multer')
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/')
@@ -38,9 +23,10 @@ const upload = multer({ storage })
 dogs.post('/upload', upload.single('file'), (req, res) => {
   console.log('req.file is:', req.file)
   console.log('req body?', req.body)
+  const filePath = req.file.path
   // dogs db not implemented yet.
   // res.sendStatus(200)
-  cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+  cloudinary.v2.uploader.upload(filePath, (err, result) => {
     if (err) console.log('cloudinary upload error:', err)
     let adjustment = {photo: result.url}
     Dog.update(
@@ -51,12 +37,56 @@ dogs.post('/upload', upload.single('file'), (req, res) => {
       )
       .then(dog => {
         console.log('dog photo update result:', dog)
+        fs.unlinkSync(filePath)
         res.status(200).json({dog: dog[1]})
       })
       .catch(err => {
         console.log('dog photo update err:', err)
         res.status(500).json({err})
       })
+  })
+})
+
+dogs.post('/mms', upload.single('file'), (req, res) => {
+  console.log('req.file is:', req.file)
+  console.log('req body?', req.body)
+  // dogs db not implemented yet.
+
+  sendMMS(req.body.name, req.body.gender, req.body.number, req.file.path)
+
+  res.sendStatus(200)
+  // cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+  //   if (err) console.log('cloudinary upload error:', err)
+  //   let adjustment = {photo: result.url}
+  //   Dog.update(
+  //     adjustment,
+  //     {where: {id: req.body.id},
+  //       returning: true,
+  //       plain: true}
+  //     )
+  //     .then(dog => {
+  //       console.log('dog photo update result:', dog)
+  //       res.status(200).json({dog: dog[1]})
+  //     })
+  //     .catch(err => {
+  //       console.log('dog photo update err:', err)
+  //       res.status(500).json({err})
+  //     })
+  // })
+})
+
+dogs.get('/all', (req, res) => {
+  Dog.findAll({
+    include: [ Client ],
+    order: [['updatedAt', 'DESC']]
+  })
+  .then(dogs => {
+    console.log('\n\nDogs from findAll:', dogs)
+    res.status(200).json({dogs})
+  })
+  .catch(err => {
+    console.log('Error finding all dogs:', err)
+    res.status(500).json({err})
   })
 })
 

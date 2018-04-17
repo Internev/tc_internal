@@ -87,8 +87,34 @@ class DogDetailsContainer extends React.Component {
         that.setState({uploadProgress: false})
       })
   }
-  handleImageMMS (id) {
-    console.log('MMSing dog:', id)
+  handleImageMMS (id, name, gender, number) {
+    this.setState({mmsOpen: false, uploadProgress: true})
+    const that = this
+    let config = {
+      headers: {
+        'authorization': localStorage.getItem('id_token'),
+        'content-type': 'multipart/form-data'
+      },
+      onUploadProgress (progressEvent) {
+        that.setState({uploadPercentage: Math.round((progressEvent.loaded * 100) / progressEvent.total)})
+      }
+    }
+    let fd = new FormData()
+    fd.append('file', this.state.file)
+    fd.append('name', name)
+    fd.append('gender', gender)
+    fd.append('number', number)
+
+    axios.post('/api/dogs/mms', fd, config)
+      .then(res => {
+        console.log('upload finished, res:', res)
+        // this.props.dispatch(getUserThenDogsThenEditable(res.data.dog.id))
+        that.setState({uploadProgress: false})
+      })
+      .catch(err => {
+        console.log('Dog mms upload failed, err:', err)
+        that.setState({uploadProgress: false})
+      })
   }
   render () {
     const d = this.props.dogs.editing
@@ -107,6 +133,8 @@ class DogDetailsContainer extends React.Component {
             dogImagePreview={this.state.dogImagePreview}
             uploadPercentage={this.state.uploadPercentage}
             name={d.name}
+            number={d.client && d.client.phone}
+            gender={d.gender}
             id={d.id}
             />
           <DogUploadModal
@@ -120,6 +148,8 @@ class DogDetailsContainer extends React.Component {
             dogImagePreview={this.state.dogImagePreview}
             uploadPercentage={this.state.uploadPercentage}
             name={d.name}
+            number={d.client && d.client.phone}
+            gender={d.gender}
             id={d.id}
             />
           <Dimmer active={this.state.uploadProgress}>

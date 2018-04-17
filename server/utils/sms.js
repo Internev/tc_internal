@@ -1,5 +1,7 @@
 const config = require('../../config')
 const axios = require('axios')
+const sharp = require('sharp')
+const fs = require('fs')
 
 function makeMessage (number, msg) {
   return {
@@ -45,4 +47,58 @@ function sendSMS (name, gender, number, type) {
   }
 }
 
+function sendMMS (name, gender, number, filePath) {
+  console.log('**\nabout to try to send mms\n**')
+  console.log('name:', name)
+  console.log('gender:', gender)
+  console.log('number:', number)
+  console.log('filePath:', filePath)
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': config.sms.auth
+    }
+  }
+
+  fs.readFile(filePath, (err, data) => {
+    if (err) throw err
+    return sharp(data).resize(1080, 1080).min().toBuffer()
+    .then(data => {
+      const file64 = data.toString('base64')
+      options.url = 'https://rest.clicksend.com/v3/uploads?convert=mms'
+      options.data = {
+        content: file64
+      }
+      return axios(options)
+    })
+    .then(res => {
+      const imgPath = res.data.data._url
+      options.url = 'https://rest.clicksend.com/v3/mms/send'
+      options.data = {
+        'media_file': imgPath,
+        'messages': [
+          {
+            'source': 'javascript',
+            'from': 'Tom + Captain',
+            'body': `${name} on his/her adventure!`,
+            'to': '+61414641576',
+            // 'to': number,
+            'subject': `${name} on his/her adventure!`,
+            'country': 'AU'
+          }
+        ]
+      }
+      return axios(options)
+    })
+    .then(res => {
+      console.log('\n\nHave I sent the mms?\n', res)
+    })
+    .catch(err => {
+      if (err) console.log('MMS failure:', err)
+    })
+  })
+}
+
 module.exports.sendSMS = sendSMS
+module.exports.sendMMS = sendMMS
