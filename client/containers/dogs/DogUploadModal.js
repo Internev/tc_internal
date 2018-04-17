@@ -2,16 +2,16 @@ import React from 'react'
 import { Button, Header, Icon, Modal, Image, Progress } from 'semantic-ui-react'
 import './Dog.scss'
 
-const DogUploadModal = ({open, handleClose, upload, handleImagePreview, dogImagePreview, handleImageUpload, uploadPercentage, name, id}) => (
+const DogUploadModal = ({open, handleClose, title, heading, upload, activate, handleImagePreview, dogImagePreview, handleImageUpload, uploadPercentage, name, id}) => (
   <Modal
     open={open}
     onClose={handleClose}
     size='mini'
     className='dog-upload'
   >
-    <Header icon='upload' content='Upload Dog Image' />
+    <Header icon='upload' content={title} />
     <Modal.Content>
-      <h3>Upload a picture of {name}</h3>
+      <h3>{heading} of {name}</h3>
       <label htmlFor='dogUpload' className='ui icon button'>
         <Icon name='upload' />
         &nbsp;Choose Photo
@@ -37,7 +37,7 @@ const DogUploadModal = ({open, handleClose, upload, handleImagePreview, dogImage
         inverted
         disabled={!dogImagePreview}
         >
-        <Icon name='checkmark' /> Upload
+        <Icon name='checkmark' /> {activate}
       </Button>
     </Modal.Actions>
   </Modal>

@@ -5,7 +5,7 @@ import { Image, Header, List, Icon, Form, Button } from 'semantic-ui-react'
 import './Dog.scss'
 import dogPlaceholder from '../../imgs/dog-placeholder.png'
 
-const DogDetails = ({dog, handleModalOpen, addComment, comment, handleCommentChange, history}) => {
+const DogDetails = ({dog, handleModalOpen, handleMMSOpen, addComment, comment, handleCommentChange, history}) => {
   const emergency = (em) => {
     if (em) {
       return (
@@ -36,7 +36,7 @@ const DogDetails = ({dog, handleModalOpen, addComment, comment, handleCommentCha
         <List.Item>
           <List.Header>Comments</List.Header>
           {c.map((com, i) => (
-            <List.Content><b>{com.name}: </b>{com.msg}</List.Content>
+            <List.Content key={i}><b>{com.name}: </b>{com.msg}</List.Content>
           ))}
         </List.Item>
       )
@@ -76,6 +76,12 @@ const DogDetails = ({dog, handleModalOpen, addComment, comment, handleCommentCha
           size='tiny'
           onClick={() => history.goBack()}
           />
+        <Button
+          content='Send Photo'
+          size='tiny'
+          color='teal'
+          onClick={handleMMSOpen}
+          />
       </div>
       {img()}
       <div className='dog-details_content-items'>
@@ -104,13 +110,13 @@ const DogDetails = ({dog, handleModalOpen, addComment, comment, handleCommentCha
             <List.Content><b>Notes: </b>{dog.notes}</List.Content>
           </List.Item>
           <List.Item>
-            <List.Content><b>Keylock: </b>{dog.client && dog.client.keylock ? <Icon name='checkmark' /> : <Icon name='remove' />}</List.Content>
+            <List.Content><b>Access: </b>{dog.client && dog.client.access && dog.client.access.type}</List.Content>
           </List.Item>
           <List.Item>
-            <List.Content><b>Keycode: </b>{dog.client && dog.client.keycode}</List.Content>
+            <List.Content><b>Access Details: </b>{dog.client && dog.client.access && dog.client.access.info}</List.Content>
           </List.Item>
           <List.Item>
-            <List.Content><b>Pickup Details: </b>{dog.client && dog.client.pickupdetails}</List.Content>
+            <List.Content><b>Access Code: </b>{dog.client && dog.client.access && dog.client.access.code}</List.Content>
           </List.Item>
           <List.Item>
             <List.Content><b>Desexed: </b>{dog.desexed ? <Icon name='checkmark' /> : <Icon name='remove' />}</List.Content>

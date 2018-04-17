@@ -12,6 +12,7 @@ class DogDetailsContainer extends React.Component {
     super(props)
     this.state = {
       modalOpen: false,
+      mmsOpen: false,
       uploadProgress: false,
       uploadPercentage: 0,
       dogImagePreview: '',
@@ -20,10 +21,13 @@ class DogDetailsContainer extends React.Component {
     }
     this.handleModalOpen = this.handleModalOpen.bind(this)
     this.handleModalClose = this.handleModalClose.bind(this)
+    this.handleMMSOpen = this.handleMMSOpen.bind(this)
+    this.handleMMSClose = this.handleMMSClose.bind(this)
     this.handleCommentChange = this.handleCommentChange.bind(this)
     this.addComment = this.addComment.bind(this)
     this.handleImagePreview = this.handleImagePreview.bind(this)
     this.handleImageUpload = this.handleImageUpload.bind(this)
+    this.handleImageMMS = this.handleImageMMS.bind(this)
   }
   componentDidMount () {
     const paramId = parseInt(this.props.match.params.id)
@@ -37,6 +41,8 @@ class DogDetailsContainer extends React.Component {
   }
   handleModalOpen () { this.setState({modalOpen: true}) }
   handleModalClose () { this.setState({modalOpen: false}) }
+  handleMMSOpen () { this.setState({mmsOpen: true}) }
+  handleMMSClose () { this.setState({mmsOpen: false}) }
   handleCommentChange (e) { this.setState({comment: e.target.value}) }
   addComment () {
     this.props.dispatch(addDogComment(this.props.dogs.editing.id, this.props.auth.name, this.state.comment))
@@ -81,6 +87,9 @@ class DogDetailsContainer extends React.Component {
         that.setState({uploadProgress: false})
       })
   }
+  handleImageMMS (id) {
+    console.log('MMSing dog:', id)
+  }
   render () {
     const d = this.props.dogs.editing
     return (
@@ -90,8 +99,24 @@ class DogDetailsContainer extends React.Component {
           <DogUploadModal
             open={this.state.modalOpen}
             handleClose={this.handleModalClose}
+            title='Upload Dog Image'
+            heading='Upload a picture'
+            activate='Upload'
             handleImagePreview={this.handleImagePreview}
             handleImageUpload={this.handleImageUpload}
+            dogImagePreview={this.state.dogImagePreview}
+            uploadPercentage={this.state.uploadPercentage}
+            name={d.name}
+            id={d.id}
+            />
+          <DogUploadModal
+            open={this.state.mmsOpen}
+            handleClose={this.handleMMSClose}
+            title='Send the client a Photo'
+            heading='Send client a photo'
+            activate='Send'
+            handleImagePreview={this.handleImagePreview}
+            handleImageUpload={this.handleImageMMS}
             dogImagePreview={this.state.dogImagePreview}
             uploadPercentage={this.state.uploadPercentage}
             name={d.name}
@@ -104,6 +129,7 @@ class DogDetailsContainer extends React.Component {
           <DogDetails
             dog={d}
             handleModalOpen={this.handleModalOpen}
+            handleMMSOpen={this.handleMMSOpen}
             comment={this.state.comment}
             handleCommentChange={this.handleCommentChange}
             addComment={this.addComment}
