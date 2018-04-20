@@ -60,8 +60,8 @@ const ClientEditor = ({
                 value={client.address} labelPosition='left' onChange={e => handleEditClientChange(e)} />
             </div>
             <div>
-              <Input type='text' name='pickupdetails' fluid label={{content: 'Pickup Details:'}}
-                value={client.pickupdetails} labelPosition='left' onChange={e => handleEditClientChange(e)} />
+              <Input type='text' name='payment' fluid label={{content: 'Payment Type:'}}
+                value={client.payment} labelPosition='left' onChange={e => handleEditClientChange(e)} />
             </div>
             <div>
               <Input type='text' name='accessType' fluid label={{content: 'Access Type:'}}

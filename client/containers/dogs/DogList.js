@@ -22,7 +22,7 @@ const desc = (dog, link, update, index, handlePopupOpen, handlePopupClose, popup
     )
     : (
       <div>
-        Pickup details: {dog.client && dog.client.pickupDetails}
+        Pickup details: {dog.client && dog.client.access && dog.client.access.type}
       </div>
     )}
     <div className='doglist_desc-buttons'>

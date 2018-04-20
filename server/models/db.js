@@ -26,7 +26,8 @@ const Client = db.define('client', {
   social: Sequelize.STRING,
   vet: Sequelize.JSON,
   pickupdetails: {type: Sequelize.STRING, defaultValue: ''},
-  access: Sequelize.JSON
+  access: Sequelize.JSON,
+  payment: {type: Sequelize.STRING, defaultValue: 'prepaid'}
 })
 
 const Dog = db.define('dog', {
