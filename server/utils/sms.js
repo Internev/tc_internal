@@ -53,6 +53,7 @@ function sendMMS (name, gender, number, filePath) {
   console.log('gender:', gender)
   console.log('number:', number)
   console.log('filePath:', filePath)
+  gender = gender === 'Male' ? 'his' : 'her'
   const options = {
     method: 'POST',
     headers: {
@@ -81,10 +82,10 @@ function sendMMS (name, gender, number, filePath) {
           {
             'source': 'javascript',
             'from': 'Tom + Captain',
-            'body': `${name} on his/her adventure!`,
+            'body': `${name} on ${gender} adventure!`,
             'to': '+61414641576',
             // 'to': number,
-            'subject': `${name} on his/her adventure!`,
+            'subject': `${name} on ${gender} adventure!`,
             'country': 'AU'
           }
         ]
