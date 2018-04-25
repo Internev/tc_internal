@@ -11,7 +11,7 @@ function makeMessage (number, msg) {
         'from': 'Tom + Captain',
         'body': msg,
         // 'to': number
-        'to': '+61414641576' // test number.
+        'to': '+61412163365' // test number (Tom).
 
       }
     ]
@@ -83,7 +83,7 @@ function sendMMS (name, gender, number, filePath) {
             'source': 'javascript',
             'from': 'Tom + Captain',
             'body': `${name} on ${gender} adventure!`,
-            'to': '+61414641576',
+            'to': '+61412163365',
             // 'to': number,
             'subject': `${name} on ${gender} adventure!`,
             'country': 'AU'
