@@ -6,7 +6,7 @@
   "scripts": {
     "prestart": "webpack -p",
     "start": "nodemon index.js",
-    "dev": "nodemon index.js",
+    "dev": "nodemon index.js & webpack -w",
     "test": "jest"
   },
   "author": "Neville Challinger",
