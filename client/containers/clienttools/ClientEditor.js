@@ -30,15 +30,14 @@ const ClientEditor = ({
 }) => {
   return (
     <div className='client_editor'>
-      <h3>Edit Client Details</h3>
+      <h3>Edit Client Details ({clients.length} total clients)</h3>
       <Loader active={clients.isFetching} />
-      {console.log('**client', client)}
       <Modal
         open={modalOpen}
         onClose={cancelEditClient}
         closeOnDimmerClick={false}
         closeIcon
-        >
+      >
         <Header icon='user' content='Edit Client' />
         <Modal.Content>
           <div className='client_editor-form'>
