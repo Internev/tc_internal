@@ -25,6 +25,7 @@ const desc = (dog, link, update, index, handlePopupOpen, handlePopupClose, popup
         Pickup details: {dog.client && dog.client.access && dog.client.access.type}
       </div>
     )}
+    {dog.allergies && <div><b>Allergies: {dog.allergies}</b></div>}
     <div className='doglist_desc-buttons'>
       <Button onClick={e => link(dog.id)}>
         Details
