@@ -96,7 +96,7 @@ class DetailsView extends React.Component {
             return (
               <Card
                 key={i}
-                header={name}
+                header={`${name} (${dogs.length})`}
                 meta={name === 'Unassigned' ? `nobody's walking these hounds yet` : 'is scheduled to walk'}
                 description={dogCards(dogs, walkComment)}
                 />
