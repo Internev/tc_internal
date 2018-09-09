@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Label, Form, Icon, Button, Popup } from 'semantic-ui-react'
+import { Input, Label, Form, Icon, Button, Popup, Image } from 'semantic-ui-react'
 import DogEditorRadio from './DogEditorRadio'
 import './ClientTools.scss'
 import differenceInYears from 'date-fns/difference_in_years'
@@ -26,6 +26,7 @@ const DogEditor = ({dog, handleEditClientDog, handleRemoveClientDog, index, hand
   }
   return (
     <div className='dog-editor'>
+      {dog.photo && <Image src={dog.photo} size='medium' floated='right' />}
       <div>
         <Input type='text' name='name' fluid label={{content: 'Name:'}}
           value={dog.name} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
@@ -54,32 +55,8 @@ const DogEditor = ({dog, handleEditClientDog, handleRemoveClientDog, index, hand
           value={dog.allergies} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
       </div>
       <div>
-        <DogEditorRadio
-          heading='Desexed'
-          fieldname='desexed'
-          clientProp={dog.desexed}
-          handleEditClientDog={handleEditClientDog}
-          dog={dog}
-          index={index}
-          />
-      </div>
-      <div>
         <Input type='text' name='injuries' fluid label={{content: 'Injuries:'}}
           value={dog.injuries} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
-      </div>
-      <div>
-        <DogEditorRadio
-          heading='Insurance'
-          fieldname='insurance'
-          clientProp={dog.insurance}
-          handleEditClientDog={handleEditClientDog}
-          dog={dog}
-          index={index}
-          />
-      </div>
-      <div>
-        <Input type='text' name='insurer' fluid label={{content: 'Insurer:'}}
-          value={dog.insurer} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
       </div>
       <div>
         <Input type='text' name='issues' fluid label={{content: 'Issues:'}}
@@ -92,6 +69,30 @@ const DogEditor = ({dog, handleEditClientDog, handleRemoveClientDog, index, hand
       <div>
         <Input type='text' name='recall' fluid label={{content: 'Recall:'}}
           value={dog.recall} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
+      </div>
+      <div className=' client_editor-radioform'>
+        <DogEditorRadio
+          heading='Desexed'
+          fieldname='desexed'
+          clientProp={dog.desexed}
+          handleEditClientDog={handleEditClientDog}
+          dog={dog}
+          index={index}
+        />
+      </div>
+      <div className=' client_editor-radioform'>
+        <DogEditorRadio
+          heading='Insurance'
+          fieldname='insurance'
+          clientProp={dog.insurance}
+          handleEditClientDog={handleEditClientDog}
+          dog={dog}
+          index={index}
+          />
+      </div>
+      <div>
+        <Input type='text' name='insurer' fluid label={{content: 'Insurer:'}}
+          value={dog.insurer} labelPosition='left' onChange={e => handleEditClientDog(e, dog, index)} />
       </div>
       <div>
         <DogEditorRadio
