@@ -38,6 +38,7 @@ class DogDetailsContainer extends React.Component {
     }
   }
   componentDidUpdate () {
+    console.log('dog details component, state is:', this.state)
   }
   handleModalOpen () { this.setState({modalOpen: true}) }
   handleModalClose () { this.setState({modalOpen: false}) }
@@ -51,14 +52,14 @@ class DogDetailsContainer extends React.Component {
   handleImagePreview (e) {
     e.preventDefault()
     let preview = new FileReader()
-    let file = e.target.files[0]
-    this.setState({file: file})
+    // let file = e.target.files[0]
+    this.setState({file: Array.from(e.target.files)})
     preview.onloadend = () => {
       this.setState({dogImagePreview: preview.result})
       // console.log('file is:', file)
     }
 
-    preview.readAsDataURL(file)
+    preview.readAsDataURL(e.target.files[0])
   }
   handleImageUpload (id) {
     this.setState({modalOpen: false, uploadProgress: true})
@@ -73,7 +74,7 @@ class DogDetailsContainer extends React.Component {
       }
     }
     let fd = new FormData()
-    fd.append('file', this.state.file)
+    fd.append('file', this.state.file[0])
     fd.append('id', id)
 
     axios.post('/api/dogs/upload', fd, config)
@@ -100,7 +101,8 @@ class DogDetailsContainer extends React.Component {
       }
     }
     let fd = new FormData()
-    fd.append('file', this.state.file)
+    this.state.file.forEach(f => fd.append('files', f))
+    // fd.append('files', this.state.file)
     fd.append('name', name)
     fd.append('gender', gender)
     fd.append('number', number)

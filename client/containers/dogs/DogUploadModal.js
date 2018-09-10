@@ -14,7 +14,7 @@ const DogUploadModal = ({open, handleClose, title, heading, upload, activate, ha
       <h3>{heading} of {name}</h3>
       <label htmlFor='dogUpload' className='ui icon button'>
         <Icon name='upload' />
-        &nbsp;Choose Photo
+        &nbsp;Choose Photo{title === 'Send the client a Photo' ? '(s)' : ''}
       </label>
       <input
         type='file'
@@ -22,6 +22,7 @@ const DogUploadModal = ({open, handleClose, title, heading, upload, activate, ha
         accept='image/*'
         id='dogUpload'
         style={{display: 'none'}}
+        multiple={title === 'Send the client a Photo'}
       />
       {dogImagePreview
       ? <Image src={dogImagePreview} size='medium' rounded className='dog-upload_preview' />

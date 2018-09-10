@@ -47,12 +47,13 @@ dogs.post('/upload', upload.single('file'), (req, res) => {
   })
 })
 
-dogs.post('/mms', upload.single('file'), (req, res) => {
-  console.log('req.file is:', req.file)
+dogs.post('/mms', upload.array('files'), (req, res) => {
+  console.log('req.body.file is:', req.files)
   console.log('req body?', req.body)
   // dogs db not implemented yet.
 
-  sendMMS(req.body.name, req.body.gender, req.body.number, req.file.path)
+
+  sendMMS(req.body.name, req.body.gender, req.body.number, req.files)
 
   res.sendStatus(200)
   // cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
