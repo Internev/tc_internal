@@ -54,4 +54,26 @@ users.post('/', (req, res) => {
     })
 })
 
+users.post('/delete', (req, res) => {
+  User.destroy(
+    {where: {id: req.body.user.id}}
+  )
+    .then(() => User.findAll({order: [[ 'createdAt', 'ASC' ]]}))
+    .then(users => {
+      res.status(200).json(users.map(user => {
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          admin: user.admin,
+          walker: user.walker
+        }
+      }))
+    })
+    .catch(err => {
+      console.log('user destroy failure, error is:', err)
+      res.status(500).json({error: err})
+    })
+})
+
 module.exports = users

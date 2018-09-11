@@ -4,7 +4,10 @@ import {
   GET_USERS_FAILURE,
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAILURE
+  UPDATE_USER_FAILURE,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAILURE
 } from '../actions'
 
 const DEFAULT_STATE = {
@@ -53,6 +56,26 @@ const updateUserFailure = (state, action) => {
   return newState
 }
 
+const deleteUserRequest = (state, action) => {
+  const newState = {...state, ...{isFetching: true}}
+  return newState
+}
+
+const deleteUserSuccess = (state, action) => {
+  const newState = {
+    ...state,
+    ...{
+      isFetching: false,
+      users: action.users
+    }}
+  return newState
+}
+
+const deleteUserFailure = (state, action) => {
+  const newState = {...state, ...{isFetching: false, error: action.err}}
+  return newState
+}
+
 export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case GET_USERS_REQUEST:
@@ -67,6 +90,12 @@ export default function (state = DEFAULT_STATE, action) {
       return updateUserSuccess(state, action)
     case UPDATE_USER_FAILURE:
       return updateUserFailure(state, action)
+    case DELETE_USER_REQUEST:
+      return deleteUserRequest(state, action)
+    case DELETE_USER_SUCCESS:
+      return deleteUserSuccess(state, action)
+    case DELETE_USER_FAILURE:
+      return deleteUserFailure(state, action)
     default:
       return state
   }

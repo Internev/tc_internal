@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Card, Input, Dimmer, Loader, Header } from 'semantic-ui-react'
-import { getUsers, updateUser } from '../../redux/creators/usersCreators'
+import { getUsers, updateUser, deleteUser } from '../../redux/creators/usersCreators'
 import UserCard from './UserCard'
 import './UserTools.scss'
 
@@ -11,6 +11,7 @@ class UserTools extends React.Component {
     this.state = {searchTerm: ''}
     this.toggleAdmin = this.toggleAdmin.bind(this)
     this.toggleWalker = this.toggleWalker.bind(this)
+    this.deleteUser = this.deleteUser.bind(this)
   }
   componentDidMount () {
     this.props.dispatch(getUsers())
@@ -27,6 +28,9 @@ class UserTools extends React.Component {
   }
   toggleWalker (user) {
     this.props.dispatch(updateUser(user, 'walker'))
+  }
+  deleteUser (user) {
+    this.props.dispatch(deleteUser(user, 'walker'))
   }
   render () {
     return (
@@ -62,6 +66,7 @@ class UserTools extends React.Component {
                 user={user}
                 toggleAdmin={this.toggleAdmin}
                 toggleWalker={this.toggleWalker}
+                deleteUser={this.deleteUser}
               />
             )
           )}

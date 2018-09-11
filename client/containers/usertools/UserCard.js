@@ -1,7 +1,7 @@
 import React from 'react'
-import { Card, Icon, Checkbox } from 'semantic-ui-react'
+import { Card, Popup, Button, Checkbox } from 'semantic-ui-react'
 
-const UserCard = ({user, toggleAdmin, toggleWalker}) => {
+const UserCard = ({user, toggleAdmin, toggleWalker, deleteUser}) => {
   const updateRole = (
     <div>
       <Checkbox
@@ -14,6 +14,13 @@ const UserCard = ({user, toggleAdmin, toggleWalker}) => {
         label='Administrator'
         checked={user.admin}
         onChange={e => toggleAdmin(user)}
+      />
+      <hr />
+      <Popup
+        trigger={<Button basic color='red' icon='remove user' content='Delete User' />}
+        content={<Button color='red' icon='warning' content='Confirm Delete' onClick={() => deleteUser(user)} />}
+        on='click'
+        position='top right'
       />
     </div>
   )
