@@ -53,7 +53,7 @@ dogs.post('/mms', upload.array('files'), (req, res) => {
   // dogs db not implemented yet.
 
 
-  sendMMS(req.body.name, req.body.gender, req.body.number, req.files)
+  sendMMS(req.body.name, req.body.gender, req.body.number, req.files, req.body.text)
 
   res.sendStatus(200)
   // cloudinary.v2.uploader.upload(req.file.path, (err, result) => {

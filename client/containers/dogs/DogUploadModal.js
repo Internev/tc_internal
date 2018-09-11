@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Header, Icon, Modal, Image, Progress } from 'semantic-ui-react'
 import './Dog.scss'
 
-const DogUploadModal = ({open, handleClose, title, heading, upload, activate, handleImagePreview, dogImagePreview, handleImageUpload, uploadPercentage, name, gender, number, id}) => (
+const DogUploadModal = ({open, handleClose, title, heading, upload, activate, handleImagePreview, dogImagePreview, handleImageUpload, uploadPercentage, name, gender, number, id, mmsTextChange, mmsText}) => (
   <Modal
     open={open}
     onClose={handleClose}
@@ -27,6 +27,17 @@ const DogUploadModal = ({open, handleClose, title, heading, upload, activate, ha
       {dogImagePreview
       ? <Image src={dogImagePreview} size='medium' rounded className='dog-upload_preview' />
       : null }
+      {title === 'Send the client a Photo'
+        ? (<div>
+          Add a custom message:
+          <textarea
+            rows='3'
+            cols='40'
+            value={mmsText}
+            onChange={e => mmsTextChange(e)} />
+        </div>)
+        : null
+      }
     </Modal.Content>
     <Modal.Actions>
       <Button color='orange' onClick={handleClose} inverted>
@@ -34,7 +45,7 @@ const DogUploadModal = ({open, handleClose, title, heading, upload, activate, ha
       </Button>
       <Button
         color='green'
-        onClick={() => handleImageUpload(id, name, gender, number)}
+        onClick={() => handleImageUpload(id, name, gender, number, mmsText)}
         inverted
         disabled={!dogImagePreview}
         >

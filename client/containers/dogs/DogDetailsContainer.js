@@ -17,7 +17,8 @@ class DogDetailsContainer extends React.Component {
       uploadPercentage: 0,
       dogImagePreview: '',
       file: '',
-      comment: ''
+      comment: '',
+      mmsText: ''
     }
     this.handleModalOpen = this.handleModalOpen.bind(this)
     this.handleModalClose = this.handleModalClose.bind(this)
@@ -28,6 +29,7 @@ class DogDetailsContainer extends React.Component {
     this.handleImagePreview = this.handleImagePreview.bind(this)
     this.handleImageUpload = this.handleImageUpload.bind(this)
     this.handleImageMMS = this.handleImageMMS.bind(this)
+    this.handleMmsTextChange = this.handleMmsTextChange.bind(this)
   }
   componentDidMount () {
     const paramId = parseInt(this.props.match.params.id)
@@ -45,6 +47,7 @@ class DogDetailsContainer extends React.Component {
   handleMMSOpen () { this.setState({mmsOpen: true}) }
   handleMMSClose () { this.setState({mmsOpen: false}) }
   handleCommentChange (e) { this.setState({comment: e.target.value}) }
+  handleMmsTextChange (e) { this.setState({mmsText: e.target.value}) }
   addComment () {
     this.props.dispatch(addDogComment(this.props.dogs.editing.id, this.props.auth.name, this.state.comment))
     this.setState({comment: ''})
@@ -88,7 +91,7 @@ class DogDetailsContainer extends React.Component {
         that.setState({uploadProgress: false, dogImagePreview: null})
       })
   }
-  handleImageMMS (id, name, gender, number) {
+  handleImageMMS (id, name, gender, number, text) {
     this.setState({mmsOpen: false, uploadProgress: true})
     const that = this
     let config = {
@@ -106,16 +109,17 @@ class DogDetailsContainer extends React.Component {
     fd.append('name', name)
     fd.append('gender', gender)
     fd.append('number', number)
+    fd.append('text', text)
 
     axios.post('/api/dogs/mms', fd, config)
       .then(res => {
         console.log('upload finished, res:', res)
         // this.props.dispatch(getUserThenDogsThenEditable(res.data.dog.id))
-        that.setState({uploadProgress: false, dogImagePreview: null})
+        that.setState({uploadProgress: false, dogImagePreview: null, mmsText: ''})
       })
       .catch(err => {
         console.log('Dog mms upload failed, err:', err)
-        that.setState({uploadProgress: false, dogImagePreview: null})
+        that.setState({uploadProgress: false, dogImagePreview: null, mmsText: ''})
       })
   }
   render () {
@@ -153,6 +157,8 @@ class DogDetailsContainer extends React.Component {
             number={d.client && d.client.phone}
             gender={d.gender}
             id={d.id}
+            mmsTextChange={this.handleMmsTextChange}
+            mmsText={this.state.mmsText}
             />
           <Dimmer active={this.state.uploadProgress}>
             Uploading Photo...
