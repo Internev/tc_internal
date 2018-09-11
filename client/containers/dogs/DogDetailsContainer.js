@@ -81,11 +81,11 @@ class DogDetailsContainer extends React.Component {
       .then(res => {
         // console.log('upload finished, res:', res)
         this.props.dispatch(getUserThenDogsThenEditable(res.data.dog.id))
-        that.setState({uploadProgress: false})
+        that.setState({uploadProgress: false, dogImagePreview: null})
       })
       .catch(err => {
         console.log('Dog image upload failed, err:', err)
-        that.setState({uploadProgress: false})
+        that.setState({uploadProgress: false, dogImagePreview: null})
       })
   }
   handleImageMMS (id, name, gender, number) {
@@ -111,11 +111,11 @@ class DogDetailsContainer extends React.Component {
       .then(res => {
         console.log('upload finished, res:', res)
         // this.props.dispatch(getUserThenDogsThenEditable(res.data.dog.id))
-        that.setState({uploadProgress: false})
+        that.setState({uploadProgress: false, dogImagePreview: null})
       })
       .catch(err => {
         console.log('Dog mms upload failed, err:', err)
-        that.setState({uploadProgress: false})
+        that.setState({uploadProgress: false, dogImagePreview: null})
       })
   }
   render () {
