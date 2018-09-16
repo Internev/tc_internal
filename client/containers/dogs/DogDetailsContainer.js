@@ -54,15 +54,26 @@ class DogDetailsContainer extends React.Component {
   }
   handleImagePreview (e) {
     e.preventDefault()
-    let preview = new FileReader()
-    // let file = e.target.files[0]
-    this.setState({file: Array.from(e.target.files)})
-    preview.onloadend = () => {
-      this.setState({dogImagePreview: preview.result})
-      // console.log('file is:', file)
-    }
-
-    preview.readAsDataURL(e.target.files[0])
+    this.setState({file: Array.from(e.target.files)}, () => {
+      console.log('handleImagePreview, state:', this.state)
+      if (this.state.file.length < 2) {
+        let preview = new FileReader()
+        preview.onloadend = () => {
+          this.setState({dogImagePreview: preview.result})
+        }
+        preview.readAsDataURL(this.state.file[0])
+      } else {
+        const previewPromises = this.state.file.map(f => new Promise((resolve, reject) => {
+          let preview = new FileReader()
+          preview.onloadend = () => {
+            resolve(preview.result)
+          }
+          preview.readAsDataURL(f)
+        }))
+        Promise.all(previewPromises)
+          .then(previews => this.setState({dogImagePreview: previews}))
+      }
+    })
   }
   handleImageUpload (id) {
     this.setState({modalOpen: false, uploadProgress: true})

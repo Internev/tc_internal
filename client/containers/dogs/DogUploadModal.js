@@ -25,8 +25,12 @@ const DogUploadModal = ({open, handleClose, title, heading, upload, activate, ha
         multiple={title === 'Send the client a Photo'}
       />
       {dogImagePreview
-      ? <Image src={dogImagePreview} size='medium' rounded className='dog-upload_preview' />
-      : null }
+        ? Array.isArray(dogImagePreview)
+          ? (dogImagePreview.map((imgSrc, i) =>
+            <Image key={i} src={imgSrc} size='small' rounded className='dog-upload_preview' />
+          ))
+          : <Image src={dogImagePreview} size='medium' rounded className='dog-upload_preview' />
+        : null }
       {title === 'Send the client a Photo'
         ? (<div>
           Add a custom message:
